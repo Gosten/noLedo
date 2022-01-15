@@ -15,8 +15,8 @@
             return{
                 BOARD_CONFIG,
                 aspectRatio: BOARD_CONFIG.columns / BOARD_CONFIG.rows,
-                scaleBoard: undefined,
-                
+                scaleBoard: {},
+                ACTIVE_PROBLEM_SCALING,
             }
         },
         mounted() {
@@ -25,7 +25,9 @@
                 payload: JSON.stringify(this.activeProblem)
             })
             sendProblem(this.activeProblem)
-            this.scaleBoard = { 'transform': this.getTransform()}
+            if(ACTIVE_PROBLEM_SCALING){
+                this.scaleBoard = { 'transform': this.getTransform()}
+            }
             console.log(this.scaleBoard)
         },
         computed: {
