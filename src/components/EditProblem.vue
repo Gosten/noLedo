@@ -2,10 +2,19 @@
     <div id="edit-problem">
         <div class="grid-content">
 
-            <div class="board-position">
-                <transition name="board-fade">
-                    <board v-if="!textInputFocus"></board>  
-                </transition>
+            <div class = "top-conainer">
+                <div v-if="ENABLE_ZOOM" class="zoom-container flex-container-blank">
+                    <div class="zoom" @click="toggleZoom()">
+                        <img v-if="!boardZoom" src="images/zoomIn.svg" alt="zoomIn">
+                        <img v-if="boardZoom" src="images/zoomOut.svg" alt="zoomOut">
+                    </div>
+                </div>
+                
+                <div class="board-position" :class="{'board-zoom': boardZoom}">
+                    <transition name="board-fade">
+                        <board v-if="!textInputFocus"></board>
+                    </transition>
+                </div>
             </div>
 
             <div class="flex-container-blank">
@@ -74,6 +83,8 @@
                 oldName: "",
                 saveNewList,
                 textInputHandle: undefined,
+                boardZoom: false,
+                ENABLE_ZOOM,
             }
         },
         watch: {
@@ -104,6 +115,11 @@
 
         },
         methods: {
+            toggleZoom(){
+                this.boardZoom = !this.boardZoom;
+                console.log(this.boardZoom)
+            },
+
             deleteProblem(){ this.$store.commit("toggleDeleteProblemModal")},
 
             blurInput(e){

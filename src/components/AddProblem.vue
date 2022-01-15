@@ -4,11 +4,19 @@
         
         <div class="grid-content">
 
-            
-            <div class="board-position">
-                <transition name="board-fade">
-                    <board v-if="!textInputFocus"></board>  
-                </transition>
+            <div class = "top-conainer">
+                <div v-if="ENABLE_ZOOM" class="zoom-container flex-container-blank">
+                    <div class="zoom" @click="toggleZoom()">
+                        <img v-if="!boardZoom" src="images/zoomIn.svg" alt="zoomIn">
+                        <img v-if="boardZoom" src="images/zoomOut.svg" alt="zoomOut">
+                    </div>
+                </div>
+                
+                <div class="board-position" :class="{'board-zoom': boardZoom}">
+                    <transition name="board-fade">
+                        <board v-if="!textInputFocus"></board>
+                    </transition>
+                </div>
             </div>
             
 
@@ -77,7 +85,8 @@
                 },
                 mapGrade,
                 textInputHandle: undefined,
-
+                boardZoom: false,
+                ENABLE_ZOOM,
             }
         },
         components: {
@@ -99,6 +108,11 @@
 
         },
         methods: {
+            toggleZoom(){
+                this.boardZoom = !this.boardZoom;
+                console.log(this.boardZoom)
+            },
+
             handleChange(value) {this.gradeValue = value},
 
             blurInput(e){

@@ -53,6 +53,9 @@ const INTRO = true;
 // toggle board scaling in active problem
 const ACTIVE_PROBLEM_SCALING = false;
 
+//toggle board zoom in addProblem and editProblem
+const ENABLE_ZOOM = true;
+
 const GRADES = [
 	'1',
 	'2',
