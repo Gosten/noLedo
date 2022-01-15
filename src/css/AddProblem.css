@@ -1,0 +1,66 @@
+.input-container{
+	width: 100%;
+	max-width: 500px;
+    display: flex;
+	flex-direction: column;
+	padding: 1em;
+    margin-bottom: 0em;
+}
+
+#add-problem .board-position{
+	width: 100%;
+}
+
+
+.border-red{
+	border-color: red;
+}
+
+#add-problem .board-position{
+	--container-width: min( calc( 100vw - 2em ), calc( 100vh - 21em ) );
+}
+#edit-problem .board-position{
+	--container-width: min( calc( 100vw - 2em ), calc( 100vh - 24em ) );
+}
+
+.name-grade-container{
+	width: 100%;
+	max-width: 500px;
+}
+
+@media(max-height: 615px){
+	#edit-problem .content-container{
+		padding-top: 60px !important;
+	}
+	#add-problem .content-container{
+		padding-top: 60px !important;
+	}
+
+}
+
+.board-fade-enter-active{
+	transition: opacity 1s;
+}
+.board-fade-leave-active{
+	transition: opacity 0s;
+}
+.board-fade-enter, .board-fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+	opacity: 0;
+}
+
+.bottom{
+	position: absolute; 
+	bottom: 1em;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	width: calc(100vw - 2em);
+	max-width: 500px;
+	max-height: 300px;
+	transition: all 0.5s;
+}
+
+.top{
+	top: 60px;
+}

@@ -1,0 +1,101 @@
+#problem-list{
+    position:absolute;
+    width: calc(100vw - 2em);
+    height: 100vh;
+    max-width: 500px;
+    overflow-y: scroll;
+    padding:0;
+    margin:0;
+    height: calc( 100vh - 60px - 5em - 200px); /* 100vh - menu height - 3* padding - input(filter) container height*/
+    border-radius: 5px;
+    transition: 0.3s height ease-in-out;
+    border-radius: 5px;
+    
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+#problem-list::-webkit-scrollbar {
+    display: none;
+}
+
+
+#problem-list::-webkit-scrollbar {
+    display: none;
+}
+li{
+    list-style-type: none;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.1em;
+    height: 35px;
+}
+
+li:last-child{
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+
+}
+
+li > span {
+    flex-basis: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+li > span:last-child{
+    flex-basis: 60%;
+}
+
+.list-label{
+    background: black;
+    color: white;
+    height: 35px;
+    position: sticky;
+    left: 0;
+    top: 0;
+}
+
+.li-0{
+    background: #ccc;
+}
+
+.li-1{
+    background: #999;
+}
+
+.li-selected{
+    position:sticky;
+    pointer-events: none;
+    bottom:0;
+}
+
+
+
+.collapsed{
+    height: 70px !important;
+    overflow: hidden !important;
+}
+
+
+
+.board-transition{
+    transition: 0.5s display;
+    transition: 0.3s opacity;
+}
+
+#filter-container{
+    width:100%;
+    border: 5px solid black;
+    border-radius: 10px;
+    padding: 1em;
+}
+
+.margin-top-none{
+    margin-top: 0;
+}
+
+

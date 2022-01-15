@@ -1,0 +1,55 @@
+.click-box{
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+#grip-0-box{
+    left: 125px;
+}
+
+#grip-1-box{
+    top: 50px;
+}
+
+#grip-2-box{
+    top: 55px;
+    left: 70px;
+}
+
+#grip-3-box{
+    top: 55px;
+    left: 185px;
+}
+
+#grip-4-box{
+    top: 110px;
+    left: 20px;
+}
+
+#grip-5-box{
+    top: 85px;
+    left: 133px;
+    height: 80px;
+}
+
+#grip-6-box{
+    top: 110px;
+    left: 230px;
+}
+
+#grip-7-box{
+    top: 170px;
+}
+
+#grip-8-box{
+    top: 165px;
+    left: 80px;
+}
+
+#grip-9-box{
+    top: 165px;
+    left: 185px;
+}

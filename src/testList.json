@@ -1,0 +1,642 @@
+[
+    {
+        "name": "trasa1",
+        "grade": "1",
+        "grips": {
+            "0": true,
+            "1": true,
+            "2": false,
+            "3": true,
+            "4": true,
+            "5": false,
+            "6": true,
+            "7": false,
+            "8": true,
+            "9": false
+        }
+    },
+    {
+        "name": "trasa2",
+        "grade": "3a",
+        "grips": {
+            "0": true,
+            "1": false,
+            "2": false,
+            "3": false,
+            "4": true,
+            "5": true,
+            "6": false,
+            "7": false,
+            "8": true,
+            "9": true
+        }
+    },
+    {
+        "name": "trasa3",
+        "grade": "5",
+        "grips": {
+            "0": false,
+            "1": false,
+            "2": true,
+            "3": false,
+            "4": false,
+            "5": true,
+            "6": false,
+            "7": false,
+            "8": true,
+            "9": false
+        }
+    },
+    {
+        "name": "trasa4",
+        "grade": "1",
+        "grips": {
+            "0": false,
+            "1": true,
+            "2": false,
+            "3": true,
+            "4": false,
+            "5": true,
+            "6": false,
+            "7": true,
+            "8": true,
+            "9": false
+        }
+    },
+    {
+        "name": "trasa5",
+        "grade": "7a",
+        "grips": {
+            "0": true,
+            "1": true,
+            "2": true,
+            "3": true,
+            "4": false,
+            "5": false,
+            "6": false,
+            "7": true,
+            "8": false,
+            "9": false
+        }
+    },
+    {
+        "name": "trasa6",
+        "grade": "1",
+        "grips": {
+            "0": false,
+            "1": true,
+            "2": false,
+            "3": false,
+            "4": false,
+            "5": true,
+            "6": false,
+            "7": false,
+            "8": true,
+            "9": true
+        }
+    },
+    {
+        "name": "trasa7",
+        "grade": "3b",
+        "grips": {
+            "0": false,
+            "1": false,
+            "2": true,
+            "3": true,
+            "4": false,
+            "5": false,
+            "6": true,
+            "7": false,
+            "8": true,
+            "9": false
+        }
+    },
+    {
+        "name": "trasa8",
+        "grade": "7c",
+        "grips": {
+            "0": false,
+            "1": true,
+            "2": true,
+            "3": true,
+            "4": false,
+            "5": false,
+            "6": true,
+            "7": false,
+            "8": true,
+            "9": true
+        }
+    },
+    {
+        "name": "trasa9",
+        "grade": "4",
+        "grips": {
+            "0": false,
+            "1": false,
+            "2": true,
+            "3": true,
+            "4": false,
+            "5": true,
+            "6": false,
+            "7": true,
+            "8": false,
+            "9": true
+        }
+    },
+    {
+        "name": "trasa10",
+        "grade": "4",
+        "grips": {
+            "0": true,
+            "1": false,
+            "2": false,
+            "3": true,
+            "4": false,
+            "5": true,
+            "6": true,
+            "7": false,
+            "8": true,
+            "9": false
+        }
+    },
+    {
+        "name": "trasa11",
+        "grade": "1",
+        "grips": {
+            "0": true,
+            "1": true,
+            "2": false,
+            "3": true,
+            "4": true,
+            "5": false,
+            "6": true,
+            "7": false,
+            "8": true,
+            "9": false
+        }
+    },
+    {
+        "name": "trasa12",
+        "grade": "1",
+        "grips": {
+            "0": false,
+            "1": true,
+            "2": false,
+            "3": true,
+            "4": false,
+            "5": true,
+            "6": false,
+            "7": true,
+            "8": false,
+            "9": false
+        }
+    },
+    {
+        "name": "trasa13",
+        "grade": "2",
+        "grips": {
+            "0": true,
+            "1": false,
+            "2": true,
+            "3": false,
+            "4": true,
+            "5": true,
+            "6": false,
+            "7": true,
+            "8": false,
+            "9": true
+        }
+    },
+    {
+        "name": "trasa14",
+        "grade": "4a",
+        "grips": {
+            "0": false,
+            "1": true,
+            "2": false,
+            "3": true,
+            "4": false,
+            "5": true,
+            "6": true,
+            "7": false,
+            "8": true,
+            "9": false
+        }
+    },
+    {
+        "name": "trasa15",
+        "grade": "4a",
+        "grips": {
+            "0": true,
+            "1": false,
+            "2": true,
+            "3": false,
+            "4": true,
+            "5": true,
+            "6": false,
+            "7": true,
+            "8": false,
+            "9": true
+        }
+    },
+    {
+        "name": "trasa16",
+        "grade": "5a",
+        "grips": {
+            "0": false,
+            "1": true,
+            "2": false,
+            "3": true,
+            "4": false,
+            "5": true,
+            "6": false,
+            "7": true,
+            "8": true,
+            "9": true
+        }
+    },
+    {
+        "name": "trasa17",
+        "grade": "2",
+        "grips": {
+            "0": false,
+            "1": true,
+            "2": true,
+            "3": true,
+            "4": false,
+            "5": true,
+            "6": false,
+            "7": true,
+            "8": false,
+            "9": true
+        }
+    },
+    {
+        "name": "trasa31",
+        "grade": "2",
+        "grips": {
+            "0": true,
+            "1": true,
+            "2": false,
+            "3": true,
+            "4": false,
+            "5": true,
+            "6": true,
+            "7": false,
+            "8": true,
+            "9": true
+        }
+    },
+    {
+        "name": "trasa41",
+        "grade": "1",
+        "grips": {
+            "0": false,
+            "1": true,
+            "2": false,
+            "3": true,
+            "4": false,
+            "5": false,
+            "6": true,
+            "7": false,
+            "8": false,
+            "9": true
+        }
+    },
+    {
+        "name": "trasa51",
+        "grade": "5b",
+        "grips": {
+            "0": false,
+            "1": false,
+            "2": true,
+            "3": false,
+            "4": false,
+            "5": true,
+            "6": false,
+            "7": false,
+            "8": true,
+            "9": false
+        }
+    },
+    {
+        "name": "trasa61",
+        "grade": "4b",
+        "grips": {
+            "0": true,
+            "1": false,
+            "2": true,
+            "3": false,
+            "4": false,
+            "5": true,
+            "6": false,
+            "7": false,
+            "8": true,
+            "9": false
+        }
+    },
+    {
+        "name": "trasa62",
+        "grade": "2",
+        "grips": {
+            "0": false,
+            "1": true,
+            "2": false,
+            "3": true,
+            "4": false,
+            "5": false,
+            "6": true,
+            "7": false,
+            "8": true,
+            "9": false
+        }
+    },
+    {
+        "name": "trasa63",
+        "grade": "5a",
+        "grips": {
+            "0": true,
+            "1": false,
+            "2": true,
+            "3": false,
+            "4": false,
+            "5": false,
+            "6": true,
+            "7": false,
+            "8": true,
+            "9": false
+        }
+    },
+    {
+        "name": "trasa64",
+        "grade": "4b",
+        "grips": {
+            "0": false,
+            "1": true,
+            "2": false,
+            "3": true,
+            "4": false,
+            "5": true,
+            "6": false,
+            "7": true,
+            "8": false,
+            "9": true
+        }
+    },
+    {
+        "name": "trasa65",
+        "grade": "2",
+        "grips": {
+            "0": false,
+            "1": true,
+            "2": true,
+            "3": true,
+            "4": false,
+            "5": false,
+            "6": true,
+            "7": true,
+            "8": false,
+            "9": true
+        }
+    },
+    {
+        "name": "trasa71",
+        "grade": "1",
+        "grips": {
+            "0": false,
+            "1": true,
+            "2": false,
+            "3": true,
+            "4": false,
+            "5": true,
+            "6": false,
+            "7": true,
+            "8": true,
+            "9": false
+        }
+    },
+    {
+        "name": "trasa72",
+        "grade": "3",
+        "grips": {
+            "0": true,
+            "1": false,
+            "2": true,
+            "3": true,
+            "4": false,
+            "5": true,
+            "6": false,
+            "7": true,
+            "8": false,
+            "9": true
+        }
+    },
+    {
+        "name": "trasa73",
+        "grade": "5c",
+        "grips": {
+            "0": true,
+            "1": false,
+            "2": true,
+            "3": true,
+            "4": false,
+            "5": true,
+            "6": false,
+            "7": true,
+            "8": false,
+            "9": true
+        }
+    },
+    {
+        "name": "trasa74",
+        "grade": "4c",
+        "grips": {
+            "0": true,
+            "1": false,
+            "2": false,
+            "3": true,
+            "4": true,
+            "5": true,
+            "6": true,
+            "7": true,
+            "8": false,
+            "9": true
+        }
+    },
+    {
+        "name": "trasa75",
+        "grade": "1",
+        "grips": {
+            "0": true,
+            "1": true,
+            "2": true,
+            "3": true,
+            "4": false,
+            "5": true,
+            "6": false,
+            "7": true,
+            "8": true,
+            "9": false
+        }
+    },
+    {
+        "name": "trasa82",
+        "grade": "3",
+        "grips": {
+            "0": true,
+            "1": true,
+            "2": false,
+            "3": true,
+            "4": false,
+            "5": true,
+            "6": false,
+            "7": true,
+            "8": true,
+            "9": true
+        }
+    },
+    {
+        "name": "trasa83",
+        "grade": "6a",
+        "grips": {
+            "0": false,
+            "1": true,
+            "2": true,
+            "3": true,
+            "4": true,
+            "5": false,
+            "6": true,
+            "7": true,
+            "8": false,
+            "9": true
+        }
+    },
+    {
+        "name": "trasa84",
+        "grade": "1",
+        "grips": {
+            "0": true,
+            "1": true,
+            "2": false,
+            "3": true,
+            "4": true,
+            "5": true,
+            "6": false,
+            "7": true,
+            "8": true,
+            "9": true
+        }
+    },
+    {
+        "name": "trasa85",
+        "grade": "6",
+        "grips": {
+            "0": false,
+            "1": true,
+            "2": true,
+            "3": false,
+            "4": true,
+            "5": false,
+            "6": true,
+            "7": true,
+            "8": false,
+            "9": true
+        }
+    },
+    {
+        "name": "trasa91",
+        "grade": "1",
+        "grips": {
+            "0": false,
+            "1": true,
+            "2": false,
+            "3": true,
+            "4": true,
+            "5": false,
+            "6": true,
+            "7": true,
+            "8": false,
+            "9": true
+        }
+    },
+    {
+        "name": "trasa92",
+        "grade": "3a",
+        "grips": {
+            "0": false,
+            "1": true,
+            "2": true,
+            "3": true,
+            "4": false,
+            "5": true,
+            "6": false,
+            "7": true,
+            "8": true,
+            "9": false
+        }
+    },
+    {
+        "name": "trasa113",
+        "grade": "5",
+        "grips": {
+            "0": true,
+            "1": false,
+            "2": true,
+            "3": true,
+            "4": false,
+            "5": false,
+            "6": true,
+            "7": false,
+            "8": true,
+            "9": false
+        }
+    },
+    {
+        "name": "trasa114",
+        "grade": "6b",
+        "grips": {
+            "0": true,
+            "1": false,
+            "2": true,
+            "3": false,
+            "4": false,
+            "5": true,
+            "6": true,
+            "7": true,
+            "8": true,
+            "9": false
+        }
+    },
+    {
+        "name": "trasa115",
+        "grade": "1",
+        "grips": {
+            "0": true,
+            "1": true,
+            "2": true,
+            "3": false,
+            "4": true,
+            "5": false,
+            "6": true,
+            "7": false,
+            "8": true,
+            "9": false
+        }
+    },
+    {
+        "name": "trasa112",
+        "grade": "1",
+        "grips": {
+            "0": true,
+            "1": false,
+            "2": true,
+            "3": false,
+            "4": false,
+            "5": true,
+            "6": false,
+            "7": true,
+            "8": true,
+            "9": false
+        }
+    }
+]

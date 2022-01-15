@@ -1,0 +1,76 @@
+
+
+.board-container {
+	font-size: 16px !important;
+	width: var(--container-width);
+	--rows-or-columns: max(var(--rows), var(--columns));
+	--grip-box-size: calc(var(--container-width) / var(--rows-or-columns));
+	aspect-ratio: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+
+.board-grid-container{
+	display: grid;
+	grid-template-columns: repeat(var(--columns), var(--grip-box-size));
+	grid-template-rows: repeat(var(--rows), var(--grip-box-size));
+}
+
+.grip-container{
+	
+	width: var(--grip-box-size);
+	height: var(--grip-box-size);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+
+
+.grip{
+	width: var(--grip-size);
+	height: var(--grip-size);
+	border-radius: 50%;
+}
+
+.grip-color-0{
+	width: var(--empty-grip-size);
+	height: var(--empty-grip-size);
+	background: hsl(0, 0%, 0%);
+}
+
+.grip-selector{
+	position: relative;
+	
+}
+.grip-selector::after{
+	box-sizing: content-box;
+	content: "";
+	position: absolute;
+	width: var(--grip-selection-size);
+	height: var(--grip-selection-size);
+	max-width: 90%;
+	max-height: 90%;
+	border-radius: 50%;
+	border: 2px solid rgb(0, 255, 0);
+	opacity: 0;
+	transition: opacity .4s;
+	transition-timing-function: cubic-bezier(.88,.72,0,.66);
+}
+
+.grip-active::after{
+	opacity: 1;
+}
+
+
+.board-position{
+	display:flex;
+	justify-content: center;
+	align-items: center;
+	width: var(--container-width);
+}
+#load-problem .board-position{
+	align-items: flex-start;
+}

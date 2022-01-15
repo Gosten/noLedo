@@ -1,0 +1,21 @@
+/* 
+    To add new color create new color variable in :root,
+    then create new css class named "grip-color-n" 
+    and set its background attribute to your new color variable
+*/
+
+:root{
+    --color-1: hsl(101, 48%, 63%);
+    --color-2: hsl(45, 100%, 70%);
+    --color-3: hsl(10, 69%, 47%); 
+    --color-4: hsl(329, 47%, 62%); 
+    --color-5: hsl(31, 89%, 69%); 
+    --color-6: hsl(0, 0%, 80%); 
+}
+
+.grip-color-1{ background: var(--color-1); }
+.grip-color-2{ background: var(--color-2); }
+.grip-color-3{ background: var(--color-3); }
+.grip-color-4{ background: var(--color-4); }
+.grip-color-5{ background: var(--color-5); }
+.grip-color-6{ background: var(--color-6); }
