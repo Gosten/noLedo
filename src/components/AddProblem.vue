@@ -2,7 +2,7 @@
     <div id="add-problem">
         
         
-        <div class="flex-container content-container">
+        <div class="grid-content">
 
             
             <div class="board-position">
@@ -12,35 +12,37 @@
             </div>
             
 
-            <div class="bottom" :class="{top: textInputFocus}">
-                <div class="input-container">
-                    <div class="name-grade-container">
-                        <div class="slider-width">
-                            <grade-slider></grade-slider>
-                        </div>
-                        <div class="name-input-container">
-                            <input
-                                id="add-problem-name-input"
-                                class="input-name input"
-                                :class="{
-                                    'border-red': errorFlags.name || nameLengthLimit,
-                                    'limit-description': 1}"
-                                name="nazwa"
-                                type="text"
-                                placeholder="nazwa"
-                                v-model="nameValue"
-                                @change="(e) => handleNameInput(e.target.value)"
-                                @focusin="() => handleFocus(true)"
-                                @focusout="() => handleFocus(false)"
-                            />
-                            <p :class="{ 'opacity': !nameLengthLimit }">Nazwa nie może mieć więcej niż 20 znaków</p>
+            <div class="flex-container-blank">
+                <div class="bottom" :class="{top: textInputFocus}">
+                    <div class="input-container">
+                        <div class="name-grade-container">
+                            <div class="slider-width">
+                                <grade-slider></grade-slider>
+                            </div>
+                            <div class="name-input-container">
+                                <input
+                                    id="add-problem-name-input"
+                                    class="input-name input"
+                                    :class="{
+                                        'border-red': errorFlags.name || nameLengthLimit,
+                                        'limit-description': 1}"
+                                    name="nazwa"
+                                    type="text"
+                                    placeholder="nazwa"
+                                    v-model="nameValue"
+                                    @change="(e) => handleNameInput(e.target.value)"
+                                    @focusin="() => handleFocus(true)"
+                                    @focusout="() => handleFocus(false)"
+                                />
+                                <p :class="{ 'opacity': !nameLengthLimit }">Nazwa nie może mieć więcej niż 20 znaków</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="button-container">
-                    <button class="button" @click="addProblem">
-                        Dodaj problem
-                    </button>
+                    <div class="button-container">
+                        <button class="button" @click="addProblem">
+                            Dodaj problem
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

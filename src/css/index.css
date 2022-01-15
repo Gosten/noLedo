@@ -71,6 +71,13 @@ button {
 	position: absolute;
 }
 
+.flex-container-blank {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+}
+
 .content-container {
 	height: 100vh;
 	padding: calc(60px + 2em) 1em 0;

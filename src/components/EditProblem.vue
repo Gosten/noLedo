@@ -1,38 +1,43 @@
 <template>
     <div id="edit-problem">
-        <div class="flex-container content-container">
+        <div class="grid-content">
 
-            <div v-if="!textInputFocus" class="board-position">
-                <board></board>
+            <div class="board-position">
+                <transition name="board-fade">
+                    <board v-if="!textInputFocus"></board>  
+                </transition>
             </div>
-            <div class="bottom" :class="{top: textInputFocus}">
-                <div class="input-container">
-                    <div className="name-grade-container">
-                        <div class="slider-width">
-                            <grade-slider></grade-slider>
+
+            <div class="flex-container-blank">
+                <div class="bottom" :class="{top: textInputFocus}">
+                    <div class="input-container">
+                        <div className="name-grade-container">
+                            <div class="slider-width">
+                                <grade-slider></grade-slider>
+                            </div>
+                            <input
+                                id="add-problem-name-input"
+                                class="input-name input"
+                                :class="{'border-red': errorFlags.name}"
+                                name="nazwa"
+                                type="text"
+                                placeholder="nazwa"
+                                v-model="nameValue"
+                                @change="() => errorFlags.name = false"
+                                @focusin="() => handleFocus(true)"
+                                @focusout="() => handleFocus(false)"
+                            />
                         </div>
-                        <input
-                            id="add-problem-name-input"
-                            class="input-name input"
-                            :class="{'border-red': errorFlags.name}"
-                            name="nazwa"
-                            type="text"
-                            placeholder="nazwa"
-                            v-model="nameValue"
-                            @change="() => errorFlags.name = false"
-                            @focusin="() => handleFocus(true)"
-                            @focusout="() => handleFocus(false)"
-                        />
                     </div>
-                </div>
                 
-                <div class="button-container">
-                    <button class="button" @click="deleteProblem">
-                        Usuń
-                    </button>
-                    <button class="button" @click="saveProblem">
-                        Zapisz
-                    </button>
+                    <div class="button-container">
+                        <button class="button" @click="deleteProblem">
+                            Usuń
+                        </button>
+                        <button class="button" @click="saveProblem">
+                            Zapisz
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
