@@ -11,7 +11,7 @@
                 <h1>{{getHeader()}}</h1>
                 <h1 class="active-problem-header" v-if="menuSelection === ACTIVE_PROBLEM">
                     <span><span>{{activeProblem.name.toUpperCase()}}</span></span>
-                    <span>: {{activeProblem.grade}}</span>
+                    <span v-if="ENABLE_GRADES">: {{activeProblem.grade}}</span>
                 </h1>
 
                 <div id="menu-button" @click="handleMenuClick">
@@ -30,7 +30,8 @@
         },
         data(){
             return{
-                ACTIVE_PROBLEM
+                ACTIVE_PROBLEM,
+                ENABLE_GRADES
         }},
         methods: {
             handleMenuClick(){

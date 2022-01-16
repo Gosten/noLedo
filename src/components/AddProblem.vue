@@ -24,7 +24,7 @@
                 <div class="bottom" :class="{top: textInputFocus}">
                     <div class="input-container">
                         <div class="name-grade-container">
-                            <div class="slider-width">
+                            <div v-if="ENABLE_GRADES" class="slider-width">
                                 <grade-slider></grade-slider>
                             </div>
                             <div class="name-input-container">
@@ -87,6 +87,7 @@
                 textInputHandle: undefined,
                 boardZoom: false,
                 ENABLE_ZOOM,
+                ENABLE_GRADES,
             }
         },
         components: {

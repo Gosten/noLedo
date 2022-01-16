@@ -21,7 +21,7 @@
                 <div class="bottom" :class="{top: textInputFocus}">
                     <div class="input-container">
                         <div className="name-grade-container">
-                            <div class="slider-width">
+                            <div v-if="ENABLE_GRADES" class="slider-width">
                                 <grade-slider></grade-slider>
                             </div>
                             <input
@@ -85,6 +85,7 @@
                 textInputHandle: undefined,
                 boardZoom: false,
                 ENABLE_ZOOM,
+                ENABLE_GRADES,
             }
         },
         watch: {
@@ -98,6 +99,7 @@
             this.oldName = this.editProblemState.editedProblem.name
             sendProblem(this.editProblemState.editedProblem)
 
+            console.log(this.editProblemState.editedProblem)
             this.textInputHandle = document.getElementById('add-problem-name-input')
             this.textInputHandle.addEventListener('keyup', this.blurInput)
         },
@@ -130,9 +132,10 @@
                 let errorMessage = "Nie wprowadzono zmian"
                 let editModalmessage = "Wprowadzono zmiany"
                 if(!this.hasProblemChanged()) return this.handleError(errorMessage);
+                let newGrade = this.editProblemState.newGrade ? this.editProblemState.newGrade : this.editProblemState.editedProblem.grade;
                 let newProblem = {
                     name: this.nameValue,
-                    grade: this.editProblemState.newGrade,
+                    grade: newGrade,
                     grips: this.editProblemState.editedProblem.grips,
                 }
                 if(this.validateProblem(newProblem)){

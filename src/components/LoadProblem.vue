@@ -10,7 +10,7 @@
             <ul id="problem-list" :class="{'collapsed': listCollapsed, 'focus-transition': textInputFocus}">
                 <li class="list-label">
                     <span>Nazwa</span>
-                    <span>Wycena</span>
+                    <span v-if="ENABLE_GRADES">Wycena</span>
                 </li>
                 <li class="li-0" v-if="filteredList? Object.keys(filteredList).length === 0: false">
                     <span>brak wyników</span>
@@ -23,15 +23,16 @@
                         }"
                     @click="() => handleProblemSelect( problem )"
                     >
-                    <span>{{limitNameLength(problem.name)}}</span><span>{{problem.grade}}</span>
+                    <span>{{limitNameLength(problem.name)}}</span>
+                    <span v-if="ENABLE_GRADES">{{problem.grade}}</span>
                 </li>
             </ul>
 
             <transition name="board-fade">
             
                 <div class="bottom-section filter-container" v-if="!listCollapsed">
-                    <h3>Filtry</h3>
-                    <div class="slider-width">
+                    <h3>Filtr<span v-if="ENABLE_GRADES">y</span></h3>
+                    <div v-if="ENABLE_GRADES" class="slider-width">
                         <slider-component></slider-component>
                     </div>
                     <input
@@ -85,6 +86,7 @@
                 },
                 sliderInstance: undefined,
                 mapGrade,
+                ENABLE_GRADES,
             }
         },
         methods: {
@@ -133,13 +135,16 @@
             problemList(){ return [...this.$store.getters.getProblemList] },
             filteredList(){
                 if(this.problemList){
-                    const fromGrade = mapGrade( this.filterGrades.value1 )
-                    const toGrade = mapGrade( this.filterGrades.value2  )
-                    let listByGrade = this.problemList
-                        .filter( problem => ( problem.grade>=fromGrade ) && ( problem.grade<=toGrade ));
-                    let listByName  = listByGrade
-                        .filter( problem => problem.name.toUpperCase().match( this.nameFilter.toUpperCase() ))
-                    return listByName;
+                    if(this.ENABLE_GRADES){
+                        const fromGrade = mapGrade( this.filterGrades.value1 )
+                        const toGrade = mapGrade( this.filterGrades.value2  )
+                        let listByGrade = this.problemList
+                            .filter( problem => ( problem.grade>=fromGrade ) && ( problem.grade<=toGrade ));
+                        let listByName  = listByGrade
+                            .filter( problem => problem.name.toUpperCase().match( this.nameFilter.toUpperCase() ))
+                        return listByName;
+                    }
+                    return this.problemList
                 }else return undefined
             },
             filterGrades(){ return this.$store.getters.getFilterSlider },
