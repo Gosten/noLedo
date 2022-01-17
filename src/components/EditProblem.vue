@@ -1,223 +1,264 @@
 <template>
-    <div id="edit-problem">
-        <div class="grid-content">
+	<div id="edit-problem">
+		<div class="grid-content">
+			<div class="top-conainer">
+				<div v-if="ENABLE_ZOOM" class="zoom-container flex-container-blank">
+					<div class="zoom" @click="toggleZoom()">
+						<img v-if="!boardZoom" src="images/zoomIn.svg" alt="zoomIn" />
+						<img v-if="boardZoom" src="images/zoomOut.svg" alt="zoomOut" />
+					</div>
+				</div>
 
-            <div class = "top-conainer">
-                <div v-if="ENABLE_ZOOM" class="zoom-container flex-container-blank">
-                    <div class="zoom" @click="toggleZoom()">
-                        <img v-if="!boardZoom" src="images/zoomIn.svg" alt="zoomIn">
-                        <img v-if="boardZoom" src="images/zoomOut.svg" alt="zoomOut">
-                    </div>
-                </div>
-                
-                <div class="board-position" :class="{'board-zoom': boardZoom}">
-                    <transition name="board-fade">
-                        <board v-if="!textInputFocus"></board>
-                    </transition>
-                </div>
-            </div>
+				<div
+					id="board-style-EP"
+					class="board-position"
+					:class="{ 'board-zoom': boardZoom }"
+				>
+					<transition name="board-fade">
+						<board v-if="!textInputFocus" board-id="board-E"></board>
+					</transition>
+				</div>
+			</div>
 
-            <div class="flex-container-blank">
-                <div class="bottom" :class="{top: textInputFocus}">
-                    <div class="input-container">
-                        <div className="name-grade-container">
-                            <div v-if="ENABLE_GRADES" class="slider-width">
-                                <grade-slider></grade-slider>
-                            </div>
-                            <input
-                                id="add-problem-name-input"
-                                class="input-name input"
-                                :class="{'border-red': errorFlags.name}"
-                                name="nazwa"
-                                type="text"
-                                placeholder="nazwa"
-                                v-model="nameValue"
-                                @change="() => errorFlags.name = false"
-                                @focusin="() => handleFocus(true)"
-                                @focusout="() => handleFocus(false)"
-                            />
-                        </div>
-                    </div>
-                
-                    <div class="button-container">
-                        <button class="button" @click="deleteProblem">
-                            Usuń
-                        </button>
-                        <button class="button" @click="saveProblem">
-                            Zapisz
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+			<div class="flex-container-blank">
+				<div class="bottom" :class="{ top: textInputFocus }">
+					<div class="input-container">
+						<div class="name-grade-container">
+							<div v-if="ENABLE_GRADES" class="slider-width">
+								<grade-slider></grade-slider>
+							</div>
+							<input
+								id="add-problem-name-input"
+								class="input-name input"
+								:class="{ 'border-red': errorFlags.name }"
+								name="nazwa"
+								type="text"
+								placeholder="nazwa"
+								v-model="nameValue"
+								@change="() => (errorFlags.name = false)"
+								@focusin="() => handleFocus(true)"
+								@focusout="() => handleFocus(false)"
+							/>
+						</div>
+					</div>
 
-        
-        <transition name="fade">
-            <error-modal v-if="errorState.active"></error-modal>
-        </transition>
+					<div class="button-container">
+						<button class="button" @click="deleteProblem">Usuń</button>
+						<button class="button" @click="saveProblem">Zapisz</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
-        <transition name="fade">
-            <delete-modal v-if="editProblemState.deleteModal"></delete-modal>
-        </transition>
-        
-    </div>
+		<transition name="fade">
+			<error-modal v-if="errorState.active"></error-modal>
+		</transition>
+
+		<transition name="fade">
+			<delete-modal v-if="editProblemState.deleteModal"></delete-modal>
+		</transition>
+	</div>
 </template>
 
 <script>
-    module.exports = {
-        components: {
-            'board': httpVueLoader('components/Board.vue'),
-            'grade-slider': httpVueLoader('components/SingleSlider.vue'),
-            'error-modal': httpVueLoader('components/ErrorModal.vue'),
-            'delete-modal': httpVueLoader('components/DeleteModal.vue'),
+	module.exports = {
+		components: {
+			board: httpVueLoader('components/Board.vue'),
+			'grade-slider': httpVueLoader('components/SingleSlider.vue'),
+			'error-modal': httpVueLoader('components/ErrorModal.vue'),
+			'delete-modal': httpVueLoader('components/DeleteModal.vue'),
+		},
+		data() {
+			return {
+				nameValue: '',
+				errorFlags: {
+					name: false,
+				},
+				mapGrade,
+				oldGrips: [],
+				oldName: '',
+				saveNewList,
+				textInputHandle: undefined,
+				boardZoom: false,
+				ENABLE_ZOOM,
+				ENABLE_GRADES,
+			};
+		},
+		watch: {
+			windowHeight(newWidth) {
+				console.log(newWidth);
+			},
+		},
+		mounted() {
+			this.nameValue = this.editProblemState.editedProblem.name;
+			this.oldGrips = Object.assign(
+				{},
+				this.editProblemState.editedProblem
+			).grips;
+			this.oldName = this.editProblemState.editedProblem.name;
+			sendProblem(this.editProblemState.editedProblem);
 
-        },
-        data(){
-            return{
-                nameValue: "",
-                errorFlags: {
-                    name: false,
-                },
-                mapGrade,
-                oldGrips: [],
-                oldName: "",
-                saveNewList,
-                textInputHandle: undefined,
-                boardZoom: false,
-                ENABLE_ZOOM,
-                ENABLE_GRADES,
-            }
-        },
-        watch: {
-            windowHeight(newWidth) {
-                console.log(newWidth)
-        }
-        },
-        mounted() {
-            this.nameValue = this.editProblemState.editedProblem.name
-            this.oldGrips = Object.assign({}, this.editProblemState.editedProblem).grips
-            this.oldName = this.editProblemState.editedProblem.name
-            sendProblem(this.editProblemState.editedProblem)
+			console.log(this.editProblemState.editedProblem);
+			this.textInputHandle = document.getElementById('add-problem-name-input');
+			this.textInputHandle.addEventListener('keyup', this.blurInput);
 
-            console.log(this.editProblemState.editedProblem)
-            this.textInputHandle = document.getElementById('add-problem-name-input')
-            this.textInputHandle.addEventListener('keyup', this.blurInput)
-        },
-        beforeUnmount(){
-            this.textInputHandle.removeEventListener('keyup', this.blurInput)
-        },
-        computed: {
+			// const boardStyle = document.getElementById("board-style-EP")
+			// setTimeout(()=>{
+			//     if(boardStyle){
+			//     const {offsetWidth: width, offsetHeight: height} = board
+			//     console.log({width, height})
+			//     const boardStyle = document.getElementById("board-style-EP")
+			//     boardStyle.style= `--board-width: calc(${width}px - 2em); --board-height: calc(${height}px - 2em); `;
+			// }
+			// }, 100)
+		},
+		beforeUnmount() {
+			this.textInputHandle.removeEventListener('keyup', this.blurInput);
+		},
+		computed: {
+			editProblemState() {
+				return this.$store.getters.getEditProblemState;
+			},
+			problemList() {
+				return [...this.$store.getters.getProblemList];
+			},
+			selectedProblem() {
+				return this.$store.getters.getSelectedProblem;
+			},
+			errorState() {
+				return this.$store.getters.getErrorState;
+			},
+			activeProblem() {
+				return this.$store.getters.getActiveProblem;
+			},
+			textInputFocus() {
+				return this.$store.getters.getTextInputFocus;
+			},
+		},
+		methods: {
+			toggleZoom() {
+				this.boardZoom = !this.boardZoom;
+				console.log(this.boardZoom);
+			},
 
-            editProblemState() { return this.$store.getters.getEditProblemState },
-            problemList(){ return [...this.$store.getters.getProblemList] },
-            selectedProblem(){ return this.$store.getters.getSelectedProblem },
-            errorState() { return this.$store.getters.getErrorState},
-            activeProblem(){ return this.$store.getters.getActiveProblem },
-            textInputFocus(){ return this.$store.getters.getTextInputFocus },
+			deleteProblem() {
+				this.$store.commit('toggleDeleteProblemModal');
+			},
 
-        },
-        methods: {
-            toggleZoom(){
-                this.boardZoom = !this.boardZoom;
-                console.log(this.boardZoom)
-            },
+			blurInput(e) {
+				if (e.key == 'Enter') this.textInputHandle.blur();
+			},
 
-            deleteProblem(){ this.$store.commit("toggleDeleteProblemModal")},
+			saveProblem() {
+				let errorMessage = 'Nie wprowadzono zmian';
+				let editModalmessage = 'Wprowadzono zmiany';
+				if (!this.hasProblemChanged()) return this.handleError(errorMessage);
+				let newGrade = this.editProblemState.newGrade
+					? this.editProblemState.newGrade
+					: this.editProblemState.editedProblem.grade;
+				let newProblem = {
+					name: this.nameValue,
+					grade: newGrade,
+					grips: this.editProblemState.editedProblem.grips,
+				};
+				if (this.validateProblem(newProblem)) {
+					let newList = this.problemList.map((problem) => {
+						if (problem.name === this.oldName) return newProblem;
+						return problem;
+					});
+					if (this.activeProblem)
+						if (this.activeProblem.name === this.oldName)
+							this.$store.commit('setActiveProblem', newProblem);
 
-            blurInput(e){
-                if (e.key == "Enter") this.textInputHandle.blur();
-            },
+					this.$store.dispatch('toggleEditModal', {
+						active: true,
+						message: editModalmessage,
+					});
+					this.saveNewList(newList);
+				}
+			},
 
-            saveProblem(){
-                let errorMessage = "Nie wprowadzono zmian"
-                let editModalmessage = "Wprowadzono zmiany"
-                if(!this.hasProblemChanged()) return this.handleError(errorMessage);
-                let newGrade = this.editProblemState.newGrade ? this.editProblemState.newGrade : this.editProblemState.editedProblem.grade;
-                let newProblem = {
-                    name: this.nameValue,
-                    grade: newGrade,
-                    grips: this.editProblemState.editedProblem.grips,
-                }
-                if(this.validateProblem(newProblem)){
-                    let newList = this.problemList.map( problem => {
-                        if(problem.name === this.oldName) return newProblem
-                        return problem
-                    })
-                    if(this.activeProblem)
-                        if(this.activeProblem.name === this.oldName)
-                            this.$store.commit('setActiveProblem', newProblem )
+			hasProblemChanged() {
+				let nameChanged = !(this.nameValue === this.oldName);
+				let gripsChanged = !this.compareGrips(
+					this.selectedProblem.grips,
+					this.editProblemState.editedProblem.grips
+				);
+				let gradeChanged = !(
+					this.editProblemState.newGrade === this.selectedProblem.grade
+				);
+				let condition = !(gripsChanged || nameChanged || gradeChanged);
+				if (condition) return false;
+				return true;
+			},
 
-                    this.$store.dispatch('toggleEditModal', { active: true, message: editModalmessage })
-                    this.saveNewList(newList)
-                }
-            },
+			compareGrips(grips1, grips2) {
+				let difference = Object.keys(grips1).filter(
+					(key) => grips1[key] !== grips2[key]
+				);
+				if (difference.length == 0) return true;
+				return false;
+			},
 
-            hasProblemChanged(){
-                let nameChanged = !(this.nameValue === this.oldName)
-                let gripsChanged = !this.compareGrips(this.selectedProblem.grips, this.editProblemState.editedProblem.grips)
-                let gradeChanged = !(this.editProblemState.newGrade === this.selectedProblem.grade)
-                let condition = !(gripsChanged || nameChanged || gradeChanged)
-                if( condition ) return false
-                return true
-            },
+			handleError(errorMessage) {
+				this.$store.dispatch('toggleErrorModal', {
+					active: true,
+					message: errorMessage,
+				});
+				console.warn(errorMessage);
+				return false;
+			},
 
-            compareGrips(grips1, grips2){
-                let difference = Object.keys(grips1).filter((key) => grips1[key]!==grips2[key])
-                if(difference.length == 0 ) return true
-                return false
-            },
+			validateProblem({ name, grips }) {
+				if (!name) return this.handleNameError('Wpisz nazwę problemu');
 
-            handleError(errorMessage){
-                this.$store.dispatch('toggleErrorModal', { active: true, message: errorMessage })
-                console.warn(errorMessage)
-                return false;
-            },
+				let selecterGripsAmount = Object.keys(grips).filter(
+					(key) => grips[key]
+				).length;
 
-            validateProblem({name, grips}){
-                if(!name) return this.handleNameError("Wpisz nazwę problemu")
-                
-                let selecterGripsAmount =  Object
-                    .keys(grips)
-                    .filter(key => grips[key])
-                    .length;
+				if (selecterGripsAmount === 0)
+					return this.handleError('Nie wybrano żadnego chwytu');
 
-                if( selecterGripsAmount === 0 ) return this.handleError("Nie wybrano żadnego chwytu")
+				return this.checkNameUniqueness(name);
+			},
 
-                return this.checkNameUniqueness(name)
-            },
+			handleNameError(errorMessage) {
+				this.handleError(errorMessage);
+				this.errorFlags.name = true;
+			},
 
-            handleNameError(errorMessage){
-                this.handleError(errorMessage);
-                this.errorFlags.name = true;
-            },
+			checkNameUniqueness(name) {
+				let matchArray = this.problemList.filter(
+					(problem) => problem.name === name
+				);
+				if (matchArray.length === 0) return true;
+				if (matchArray[0].name === this.oldName) return true;
+				return this.handleNameError('Ta nazwa już istnieje');
+			},
 
-            checkNameUniqueness(name){ 
-                let matchArray = this.problemList.filter(problem => problem.name === name)
-                if(matchArray.length === 0) return true
-                if(matchArray[0].name === this.oldName) return true
-                return this.handleNameError("Ta nazwa już istnieje")
-            },
-
-            handleFocus(inOut){
-                if(inOut) return this.$store.commit('toggleTextInputFocus')
-                return setTimeout(() => this.$store.commit('toggleTextInputFocus'), 200)
-            },
-        }
-    }
+			handleFocus(inOut) {
+				if (inOut) return this.$store.commit('toggleTextInputFocus');
+				return setTimeout(
+					() => this.$store.commit('toggleTextInputFocus'),
+					200
+				);
+			},
+		},
+	};
 </script>
 
 <style>
-    @import url("../css/AddProblem.css");
+	@import url('../css/AddProblem.css');
 
-    .fade-enter-active, .fade-leave-active{
-        transition: opacity .3s;
-    }
-    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-        opacity: 0;
-    }
+	.fade-enter-active,
+	.fade-leave-active {
+		transition: opacity 0.3s;
+	}
+	.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+		opacity: 0;
+	}
 
-    .content-container{
-        padding-top: calc(60px + 1em) !important;
-    }
-
+	.content-container {
+		padding-top: calc(60px + 1em) !important;
+	}
 </style>

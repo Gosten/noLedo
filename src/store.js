@@ -1,10 +1,10 @@
 const store = new Vuex.Store({
 	state: {
 		menu: {
-			// menuActive: true,
-			// activeScene: '',
-			menuActive: false,
-			activeScene: 'ADD_PROBLEM',
+			menuActive: true,
+			activeScene: '',
+			// menuActive: false,
+			// activeScene: 'ADD_PROBLEM',
 			sceneLoaded: true,
 			activeProblem: {
 				//   grade: "4a",

@@ -2,8 +2,8 @@ const DEFAULT_GRADE = 5; // Index of GRADES array
 
 const BOARD_CONFIG = {
 	//Board dimension
-	columns: 12,
-	rows: 4,
+	columns: 6,
+	rows: 6,
 
 	//Size of grip, empty grip and grip selection in pixels
 	gripSize: 10,
@@ -11,7 +11,7 @@ const BOARD_CONFIG = {
 	gripSelectionSize: 20,
 
 	//For testing
-	horizontalActiveBoardZoomModifier: 1,
+	horizontalActiveBoardZoomModifier: 0.5,
 
 	//Array that defines types of grips and their position. Array must contain the same number of elements as ( columns * rows )
 	// 0 - empty position
@@ -19,11 +19,13 @@ const BOARD_CONFIG = {
 	// 2 - color 2 ...
 	// to change colors check css/app_config.css
 	gripPositions: [
-		0, 0, 1, 0, 1, 2, 4, 0, 0, 1, 3, 3, 4, 6, 5, 0,
+		0, 0, 1, 0, 1, 2, 4, 0, 0, 1, 3, 3,
 
-		0, 0, 1, 0, 1, 2, 4, 0, 0, 1, 3, 3, 4, 6, 5, 0,
+		0, 0, 1, 0, 1, 2, 4, 0, 0, 1, 3, 3,
 
-		0, 0, 1, 0, 1, 2, 4, 0, 0, 1, 3, 3, 4, 6, 5, 0,
+		0, 0, 1, 0, 1, 2, 4, 0, 0, 1, 3, 3,
+
+		//0, 0, 1, 0, 1, 2, 4, 0, 0, 1, 3, 3,
 	],
 };
 
@@ -48,7 +50,7 @@ const diodeIndexes = {
 };
 
 // toggle splash screen
-const INTRO = true;
+const INTRO = false;
 
 // toggle board scaling in active problem
 const ACTIVE_PROBLEM_SCALING = false;

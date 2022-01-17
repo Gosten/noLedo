@@ -1,98 +1,184 @@
 <template>
-
-        <div class="board-container" :style="boardVariables">
-            <div class="board-grid-container">
-                <div
-                    v-for="(grip, index) in BOARD_CONFIG.gripPositions"
-                    :key="index"
-                    class="grip-container grip-selector"
-                    :class="{'grip-active': gripClassCondition(index)}"
-                    @click="handleClick(index)">
-                    <div class="grip" :class="{[gripColors[index]]: true}">
-            
-                    </div>
-                </div>
-            </div>
-        </div>
-
+	<div
+		:id="boardId"
+		class="board-container"
+		:style="{ ...boardVariables, ...boardSize }"
+		:class="{
+			'more-cols': moreCols,
+			'more-rows': moreRows,
+			'even-size': evenSize,
+		}"
+	>
+		<div v-if="sizeSet" id="grid-container" class="board-grid-container">
+			<div
+				v-for="(grip, index) in BOARD_CONFIG.gripPositions"
+				:key="index"
+				class="grip-container grip-selector"
+				:class="{ 'grip-active': gripClassCondition(index) }"
+				@click="handleClick(index)"
+			>
+				<div class="grip" :class="{ [gripColors[index]]: true }"></div>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
-    module.exports = {
-        methods: {
-            handleClick(index){
-                if(this.BOARD_CONFIG.gripPositions[index]){
-                    if(this.isScene(ADD_PROBLEM)) this.$store.commit("toggleProblemState", index)
-                    if(this.isScene(EDIT_PROBLEM)) this.$store.commit("editProblemStateGrip", index)
-                    if(this.isScene(ADD_PROBLEM) || this.isScene(EDIT_PROBLEM)) this.sendGripMessage(index)
-                }
-            },
-            sendGripMessage(index){
-                let i = this.diodeIndexes[index];
-                let diodeState = this.problemState[index] ? 255 : 0;
-                let msg = `${i},0,${diodeState},0`
-                uibuilder.send(msg)
-            },
-            gripClassCondition(index) { 
-                
-                if( this.isScene(LOAD_PROBLEM)) 
-                    return this.selectedProblem.grips[index]
-                if( this.isScene(ACTIVE_PROBLEM)) 
-                    return this.activeProblem.grips[index]
-                if( this.isScene(ADD_PROBLEM) ) {
-                    return this.problemState[index]
-                }
-                if( this.isScene(EDIT_PROBLEM) ) {
-                    return this.editedProblem.grips[index]
-                }
-                    
-            },
-            isScene(sceneType){
-                return this.$store.getters.getActiveScene === sceneType
-            },
-            onResize() {
-                console.log("resize ", window.innerWidth)
-                this.windowWidth = window.innerWidth
-                console.log(windowWidth)
-            }
-        },
-        computed: {
-            problemState() { return this.$store.getters.getAddProblemState },
-            editedProblem() { return this.$store.getters.getEditedProblem },
-            interactionCondition() { 
-                return this.activeScene === ADD_PROBLEM || this.activeScene === EDIT_PROBLEM},
-            activeProblem(){ return this.$store.getters.getActiveProblem },
-            activeScene(){ return this.$store.getters.getActiveScene },
-            selectedProblem(){ return this.$store.getters.getSelectedProblem },
-            diodeIndexes: () => diodeIndexes,
-            gripImages: () => gripImages,
+	module.exports = {
+		methods: {
+			handleClick(index) {
+				if (this.BOARD_CONFIG.gripPositions[index]) {
+					if (this.isScene(ADD_PROBLEM))
+						this.$store.commit('toggleProblemState', index);
+					if (this.isScene(EDIT_PROBLEM))
+						this.$store.commit('editProblemStateGrip', index);
+					if (this.isScene(ADD_PROBLEM) || this.isScene(EDIT_PROBLEM))
+						this.sendGripMessage(index);
+				}
+			},
+			sendGripMessage(index) {
+				let i = this.diodeIndexes[index];
+				let diodeState = this.problemState[index] ? 255 : 0;
+				let msg = `${i},0,${diodeState},0`;
+				uibuilder.send(msg);
+			},
+			gripClassCondition(index) {
+				if (this.isScene(LOAD_PROBLEM))
+					return this.selectedProblem.grips[index];
+				if (this.isScene(ACTIVE_PROBLEM))
+					return this.activeProblem.grips[index];
+				if (this.isScene(ADD_PROBLEM)) {
+					return this.problemState[index];
+				}
+				if (this.isScene(EDIT_PROBLEM)) {
+					return this.editedProblem.grips[index];
+				}
+			},
+			isScene(sceneType) {
+				return this.$store.getters.getActiveScene === sceneType;
+			},
+			handleBoardResize(reset = false) {
+				const { offsetWidth: width, offsetHeight: height } = this.boardHandle;
+				const { columns, rows } = this.BOARD_CONFIG;
+				const minSize =
+					width / columns < height / rows ? `${width}px` : `${height}px`;
 
-        },
-        data(){
-            return{
-                ACTIVE_PROBLEM,
-                BOARD_CONFIG,
-                gripColors: BOARD_CONFIG.gripPositions.map(color => `grip-color-${color}`),
-                boardVariables: {
-                   "--columns": BOARD_CONFIG.columns,
-                   "--rows": BOARD_CONFIG.rows,
-                   "--grip-size": `${BOARD_CONFIG.gripSize}px`,
-                   "--empty-grip-size": `${BOARD_CONFIG.emptyGripSize}px`,
-                   "--grip-selection-size": `${BOARD_CONFIG.gripSelectionSize}px`,
-                },
-            }
-        },
-        mounted(){
-        }
+				const gripContSize =
+					width / columns < height / rows ? width / columns : height / rows;
 
+				this.boardSize = {
+					'--board-width': `calc(${width}px - 2em)`,
+					'--board-height': `${height}px`,
+					'--min-size': minSize,
+					'--grip-cont-size': `${gripContSize}px`,
+				};
+				this.sizeSet = !reset;
+			},
 
+			handleAppResize() {
+				//reset board size
+				this.sizeSet = false;
+			},
+		},
+		computed: {
+			problemState() {
+				return this.$store.getters.getAddProblemState;
+			},
+			editedProblem() {
+				return this.$store.getters.getEditedProblem;
+			},
+			interactionCondition() {
+				return (
+					this.activeScene === ADD_PROBLEM || this.activeScene === EDIT_PROBLEM
+				);
+			},
+			activeProblem() {
+				return this.$store.getters.getActiveProblem;
+			},
+			activeScene() {
+				return this.$store.getters.getActiveScene;
+			},
+			selectedProblem() {
+				return this.$store.getters.getSelectedProblem;
+			},
+			diodeIndexes: () => diodeIndexes,
+			gripImages: () => gripImages,
+		},
+		data() {
+			return {
+				ACTIVE_PROBLEM,
+				BOARD_CONFIG,
+				gripColors: BOARD_CONFIG.gripPositions.map(
+					(color) => `grip-color-${color}`
+				),
+				boardVariables: {
+					'--columns': BOARD_CONFIG.columns,
+					'--rows': BOARD_CONFIG.rows,
+					'--grip-size': `${BOARD_CONFIG.gripSize}px`,
+					'--empty-grip-size': `${BOARD_CONFIG.emptyGripSize}px`,
+					'--grip-selection-size': `${BOARD_CONFIG.gripSelectionSize}px`,
+					'--grid-container-width':
+						BOARD_CONFIG.columns > BOARD_CONFIG.rows ? '100%' : 'auto',
+					'--grid-container-height':
+						BOARD_CONFIG.columns > BOARD_CONFIG.rows ? 'auto' : '100%',
+				},
+				boardSize: {},
+				moreRows: BOARD_CONFIG.columns < BOARD_CONFIG.rows,
+				moreCols: BOARD_CONFIG.columns > BOARD_CONFIG.rows,
+				evenSize: BOARD_CONFIG.columns === BOARD_CONFIG.rows,
+				sizeSet: false,
+				boardHandle: undefined,
+				appHandle: undefined,
+				resizeObserver: undefined,
+				appResizeObserver: undefined,
+			};
+		},
+		props: {
+			boardId: String,
+		},
+		mounted() {
+			this.resizeObserver = new ResizeObserver(() => this.handleBoardResize());
+			this.boardHandle = document.getElementById(this.boardId);
+			this.resizeObserver.observe(this.boardHandle);
 
-    }
+			window.addEventListener('resize', this.handleAppResize);
+		},
+		updated() {},
+		created() {},
+		destroyed() {
+			this.resizeObserver.unobserve(this.boardHandle);
+
+			window.removeEventListener('resize', this.handleAppResize);
+		},
+	};
 </script>
 
 <style scoped>
-    @import '../css/Board.css';
-    @import '../css/app_config.css';
+	@import '../css/Board.css';
+	@import '../css/app_config.css';
 
-    
+	/* .more-cols .grip-container{
+        width: calc(100% / var(--columns));
+    } */
+
+	.more-rows .board-grid-container {
+	}
+
+	.grip-container {
+		height: var(--grip-cont-size);
+		width: var(--grip-cont-size);
+	}
+
+	.even-size .board-grid-container {
+		justify-content: center;
+		align-items: center;
+		grid-template-columns: repeat(
+			var(--columns),
+			calc(var(--min-size) / var(--rows))
+		);
+		grid-template-rows: repeat(
+			var(--columns),
+			calc(var(--min-size) / var(--rows))
+		);
+	}
 </style>

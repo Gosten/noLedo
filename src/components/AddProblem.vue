@@ -1,223 +1,238 @@
 <template>
-    <div id="add-problem">
-        
-        
-        <div class="grid-content">
+	<div id="add-problem">
+		<div class="grid-content">
+			<div class="top-conainer">
+				<div v-if="ENABLE_ZOOM" class="zoom-container flex-container-blank">
+					<div class="zoom" @click="toggleZoom()">
+						<img v-if="!boardZoom" src="images/zoomIn.svg" alt="zoomIn" />
+						<img v-if="boardZoom" src="images/zoomOut.svg" alt="zoomOut" />
+					</div>
+				</div>
 
-            <div class = "top-conainer">
-                <div v-if="ENABLE_ZOOM" class="zoom-container flex-container-blank">
-                    <div class="zoom" @click="toggleZoom()">
-                        <img v-if="!boardZoom" src="images/zoomIn.svg" alt="zoomIn">
-                        <img v-if="boardZoom" src="images/zoomOut.svg" alt="zoomOut">
-                    </div>
-                </div>
-                
-                <div class="board-position" :class="{'board-zoom': boardZoom}">
-                    <transition name="board-fade">
-                        <board v-if="!textInputFocus"></board>
-                    </transition>
-                </div>
-            </div>
-            
+				<div
+					id="board-style-AP"
+					class="board-position"
+					:class="{ 'board-zoom': boardZoom }"
+				>
+					<transition name="board-fade">
+						<board v-if="!textInputFocus" board-id="board-AdP"></board>
+					</transition>
+				</div>
+			</div>
 
-            <div class="flex-container-blank">
-                <div class="bottom" :class="{top: textInputFocus}">
-                    <div class="input-container">
-                        <div class="name-grade-container">
-                            <div v-if="ENABLE_GRADES" class="slider-width">
-                                <grade-slider></grade-slider>
-                            </div>
-                            <div class="name-input-container">
-                                <input
-                                    id="add-problem-name-input"
-                                    class="input-name input"
-                                    :class="{
-                                        'border-red': errorFlags.name || nameLengthLimit,
-                                        'limit-description': 1}"
-                                    name="nazwa"
-                                    type="text"
-                                    placeholder="nazwa"
-                                    v-model="nameValue"
-                                    @change="(e) => handleNameInput(e.target.value)"
-                                    @focusin="() => handleFocus(true)"
-                                    @focusout="() => handleFocus(false)"
-                                />
-                                <p :class="{ 'opacity': !nameLengthLimit }">Nazwa nie może mieć więcej niż 20 znaków</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="button-container">
-                        <button class="button" @click="addProblem">
-                            Dodaj problem
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+			<div class="flex-container-blank">
+				<div class="bottom" :class="{ top: textInputFocus }">
+					<div class="input-container">
+						<div class="name-grade-container">
+							<div v-if="ENABLE_GRADES" class="slider-width">
+								<grade-slider></grade-slider>
+							</div>
+							<div class="name-input-container">
+								<input
+									id="add-problem-name-input"
+									class="input-name input"
+									:class="{
+										'border-red': errorFlags.name || nameLengthLimit,
+										'limit-description': 1,
+									}"
+									name="nazwa"
+									type="text"
+									placeholder="nazwa"
+									v-model="nameValue"
+									@change="(e) => handleNameInput(e.target.value)"
+									@focusin="() => handleFocus(true)"
+									@focusout="() => handleFocus(false)"
+								/>
+								<p :class="{ opacity: !nameLengthLimit }">
+									Nazwa nie może mieć więcej niż 20 znaków
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="button-container">
+						<button class="button" @click="addProblem">Dodaj problem</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
-        <transition name="fade">
-            <error-modal v-if="errorState.active"></error-modal>
-        </transition>
+		<transition name="fade">
+			<error-modal v-if="errorState.active"></error-modal>
+		</transition>
 
-        <transition name="fade">
-            <problem-modal v-if="addModal"></problem-modal>
-        </transition>
-    </div>
+		<transition name="fade">
+			<problem-modal v-if="addModal"></problem-modal>
+		</transition>
+	</div>
 </template>
 
 <script>
-    module.exports = {
-        mounted(){
-            this.$store.commit("clearProblemState", this.BOARD_CONFIG.gripPositions)
+	module.exports = {
+		mounted() {
+			this.$store.commit('clearProblemState', this.BOARD_CONFIG.gripPositions);
 
-            this.textInputHandle = document.getElementById('add-problem-name-input')
-            this.textInputHandle.addEventListener('keyup', this.blurInput)
-        },
-        beforeUnmount(){
-            this.textInputHandle.removeEventListener('keyup', this.blurInput)
-        },
-        data(){
-            return {
-                BOARD_CONFIG,
-                nameValue: "",
-                errorFlags: {
-                    name: false,
-                },
-                mapGrade,
-                textInputHandle: undefined,
-                boardZoom: false,
-                ENABLE_ZOOM,
-                ENABLE_GRADES,
-            }
-        },
-        components: {
-            'board': httpVueLoader('components/Board.vue'),
-            'error-modal': httpVueLoader('components/ErrorModal.vue'),
-            'problem-modal': httpVueLoader('components/AddProblemModal.vue'),
-            'loading-modal': httpVueLoader('components/LoadingModal.vue'),
-            'grade-slider': httpVueLoader('components/SingleSlider.vue'),
-        },
-        computed: {
+			this.textInputHandle = document.getElementById('add-problem-name-input');
+			this.textInputHandle.addEventListener('keyup', this.blurInput);
+		},
+		beforeUnmount() {
+			this.textInputHandle.removeEventListener('keyup', this.blurInput);
+		},
+		data() {
+			return {
+				BOARD_CONFIG,
+				nameValue: '',
+				errorFlags: {
+					name: false,
+				},
+				mapGrade,
+				textInputHandle: undefined,
+				boardZoom: false,
+				ENABLE_ZOOM,
+				ENABLE_GRADES,
+			};
+		},
+		components: {
+			board: httpVueLoader('components/Board.vue'),
+			'error-modal': httpVueLoader('components/ErrorModal.vue'),
+			'problem-modal': httpVueLoader('components/AddProblemModal.vue'),
+			'loading-modal': httpVueLoader('components/LoadingModal.vue'),
+			'grade-slider': httpVueLoader('components/SingleSlider.vue'),
+		},
+		computed: {
+			problmState() {
+				return this.$store.getters.getAddProblemState;
+			},
+			errorState() {
+				return this.$store.getters.getErrorState;
+			},
+			problemList() {
+				return [...this.$store.getters.getProblemList];
+			},
+			addModal() {
+				return this.$store.getters.getAddProblemModal;
+			},
+			gradeValue() {
+				return this.$store.getters.getSelectedGrade;
+			},
+			nameLengthLimit() {
+				return this.nameValue.length >= 20;
+			},
+			textInputFocus() {
+				return this.$store.getters.getTextInputFocus;
+			},
+		},
+		methods: {
+			toggleZoom() {
+				this.boardZoom = !this.boardZoom;
+			},
 
-            problmState() { return this.$store.getters.getAddProblemState},
-            errorState() { return this.$store.getters.getErrorState},
-            problemList() { return [...this.$store.getters.getProblemList]},
-            addModal(){ return this.$store.getters.getAddProblemModal },
-            gradeValue(){ return this.$store.getters.getSelectedGrade},
-            nameLengthLimit(){ return this.nameValue.length >= 20 },
-            textInputFocus(){ return this.$store.getters.getTextInputFocus },
+			handleChange(value) {
+				this.gradeValue = value;
+			},
 
-        },
-        methods: {
-            toggleZoom(){
-                this.boardZoom = !this.boardZoom;
-                console.log(this.boardZoom)
-            },
+			blurInput(e) {
+				if (e.key == 'Enter') this.textInputHandle.blur();
+			},
 
-            handleChange(value) {this.gradeValue = value},
+			addProblem() {
+				let newProblem = {
+					name: this.nameValue,
+					grade: mapGrade(this.gradeValue),
+					grips: this.problmState,
+				};
+				if (this.validateProblem(newProblem)) {
+					let newList = [...this.problemList, newProblem];
 
-            blurInput(e){
-                if (e.key == "Enter") this.textInputHandle.blur();
-            },
+					uibuilder.send({
+						topic: 'save',
+						payload: JSON.stringify(newList),
+					});
+					uibuilder.send({ topic: TOPIC.LOAD });
 
-            addProblem(){
-                console.log(this.gradeValue)
-                let newProblem =    {
-                    name: this.nameValue,
-                    grade: mapGrade(this.gradeValue),
-                    grips: this.problmState,
-                }
-                if( this.validateProblem(newProblem) ) {
-                    let newList = [...this.problemList, newProblem]
+					this.$store.commit('toggleAddProblemModal');
+					this.$store.commit('setAddProblemNewProblem', newProblem);
+				}
+			},
 
-                    uibuilder.send({
-                        topic: "save", 
-                        payload: JSON.stringify(newList)
-                    })
-                    console.log(newList)
-                    uibuilder.send({topic: TOPIC.LOAD})
-                    
-                    this.$store.commit("toggleAddProblemModal")
-                    this.$store.commit("setAddProblemNewProblem", newProblem )
-                }
-            },
+			validateProblem({ name, grade, grips }) {
+				if (!name) return this.handleNameError('Wpisz nazwę problemu');
 
-            validateProblem({name, grade, grips}){
-                if(!name) return this.handleNameError("Wpisz nazwę problemu")
-                
-                let selecterGripsAmount =  Object
-                    .keys(grips)
-                    .filter(key => grips[key])
-                    .length;
+				let selecterGripsAmount = Object.keys(grips).filter(
+					(key) => grips[key]
+				).length;
 
-                if( selecterGripsAmount === 0 ) return this.handleError("Nie wybrano żadnego chwytu")
+				if (selecterGripsAmount === 0)
+					return this.handleError('Nie wybrano żadnego chwytu');
 
-                return this.checkNameUniqueness(name)
-            },
+				return this.checkNameUniqueness(name);
+			},
 
-            checkNameUniqueness(name){ 
-                let matchArray = this.problemList.filter(problem => problem.name === name)
-                if(matchArray.length === 0) return true
-                return this.handleNameError("Ta nazwa już istnieje")
-            },
+			checkNameUniqueness(name) {
+				let matchArray = this.problemList.filter(
+					(problem) => problem.name === name
+				);
+				if (matchArray.length === 0) return true;
+				return this.handleNameError('Ta nazwa już istnieje');
+			},
 
-            handleError(errorMessage){
-                this.$store.dispatch('toggleErrorModal', { active: true, message: errorMessage })
-                console.warn(errorMessage)
-                return false;
-            },
+			handleError(errorMessage) {
+				this.$store.dispatch('toggleErrorModal', {
+					active: true,
+					message: errorMessage,
+				});
+				console.warn(errorMessage);
+				return false;
+			},
 
-            handleNameError(errorMessage){
-                this.handleError(errorMessage);
-                this.errorFlags.name = true;
-            },
+			handleNameError(errorMessage) {
+				this.handleError(errorMessage);
+				this.errorFlags.name = true;
+			},
 
-            handleNameInput(value){
-                this.errorFlags.name = false
-                let newValue = value.replace(/ +/g, " ") //reduce multiple spaces to a single one
-                newValue = newValue.replace(/(^ *| *$)/g, "") //remove space from begining end end of name
-                return this.nameValue = newValue
-            },
+			handleNameInput(value) {
+				this.errorFlags.name = false;
+				let newValue = value.replace(/ +/g, ' '); //reduce multiple spaces to a single one
+				newValue = newValue.replace(/(^ *| *$)/g, ''); //remove space from begining end end of name
+				return (this.nameValue = newValue);
+			},
 
-            handleFocus(){
-                this.$store.commit('toggleTextInputFocus')
-            },
-            handleFocus(inOut){
-                if(inOut) return this.$store.commit('toggleTextInputFocus')
-                return setTimeout(() => this.$store.commit('toggleTextInputFocus'), 200)
-            },
-        }
-    }
+			handleFocus() {
+				this.$store.commit('toggleTextInputFocus');
+			},
+			handleFocus(inOut) {
+				if (inOut) return this.$store.commit('toggleTextInputFocus');
+				return setTimeout(
+					() => this.$store.commit('toggleTextInputFocus'),
+					200
+				);
+			},
+		},
+	};
 </script>
 
 <style scoped>
-    @import url("../css/AddProblem.css");
+	@import url('../css/AddProblem.css');
 
-    .fade-enter-active, .fade-leave-active{
-        transition: opacity .3s;
-    }
-    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-        opacity: 0;
-    }
+	.fade-enter-active,
+	.fade-leave-active {
+		transition: opacity 0.3s;
+	}
+	.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+		opacity: 0;
+	}
 
-
-
-
-
-    .border-red{
-        border-color: red !important;
-    }
-    .name-input-container > p{
-        margin: 0 5px;
-        color:red;
-        font-size: 0.7em;
-    }
-    .name-input-container > input {
-        margin-bottom: 0 !important;
-    }
-    .opacity{
-        opacity: 0;
-    }
-
-
+	.border-red {
+		border-color: red !important;
+	}
+	.name-input-container > p {
+		margin: 0 5px;
+		color: red;
+		font-size: 0.7em;
+	}
+	.name-input-container > input {
+		margin-bottom: 0 !important;
+	}
+	.opacity {
+		opacity: 0;
+	}
 </style>
