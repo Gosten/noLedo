@@ -66,6 +66,7 @@
 				const gripContSize =
 					width / columns < height / rows ? width / columns : height / rows;
 
+				//console.log({ width, height });
 				this.boardSize = {
 					'--board-width': `calc(${width}px - 2em)`,
 					'--board-height': `${height}px`,
@@ -78,6 +79,11 @@
 			handleAppResize() {
 				//reset board size
 				this.sizeSet = false;
+
+				//app resize without board resize
+				setTimeout(() => {
+					if (!this.sizeSet) this.sizeSet = true;
+				}, 10);
 			},
 		},
 		computed: {
@@ -131,6 +137,7 @@
 				appHandle: undefined,
 				resizeObserver: undefined,
 				appResizeObserver: undefined,
+				firstUpdate: true,
 			};
 		},
 		props: {
@@ -140,10 +147,15 @@
 			this.resizeObserver = new ResizeObserver(() => this.handleBoardResize());
 			this.boardHandle = document.getElementById(this.boardId);
 			this.resizeObserver.observe(this.boardHandle);
-
 			window.addEventListener('resize', this.handleAppResize);
 		},
-		updated() {},
+		updated() {
+			if (this.firstUpdate) {
+				this.handleAppResize();
+				//console.log('resize');
+				this.firstUpdate = false;
+			}
+		},
 		created() {},
 		destroyed() {
 			this.resizeObserver.unobserve(this.boardHandle);
@@ -156,13 +168,6 @@
 <style scoped>
 	@import '../css/Board.css';
 	@import '../css/app_config.css';
-
-	/* .more-cols .grip-container{
-        width: calc(100% / var(--columns));
-    } */
-
-	.more-rows .board-grid-container {
-	}
 
 	.grip-container {
 		height: var(--grip-cont-size);
