@@ -84,11 +84,6 @@
 				ENABLE_GRADES,
 			};
 		},
-		watch: {
-			windowHeight(newWidth) {
-				console.log(newWidth);
-			},
-		},
 		mounted() {
 			this.nameValue = this.editProblemState.editedProblem.name;
 			this.oldGrips = Object.assign(
@@ -98,19 +93,8 @@
 			this.oldName = this.editProblemState.editedProblem.name;
 			sendProblem(this.editProblemState.editedProblem);
 
-			console.log(this.editProblemState.editedProblem);
 			this.textInputHandle = document.getElementById('add-problem-name-input');
 			this.textInputHandle.addEventListener('keyup', this.blurInput);
-
-			// const boardStyle = document.getElementById("board-style-EP")
-			// setTimeout(()=>{
-			//     if(boardStyle){
-			//     const {offsetWidth: width, offsetHeight: height} = board
-			//     console.log({width, height})
-			//     const boardStyle = document.getElementById("board-style-EP")
-			//     boardStyle.style= `--board-width: calc(${width}px - 2em); --board-height: calc(${height}px - 2em); `;
-			// }
-			// }, 100)
 		},
 		beforeUnmount() {
 			this.textInputHandle.removeEventListener('keyup', this.blurInput);
@@ -138,7 +122,6 @@
 		methods: {
 			toggleZoom() {
 				this.boardZoom = !this.boardZoom;
-				console.log(this.boardZoom);
 			},
 
 			deleteProblem() {

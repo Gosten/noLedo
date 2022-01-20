@@ -92,16 +92,19 @@
 					'--grip-selection-size': `${gripSelectionSize}px`,
 					'--grip-selection-border': `${gripSelectionBorder}px`,
 				};
-				this.sizeSet = !reset;
+				this.setSizeChanged(!reset);
 			},
-
+			setSizeChanged(state) {
+				this.sizeSet = state;
+				this.$emit('resize', state);
+			},
 			handleAppResize() {
 				//reset board size
-				this.sizeSet = false;
+				this.setSizeChanged(false);
 
 				//app resize without board resize
 				setTimeout(() => {
-					if (!this.sizeSet) this.sizeSet = true;
+					if (!this.sizeSet) this.setSizeChanged(true);
 				}, 10);
 			},
 		},
