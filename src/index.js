@@ -79,10 +79,10 @@ const app1 = new Vue({
 				//ActiveState
 				const loadedState = JSON.parse(msg.payload);
 				if (loadedState) {
-					console.log(loadedState, Object.entries(loadedState).length);
+					//console.log(loadedState, Object.entries(loadedState).length);
 					store.commit('setActiveProblem', loadedState);
 				}
-				console.log('loaded_state: ', loadedState);
+				//console.log('loaded_state: ', loadedState);
 			}
 		});
 	},

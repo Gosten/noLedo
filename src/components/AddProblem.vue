@@ -1,7 +1,7 @@
 <template>
 	<div id="add-problem">
 		<div class="grid-content">
-			<div class="top-conainer">
+			<div class="top-conainer" :class="{ 'zoom-off': !ENABLE_ZOOM }">
 				<div v-if="ENABLE_ZOOM" class="zoom-container flex-container-blank">
 					<div class="zoom" @click="toggleZoom()">
 						<img v-if="!boardZoom" src="images/zoomIn.svg" alt="zoomIn" />

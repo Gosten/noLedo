@@ -42,8 +42,6 @@
 				const container = document.getElementById('active-container');
 				container.style = 'align-items: flex-start;';
 			}
-
-			console.log(this.scaleBoard);
 		},
 		computed: {
 			activeProblem() {

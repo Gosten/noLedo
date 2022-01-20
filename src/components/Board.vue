@@ -156,7 +156,7 @@
 		updated() {
 			if (this.firstUpdate) {
 				this.handleAppResize();
-				//console.log('resize');
+				//console.log('first update');
 				this.firstUpdate = false;
 			}
 		},
