@@ -117,9 +117,6 @@
 		width: 100%;
 		height: 100%;
 		justify-content: center;
-	}
-
-	#board-style {
-		/* transform-origin: center center; */
+		padding: 1em;
 	}
 </style>

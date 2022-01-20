@@ -1,3 +1,15 @@
+// toggle board scaling in active problem
+const ACTIVE_PROBLEM_SCALING = false;
+
+// enable board zoom in addProblem and editProblem
+const ENABLE_ZOOM = true;
+
+// enable problem grading
+const ENABLE_GRADES = true;
+
+// toggle splash screen
+const INTRO = false;
+
 const DEFAULT_GRADE = 5; // Index of GRADES array
 
 const BOARD_CONFIG = {
@@ -6,8 +18,8 @@ const BOARD_CONFIG = {
 	rows: 6,
 
 	//Size of grip, empty grip and grip selection in % of container size
-	gripSize: 25,
-	emptyGripSize: 10,
+	gripSize: 30,
+	emptyGripSize: 15,
 	gripSelectionSize: 80,
 	gripSelectionBorder: 4,
 
@@ -30,13 +42,6 @@ const BOARD_CONFIG = {
 	],
 };
 
-// grip positions array index
-
-//     0,  1,  2,  3,
-//     4,  5,  6,  7,
-//     8,  9,  10, 11,
-//     12, 13, 14, 15
-
 const diodeIndexes = {
 	2: 40,
 	4: 28,
@@ -49,18 +54,6 @@ const diodeIndexes = {
 	13: 12,
 	14: 16,
 };
-
-// toggle splash screen
-const INTRO = false;
-
-// toggle board scaling in active problem
-const ACTIVE_PROBLEM_SCALING = false;
-
-// enable board zoom in addProblem and editProblem
-const ENABLE_ZOOM = true;
-
-// enable problem grading
-const ENABLE_GRADES = true;
 
 const GRADES = [
 	'1',

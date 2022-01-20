@@ -61,21 +61,36 @@
 			handleBoardResize(reset = false) {
 				const { offsetWidth: width, offsetHeight: height } = this.boardHandle;
 				const { columns, rows } = this.BOARD_CONFIG;
+
 				const minSize =
 					width / columns < height / rows ? `${width}px` : `${height}px`;
 
-				const gripContSize =
+				let gripContSize =
 					width / columns < height / rows ? width / columns : height / rows;
 
-				const selectionBorder =
+				// mage gripContSize even number
+				const getEvenNumber = (n) => n - (n % 2);
+				gripContSize = getEvenNumber(gripContSize);
+
+				const getFracSize = (baseSize) =>
+					getEvenNumber(Math.floor((baseSize * gripContSize) / 100));
+
+				const gripSize = getFracSize(BOARD_CONFIG.gripSize);
+				const emptyGripSize = getFracSize(BOARD_CONFIG.emptyGripSize);
+				const gripSelectionSize = getFracSize(BOARD_CONFIG.gripSelectionSize);
+				const gripSelectionBorder =
 					(BOARD_CONFIG.gripSelectionBorder * gripContSize) / 100;
+
 				//console.log({ width, height });
 				this.boardSize = {
 					'--board-width': `calc(${width}px - 2em)`,
 					'--board-height': `${height}px`,
 					'--min-size': minSize,
 					'--grip-cont-size': `${gripContSize}px`,
-					'--grip-selection-border': `${selectionBorder}px`,
+					'--grip-size': `${gripSize}px`,
+					'--empty-grip-size': `${emptyGripSize}px`,
+					'--grip-selection-size': `${gripSelectionSize}px`,
+					'--grip-selection-border': `${gripSelectionBorder}px`,
 				};
 				this.sizeSet = !reset;
 			},
@@ -124,9 +139,6 @@
 				boardVariables: {
 					'--columns': BOARD_CONFIG.columns,
 					'--rows': BOARD_CONFIG.rows,
-					'--grip-size': `${BOARD_CONFIG.gripSize}`,
-					'--empty-grip-size': `${BOARD_CONFIG.emptyGripSize}`,
-					'--grip-selection-size': `${BOARD_CONFIG.gripSelectionSize}`,
 					'--grid-container-width':
 						BOARD_CONFIG.columns > BOARD_CONFIG.rows ? '100%' : 'auto',
 					'--grid-container-height':
