@@ -39,7 +39,8 @@
 			sendGripMessage(index) {
 				let i = this.diodeIndexes[index];
 				let diodeState = this.problemState[index] ? 255 : 0;
-				let msg = `${i},0,${diodeState},0`;
+				let msg = { topic: 'display' };
+				msg.payload = `${i},0,${diodeState},0`;
 				uibuilder.send(msg);
 			},
 			gripClassCondition(index) {

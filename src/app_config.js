@@ -59,7 +59,7 @@ const ACTIVE_PROBLEM_SCALING = false;
 const ENABLE_ZOOM = true;
 
 // enable problem grading
-const ENABLE_GRADES = true;
+const ENABLE_GRADES = false;
 
 const GRADES = [
 	'1',
