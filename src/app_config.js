@@ -5,10 +5,11 @@ const BOARD_CONFIG = {
 	columns: 6,
 	rows: 6,
 
-	//Size of grip, empty grip and grip selection in pixels
-	gripSize: 10,
-	emptyGripSize: 5,
-	gripSelectionSize: 20,
+	//Size of grip, empty grip and grip selection in % of container size
+	gripSize: 25,
+	emptyGripSize: 10,
+	gripSelectionSize: 80,
+	gripSelectionBorder: 4,
 
 	//For testing
 	horizontalActiveBoardZoomModifier: 0.5,

@@ -67,12 +67,15 @@
 				const gripContSize =
 					width / columns < height / rows ? width / columns : height / rows;
 
+				const selectionBorder =
+					(BOARD_CONFIG.gripSelectionBorder * gripContSize) / 100;
 				//console.log({ width, height });
 				this.boardSize = {
 					'--board-width': `calc(${width}px - 2em)`,
 					'--board-height': `${height}px`,
 					'--min-size': minSize,
 					'--grip-cont-size': `${gripContSize}px`,
+					'--grip-selection-border': `${selectionBorder}px`,
 				};
 				this.sizeSet = !reset;
 			},
@@ -121,9 +124,9 @@
 				boardVariables: {
 					'--columns': BOARD_CONFIG.columns,
 					'--rows': BOARD_CONFIG.rows,
-					'--grip-size': `${BOARD_CONFIG.gripSize}px`,
-					'--empty-grip-size': `${BOARD_CONFIG.emptyGripSize}px`,
-					'--grip-selection-size': `${BOARD_CONFIG.gripSelectionSize}px`,
+					'--grip-size': `${BOARD_CONFIG.gripSize}`,
+					'--empty-grip-size': `${BOARD_CONFIG.emptyGripSize}`,
+					'--grip-selection-size': `${BOARD_CONFIG.gripSelectionSize}`,
 					'--grid-container-width':
 						BOARD_CONFIG.columns > BOARD_CONFIG.rows ? '100%' : 'auto',
 					'--grid-container-height':

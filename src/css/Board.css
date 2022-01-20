@@ -27,14 +27,14 @@
 }
 
 .grip {
-	width: var(--grip-size);
-	height: var(--grip-size);
+	width: calc(1% * var(--grip-size));
+	height: calc(1% * var(--grip-size));
 	border-radius: 50%;
 }
 
 .grip-color-0 {
-	width: var(--empty-grip-size);
-	height: var(--empty-grip-size);
+	width: calc(1% * var(--empty-grip-size));
+	height: calc(1% * var(--empty-grip-size));
 	background: hsl(0, 0%, 0%);
 }
 
@@ -42,15 +42,13 @@
 	position: relative;
 }
 .grip-selector::after {
-	box-sizing: content-box;
+	box-sizing: border-box;
 	content: '';
 	position: absolute;
-	width: var(--grip-selection-size);
-	height: var(--grip-selection-size);
-	max-width: 90%;
-	max-height: 90%;
+	width: calc(1% * var(--grip-selection-size));
+	height: calc(1% * var(--grip-selection-size));
 	border-radius: 50%;
-	border: 2px solid rgb(0, 255, 0);
+	border: var(--grip-selection-border) solid rgb(0, 255, 0);
 	opacity: 0;
 	transition: opacity 0.4s;
 	transition-timing-function: cubic-bezier(0.88, 0.72, 0, 0.66);
