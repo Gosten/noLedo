@@ -76,9 +76,13 @@ const app1 = new Vue({
 				store.commit('setProblemList', newProblemList);
 			}
 			if (msg.topic === TOPIC.LOAD_STATE) {
-				if (msg.payload)
-					store.commit('setActiveProblem', JSON.parse(msg.payload));
-				console.log('loaded_state: ');
+				//ActiveState
+				const loadedState = JSON.parse(msg.payload);
+				if (loadedState) {
+					console.log(loadedState, Object.entries(loadedState).length);
+					store.commit('setActiveProblem', loadedState);
+				}
+				console.log('loaded_state: ', loadedState);
 			}
 		});
 	},
