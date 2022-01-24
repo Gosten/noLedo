@@ -59,7 +59,7 @@
 
 .grid-content {
 	display: grid;
-	height: 100vh;
+	height: 100%;
 	width: 100%;
 	padding-top: 60px;
 	grid-template-rows: 1fr auto;

@@ -1,57 +1,55 @@
 <template>
-	<div id="add-problem">
-		<div class="grid-content">
-			<div class="top-conainer" :class="{ 'zoom-off': !ENABLE_ZOOM }">
-				<div v-if="ENABLE_ZOOM" class="zoom-container flex-container-blank">
-					<div class="zoom" @click="toggleZoom()">
-						<img v-if="!boardZoom" src="images/zoomIn.svg" alt="zoomIn" />
-						<img v-if="boardZoom" src="images/zoomOut.svg" alt="zoomOut" />
-					</div>
-				</div>
-
-				<div
-					id="board-style-AP"
-					class="board-position"
-					:class="{ 'board-zoom': boardZoom }"
-				>
-					<transition name="board-fade">
-						<board v-if="!textInputFocus" board-id="board-AdP"></board>
-					</transition>
+	<div id="add-problem" class="grid-content">
+		<div class="top-conainer" :class="{ 'zoom-off': !ENABLE_ZOOM }">
+			<div v-if="ENABLE_ZOOM" class="zoom-container flex-container-blank">
+				<div class="zoom" @click="toggleZoom()">
+					<img v-if="!boardZoom" src="images/zoomIn.svg" alt="zoomIn" />
+					<img v-if="boardZoom" src="images/zoomOut.svg" alt="zoomOut" />
 				</div>
 			</div>
 
-			<div class="flex-container-blank">
-				<div class="bottom" :class="{ top: textInputFocus }">
-					<div class="input-container">
-						<div class="name-grade-container">
-							<div v-if="ENABLE_GRADES" class="slider-width">
-								<grade-slider></grade-slider>
-							</div>
-							<div class="name-input-container">
-								<input
-									id="add-problem-name-input"
-									class="input-name input"
-									:class="{
-										'border-red': errorFlags.name || nameLengthLimit,
-										'limit-description': 1,
-									}"
-									name="nazwa"
-									type="text"
-									placeholder="nazwa"
-									v-model="nameValue"
-									@change="(e) => handleNameInput(e.target.value)"
-									@focusin="() => handleFocus(true)"
-									@focusout="() => handleFocus(false)"
-								/>
-								<p :class="{ opacity: !nameLengthLimit }">
-									Nazwa nie może mieć więcej niż 20 znaków
-								</p>
-							</div>
+			<div
+				id="board-style-AP"
+				class="board-position"
+				:class="{ 'board-zoom': boardZoom }"
+			>
+				<transition name="board-fade">
+					<board v-if="!textInputFocus" board-id="board-AdP"></board>
+				</transition>
+			</div>
+		</div>
+
+		<div class="flex-container-blank">
+			<div class="bottom" :class="{ top: textInputFocus }">
+				<div class="input-container">
+					<div class="name-grade-container">
+						<div v-if="ENABLE_GRADES" class="slider-width">
+							<grade-slider></grade-slider>
+						</div>
+						<div class="name-input-container">
+							<input
+								id="add-problem-name-input"
+								class="input-name input"
+								:class="{
+									'border-red': errorFlags.name || nameLengthLimit,
+									'limit-description': 1,
+								}"
+								name="nazwa"
+								type="text"
+								placeholder="nazwa"
+								v-model="nameValue"
+								@change="(e) => handleNameInput(e.target.value)"
+								@focusin="() => handleFocus(true)"
+								@focusout="() => handleFocus(false)"
+							/>
+							<p :class="{ opacity: !nameLengthLimit }">
+								Nazwa nie może mieć więcej niż 20 znaków
+							</p>
 						</div>
 					</div>
-					<div class="button-container">
-						<button class="button" @click="addProblem">Dodaj problem</button>
-					</div>
+				</div>
+				<div class="button-container">
+					<button class="button" @click="addProblem">Dodaj problem</button>
 				</div>
 			</div>
 		</div>

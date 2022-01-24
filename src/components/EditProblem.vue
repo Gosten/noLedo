@@ -1,51 +1,49 @@
 <template>
-	<div id="edit-problem">
-		<div class="grid-content">
-			<div class="top-conainer" :class="{ 'zoom-off': !ENABLE_ZOOM }">
-				<div v-if="ENABLE_ZOOM" class="zoom-container flex-container-blank">
-					<div class="zoom" @click="toggleZoom()">
-						<img v-if="!boardZoom" src="images/zoomIn.svg" alt="zoomIn" />
-						<img v-if="boardZoom" src="images/zoomOut.svg" alt="zoomOut" />
-					</div>
-				</div>
-
-				<div
-					id="board-style-EP"
-					class="board-position"
-					:class="{ 'board-zoom': boardZoom }"
-				>
-					<transition name="board-fade">
-						<board v-if="!textInputFocus" board-id="board-E"></board>
-					</transition>
+	<div id="edit-problem" class="grid-content">
+		<div class="top-conainer" :class="{ 'zoom-off': !ENABLE_ZOOM }">
+			<div v-if="ENABLE_ZOOM" class="zoom-container flex-container-blank">
+				<div class="zoom" @click="toggleZoom()">
+					<img v-if="!boardZoom" src="images/zoomIn.svg" alt="zoomIn" />
+					<img v-if="boardZoom" src="images/zoomOut.svg" alt="zoomOut" />
 				</div>
 			</div>
 
-			<div class="flex-container-blank">
-				<div class="bottom" :class="{ top: textInputFocus }">
-					<div class="input-container">
-						<div class="name-grade-container">
-							<div v-if="ENABLE_GRADES" class="slider-width">
-								<grade-slider></grade-slider>
-							</div>
-							<input
-								id="add-problem-name-input"
-								class="input-name input"
-								:class="{ 'border-red': errorFlags.name }"
-								name="nazwa"
-								type="text"
-								placeholder="nazwa"
-								v-model="nameValue"
-								@change="() => (errorFlags.name = false)"
-								@focusin="() => handleFocus(true)"
-								@focusout="() => handleFocus(false)"
-							/>
-						</div>
-					</div>
+			<div
+				id="board-style-EP"
+				class="board-position"
+				:class="{ 'board-zoom': boardZoom }"
+			>
+				<transition name="board-fade">
+					<board v-if="!textInputFocus" board-id="board-E"></board>
+				</transition>
+			</div>
+		</div>
 
-					<div class="button-container">
-						<button class="button" @click="deleteProblem">Usuń</button>
-						<button class="button" @click="saveProblem">Zapisz</button>
+		<div class="flex-container-blank">
+			<div class="bottom" :class="{ top: textInputFocus }">
+				<div class="input-container">
+					<div class="name-grade-container">
+						<div v-if="ENABLE_GRADES" class="slider-width">
+							<grade-slider></grade-slider>
+						</div>
+						<input
+							id="add-problem-name-input"
+							class="input-name input"
+							:class="{ 'border-red': errorFlags.name }"
+							name="nazwa"
+							type="text"
+							placeholder="nazwa"
+							v-model="nameValue"
+							@change="() => (errorFlags.name = false)"
+							@focusin="() => handleFocus(true)"
+							@focusout="() => handleFocus(false)"
+						/>
 					</div>
+				</div>
+
+				<div class="button-container">
+					<button class="button" @click="deleteProblem">Usuń</button>
+					<button class="button" @click="saveProblem">Zapisz</button>
 				</div>
 			</div>
 		</div>

@@ -79,7 +79,7 @@ button {
 }
 
 .content-container {
-	height: 100vh;
+	height: 100%;
 	padding: calc(60px + 2em) 1em 0;
 }
 
@@ -116,4 +116,8 @@ button {
 .slider-width {
 	width: 90%;
 	box-sizing: content-box;
+}
+
+#app {
+	height: 100vh;
 }

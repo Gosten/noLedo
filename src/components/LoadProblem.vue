@@ -1,71 +1,73 @@
 <template>
-	<div id="load-problem">
-		<div class="flex-container content-container">
-			<transition name="fade">
-				<loading-modal v-if="!problemList"></loading-modal>
-			</transition>
+	<div id="load-problem" class="flex-container content-container">
+		<transition name="fade">
+			<loading-modal v-if="!problemList"></loading-modal>
+		</transition>
 
-			<ul
-				id="problem-list"
-				:class="{
-					collapsed: listCollapsed,
-					'focus-transition': textInputFocus,
-				}"
+		<ul
+			id="problem-list"
+			:class="{
+				collapsed: listCollapsed,
+				'focus-transition': textInputFocus,
+			}"
+		>
+			<li class="list-label">
+				<span>Nazwa</span>
+				<span v-if="ENABLE_GRADES">Wycena</span>
+			</li>
+			<li
+				class="li-0"
+				v-if="filteredList ? Object.keys(filteredList).length === 0 : false"
 			>
-				<li class="list-label">
-					<span>Nazwa</span>
-					<span v-if="ENABLE_GRADES">Wycena</span>
-				</li>
-				<li
-					class="li-0"
-					v-if="filteredList ? Object.keys(filteredList).length === 0 : false"
-				>
-					<span>brak wyników</span>
-				</li>
-				<li
-					v-for="(problem, index) in filteredList"
-					:key="problem.name"
-					:class="{
-						[listItemClass(index)]: true,
-						'li-selected': liSelectedCondition(problem),
-					}"
-					@click="() => handleProblemSelect(problem)"
-				>
-					<span>{{ limitNameLength(problem.name) }}</span>
-					<span v-if="ENABLE_GRADES">{{ problem.grade }}</span>
-				</li>
-			</ul>
+				<span>brak wyników</span>
+			</li>
+			<li
+				v-for="(problem, index) in filteredList"
+				:key="problem.name"
+				:class="{
+					[listItemClass(index)]: true,
+					'li-selected': liSelectedCondition(problem),
+				}"
+				@click="() => handleProblemSelect(problem)"
+			>
+				<span>{{ limitNameLength(problem.name) }}</span>
+				<span v-if="ENABLE_GRADES">{{ problem.grade }}</span>
+			</li>
+		</ul>
 
-			<transition name="board-fade">
-				<div class="bottom-section filter-container" v-if="!listCollapsed">
-					<h3>Filtr<span v-if="ENABLE_GRADES">y</span></h3>
-					<div v-if="ENABLE_GRADES" class="slider-width">
-						<slider-component></slider-component>
-					</div>
-					<input
-						class="input-name"
-						type="text"
-						placeholder="nazwa"
-						v-model="nameFilter"
-						@focusin="handleFocus"
-						@focusout="handleFocus"
-					/>
+		<transition name="board-fade">
+			<div
+				class="bottom-section filter-container"
+				v-if="!listCollapsed"
+				id="bottom"
+			>
+				<h3>Filtr<span v-if="ENABLE_GRADES">y</span></h3>
+				<div v-if="ENABLE_GRADES" class="slider-width">
+					<slider-component></slider-component>
 				</div>
-			</transition>
+				<input
+					class="input-name"
+					type="text"
+					placeholder="nazwa"
+					v-model="nameFilter"
+					@focusin="handleFocus"
+					@focusout="handleFocus"
+				/>
+			</div>
+		</transition>
 
-			<transition name="button-fade">
-				<div class="bottom-section preview" v-if="listCollapsed">
-					<div id="board-style-L" class="board-position-container">
-						<board board-id="board-L"></board>
-					</div>
-					<div id="list-buttons" class="button-container" v-if="listCollapsed">
-						<button class="button" @click="editProblem">Edytuj problem</button>
-						<button class="button" @click="showProblemList">Pokaż listę</button>
-						<button class="button" @click="loadProblem">Wczytaj</button>
-					</div>
+		<transition name="button-fade">
+			<div id="bottom" class="bottom-section preview" v-if="listCollapsed">
+				<div id="board-style-L" class="board-position-container">
+					<board board-id="board-L"></board>
 				</div>
-			</transition>
-		</div>
+				<div id="list-buttons" class="button-container" v-if="listCollapsed">
+					<button class="button" @click="editProblem">Edytuj problem</button>
+					<button class="button" @click="showProblemList">Pokaż listę</button>
+					<button class="button" @click="loadProblem">Wczytaj</button>
+				</div>
+			</div>
+		</transition>
 	</div>
 </template>
 
@@ -90,9 +92,6 @@
 				ENABLE_GRADES,
 			};
 		},
-
-		mounted() {},
-
 		methods: {
 			handleProblemSelect(problem) {
 				if (!this.listCollapsed) {
@@ -208,24 +207,27 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		--container-height: calc(100vh - 60px - 70px - 2em - 200px);
-		height: var(--container-height);
+		height: 100%;
 		width: calc(100% - 2em);
 	}
 	.board-position {
 		display: flex;
-		--container-width: min(500px, var(--container-height), calc(100vw - 2em));
 	}
 
 	.bottom-section {
 		position: absolute;
-		bottom: 1em;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
 		align-items: center;
 		width: calc(100vw - 2em);
 		border-radius: 5px;
+		bottom: 1em;
+	}
+
+	.preview {
+		padding-top: calc(70px + 60px + 3em); /* list+menu+paddings */
+		height: 100%;
 	}
 
 	.filter-container {
