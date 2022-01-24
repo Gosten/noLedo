@@ -14,13 +14,13 @@
 				:class="{ 'board-zoom': boardZoom }"
 			>
 				<transition name="board-fade">
-					<board v-if="!textInputFocus" board-id="board-AdP"></board>
+					<board board-id="board-AdP"></board>
 				</transition>
 			</div>
 		</div>
 
 		<div class="flex-container-blank">
-			<div class="bottom" :class="{ top: textInputFocus }">
+			<div class="bottom">
 				<div class="input-container">
 					<div class="name-grade-container">
 						<div v-if="ENABLE_GRADES" class="slider-width">
@@ -83,10 +83,10 @@
 					name: false,
 				},
 				mapGrade,
-				textInputHandle: undefined,
 				boardZoom: false,
 				ENABLE_ZOOM,
 				ENABLE_GRADES,
+				textInputHandle: undefined,
 			};
 		},
 		components: {

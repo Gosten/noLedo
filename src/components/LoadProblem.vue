@@ -46,6 +46,7 @@
 					<slider-component></slider-component>
 				</div>
 				<input
+					id="name-filter-input"
 					class="input-name"
 					type="text"
 					placeholder="nazwa"
@@ -90,9 +91,13 @@
 				sliderInstance: undefined,
 				mapGrade,
 				ENABLE_GRADES,
+				textInputHandle: undefined,
 			};
 		},
 		methods: {
+			blurInput(e) {
+				if (e.key == 'Enter') this.textInputHandle.blur();
+			},
 			handleProblemSelect(problem) {
 				if (!this.listCollapsed) {
 					this.listCollapsed = true;
@@ -133,7 +138,13 @@
 				this.$store.commit('toggleTextInputFocus');
 			},
 		},
+		mounted() {
+			this.textInputHandle = document.getElementById('name-filter-input');
+			this.textInputHandle.addEventListener('keyup', this.blurInput);
+		},
 		beforeUnmount() {
+			this.textInputHandle.removeEventListener('keyup', this.blurInput);
+
 			this.sliderInstance.destroy();
 		},
 

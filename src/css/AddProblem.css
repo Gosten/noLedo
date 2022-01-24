@@ -53,10 +53,6 @@
 	height: auto;
 }
 
-.top {
-	top: 60px;
-}
-
 .grid-content {
 	display: grid;
 	height: 100%;
