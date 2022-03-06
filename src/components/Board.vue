@@ -61,14 +61,13 @@
 			handleBoardResize(reset = false) {
 				const { offsetWidth: width, offsetHeight: height } = this.boardHandle;
 				const { columns, rows } = this.BOARD_CONFIG;
+				const condition = width / columns < height / rows;
 
-				const minSize =
-					width / columns < height / rows ? `${width}px` : `${height}px`;
+				const minSize = condition ? width : height;
 
-				let gripContSize =
-					width / columns < height / rows ? width / columns : height / rows;
+				let gripContSize = minSize / (condition ? columns : rows);
 
-				// mage gripContSize even number
+				// make gripContSize even number
 				const getEvenNumber = (n) => n - (n % 2);
 				gripContSize = getEvenNumber(gripContSize);
 
@@ -81,11 +80,11 @@
 				const gripSelectionBorder =
 					(BOARD_CONFIG.gripSelectionBorder * gripContSize) / 100;
 
-				//console.log({ width, height });
+				// console.log({ width, height, minSize, gripContSize });
 				this.boardSize = {
 					'--board-width': `calc(${width}px - 2em)`,
 					'--board-height': `${height}px`,
-					'--min-size': minSize,
+					'--min-size': `${minSize}px`,
 					'--grip-cont-size': `${gripContSize}px`,
 					'--grip-size': `${gripSize}px`,
 					'--empty-grip-size': `${emptyGripSize}px`,

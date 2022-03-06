@@ -26,26 +26,7 @@
 						<div v-if="ENABLE_GRADES" class="slider-width">
 							<grade-slider></grade-slider>
 						</div>
-						<div class="name-input-container">
-							<input
-								id="add-problem-name-input"
-								class="input-name input"
-								:class="{
-									'border-red': errorFlags.name || nameLengthLimit,
-									'limit-description': 1,
-								}"
-								name="nazwa"
-								type="text"
-								placeholder="nazwa"
-								v-model="nameValue"
-								@change="(e) => handleNameInput(e.target.value)"
-								@focusin="() => handleFocus(true)"
-								@focusout="() => handleFocus(false)"
-							/>
-							<p :class="{ opacity: !nameLengthLimit }">
-								Nazwa nie może mieć więcej niż 20 znaków
-							</p>
-						</div>
+						<name-input :set-name="setName"></name-input>
 					</div>
 				</div>
 				<div class="button-container">
@@ -68,9 +49,6 @@
 	module.exports = {
 		mounted() {
 			this.$store.commit('clearProblemState', this.BOARD_CONFIG.gripPositions);
-
-			this.textInputHandle = document.getElementById('add-problem-name-input');
-			this.textInputHandle.addEventListener('keyup', this.blurInput);
 		},
 		beforeUnmount() {
 			this.textInputHandle.removeEventListener('keyup', this.blurInput);
@@ -91,6 +69,7 @@
 		},
 		components: {
 			board: httpVueLoader('components/Board.vue'),
+			'name-input': httpVueLoader('components/subComponents/NameAuthInput.vue'),
 			'error-modal': httpVueLoader('components/ErrorModal.vue'),
 			'problem-modal': httpVueLoader('components/AddProblemModal.vue'),
 			'loading-modal': httpVueLoader('components/LoadingModal.vue'),
@@ -120,6 +99,9 @@
 			},
 		},
 		methods: {
+			setName(newName) {
+				this.nameValue = newName;
+			},
 			toggleZoom() {
 				this.boardZoom = !this.boardZoom;
 			},
@@ -152,9 +134,9 @@
 				}
 			},
 
-			validateProblem({ name, grade, grips }) {
+			validateProblem({ name, grips }) {
 				if (!name) return this.handleNameError('Wpisz nazwę problemu');
-
+				if (name.length > 20) return;
 				let selecterGripsAmount = Object.keys(grips).filter(
 					(key) => grips[key]
 				).length;

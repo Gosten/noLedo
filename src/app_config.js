@@ -15,7 +15,7 @@ const DEFAULT_GRADE = 5; // Index of GRADES array
 const BOARD_CONFIG = {
 	//Board dimension
 	columns: 6,
-	rows: 6,
+	rows: 8,
 
 	//Size of grip, empty grip and grip selection in % of container size
 	gripSize: 30,
@@ -32,13 +32,16 @@ const BOARD_CONFIG = {
 	// 2 - color 2 ...
 	// to change colors check css/app_config.css
 	gripPositions: [
-		0, 0, 1, 0, 1, 2, 4, 0, 0, 1, 3, 3,
-
-		0, 0, 1, 0, 1, 2, 4, 0, 0, 1, 3, 3,
-
-		0, 0, 1, 0, 1, 2, 4, 0, 0, 1, 3, 3,
-
-		//0, 0, 1, 0, 1, 2, 4, 0, 0, 1, 3, 3,
+		0, 0, 1, 0, 1, 2, 4, 1, 0, 1, 3, 0, 0, 2, 4, 0, 1, 1, 2, 1, 0, 1, 0, 4, 0,
+		3, 2, 0, 1, 2, 4, 1, 0, 1, 3, 0, 0, 4, 1, 0, 1, 1, 3, 1, 0, 1, 3, 3,
+		// 0, 0, 1, 0, 1, 2,
+		// 4, 1, 0, 1, 3, 3,
+		// 0, 2, 4, 0, 1, 2,
+		// 2, 0, 0, 1, 3, 4,
+		// 0, 3, 2, 0, 1, 2,
+		// 4, 0, 0, 1, 3, 3,
+		// 0, 4, 1, 0, 1, 4,
+		// 3, 0, 0, 1, 3, 3,
 	],
 
 	// gripPositions: [
