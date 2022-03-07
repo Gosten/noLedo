@@ -13,15 +13,6 @@
 	min-height: 1px;
 }
 
-.border-red {
-	border-color: red;
-}
-
-.name-grade-container {
-	width: 100%;
-	max-width: 500px;
-}
-
 /* @media (max-height: 615px) {
 	#edit-problem .content-container {
 		padding-top: 60px !important;

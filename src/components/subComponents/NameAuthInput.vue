@@ -12,13 +12,32 @@
 				type="text"
 				placeholder="nazwa"
 				v-model="nameValue"
-				@change="(e) => handleNameInput(e.target.value)"
+				@change="(e) => handleNameInput(e.target.value, nameValue, setName)"
 				@focusin="() => handleFocus(true)"
 				@focusout="() => handleFocus(false)"
 			/>
 			<p :class="{ opacity: !nameLengthLimit }">
 				Nazwa nie może mieć więcej niż 20 znaków
 			</p>
+		</div>
+		<div class="name-input-container">
+			<input
+				id="add-problem-author-input"
+				class="input-name input"
+				:class="{
+					'border-red': errorFlags.auth || authorLengthLimit,
+					'limit-description': 1,
+				}"
+				name="nazwa"
+				type="text"
+				placeholder="autor"
+				v-model="authNameValue"
+				@change="
+					(e) => handleNameInput(e.target.value, authNameValue, setAuthor)
+				"
+				@focusin="() => handleFocus(true)"
+				@focusout="() => handleFocus(false)"
+			/>
 		</div>
 	</div>
 </template>
@@ -34,18 +53,19 @@
 		},
 		props: {
 			setName: Function,
+			setAuthor: Function,
 		},
 		data() {
 			return {
 				BOARD_CONFIG,
+				ENABLE_AUTHOR,
 				nameValue: '',
+				authNameValue: '',
 				errorFlags: {
 					name: false,
+					auth: false,
 				},
-				mapGrade,
 				boardZoom: false,
-				ENABLE_ZOOM,
-				ENABLE_GRADES,
 				textInputHandle: undefined,
 			};
 		},
@@ -73,12 +93,12 @@
 				return this.handleNameError('Ta nazwa już istnieje');
 			},
 
-			handleNameInput(value) {
+			handleNameInput(value, state, callback) {
 				this.errorFlags.name = false;
 				let newValue = value.replace(/ +/g, ' '); //reduce multiple spaces to a single one
 				newValue = newValue.replace(/(^ *| *$)/g, ''); //remove space from begining end end of name
-				this.setName(newValue);
-				return (this.nameValue = newValue);
+				callback(newValue);
+				return (state = newValue);
 			},
 
 			handleFocus(inOut) {
@@ -93,5 +113,20 @@
 </script>
 
 <style scoped>
-	@import url('../../css/AddProblem.css');
+	.border-red {
+		border-color: red;
+	}
+
+	.name-grade-container {
+		max-width: 500px;
+	}
+
+	.text-input-container {
+		display: grid;
+		grid-template-columns: 2fr 1fr;
+	}
+
+	.text-input-container div:first-child {
+		margin-right: 5px;
+	}
 </style>

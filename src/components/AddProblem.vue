@@ -26,7 +26,10 @@
 						<div v-if="ENABLE_GRADES" class="slider-width">
 							<grade-slider></grade-slider>
 						</div>
-						<name-input :set-name="setName"></name-input>
+						<name-input
+							:set-name="setName"
+							:set-author="setAuthor"
+						></name-input>
 					</div>
 				</div>
 				<div class="button-container">
@@ -57,6 +60,7 @@
 			return {
 				BOARD_CONFIG,
 				nameValue: '',
+				authNameValue: '',
 				errorFlags: {
 					name: false,
 				},
@@ -64,6 +68,7 @@
 				boardZoom: false,
 				ENABLE_ZOOM,
 				ENABLE_GRADES,
+				ENABLE_AUTHOR,
 				textInputHandle: undefined,
 			};
 		},
@@ -102,6 +107,9 @@
 			setName(newName) {
 				this.nameValue = newName;
 			},
+			setAuthor(newAuthor) {
+				this.authNameValue = newAuthor;
+			},
 			toggleZoom() {
 				this.boardZoom = !this.boardZoom;
 			},
@@ -119,6 +127,7 @@
 					name: this.nameValue,
 					grade: mapGrade(this.gradeValue),
 					grips: this.problmState,
+					author: this.authNameValue,
 				};
 				if (this.validateProblem(newProblem)) {
 					let newList = [...this.problemList, newProblem];
@@ -135,15 +144,18 @@
 			},
 
 			validateProblem({ name, grips }) {
+				//validate name
 				if (!name) return this.handleNameError('Wpisz nazwę problemu');
 				if (name.length > 20) return;
+
+				//validate grips
 				let selecterGripsAmount = Object.keys(grips).filter(
 					(key) => grips[key]
 				).length;
-
 				if (selecterGripsAmount === 0)
 					return this.handleError('Nie wybrano żadnego chwytu');
 
+				//validate name uniqueness
 				return this.checkNameUniqueness(name);
 			},
 
@@ -167,24 +179,6 @@
 			handleNameError(errorMessage) {
 				this.handleError(errorMessage);
 				this.errorFlags.name = true;
-			},
-
-			handleNameInput(value) {
-				this.errorFlags.name = false;
-				let newValue = value.replace(/ +/g, ' '); //reduce multiple spaces to a single one
-				newValue = newValue.replace(/(^ *| *$)/g, ''); //remove space from begining end end of name
-				return (this.nameValue = newValue);
-			},
-
-			handleFocus() {
-				this.$store.commit('toggleTextInputFocus');
-			},
-			handleFocus(inOut) {
-				if (inOut) return this.$store.commit('toggleTextInputFocus');
-				return setTimeout(
-					() => this.$store.commit('toggleTextInputFocus'),
-					200
-				);
 			},
 		},
 	};

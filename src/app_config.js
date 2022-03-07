@@ -7,6 +7,9 @@ const ENABLE_ZOOM = true;
 // enable problem grading
 const ENABLE_GRADES = true;
 
+// enable problem author
+const ENABLE_AUTHOR = true;
+
 // toggle splash screen
 const INTRO = false;
 
