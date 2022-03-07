@@ -1,5 +1,5 @@
 <template>
-	<div class="text-input-container">
+	<div class="text-input-container" :class="{ 'no-author': !ENABLE_AUTHOR }">
 		<div class="name-input-container">
 			<input
 				id="add-problem-name-input"
@@ -20,7 +20,7 @@
 				Nazwa nie może mieć więcej niż 20 znaków
 			</p>
 		</div>
-		<div class="name-input-container">
+		<div class="name-input-container" v-if="ENABLE_AUTHOR">
 			<input
 				id="add-problem-author-input"
 				class="input-name input"
@@ -124,6 +124,9 @@
 	.text-input-container {
 		display: grid;
 		grid-template-columns: 2fr 1fr;
+	}
+	.no-author {
+		grid-template-columns: 1fr;
 	}
 
 	.text-input-container div:first-child {

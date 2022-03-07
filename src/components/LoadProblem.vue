@@ -90,17 +90,12 @@
 				},
 				sliderInstance: undefined,
 				mapGrade,
+				parseName,
 				ENABLE_GRADES,
 				textInputHandle: undefined,
 			};
 		},
 		methods: {
-			parseName(problem) {
-				//connect problem name with author
-				const shortName = this.limitNameLength(problem.name, 10);
-				if (problem.author) return `${shortName} (${problem.author})`;
-				return this.limitNameLength(problem.name, 15);
-			},
 			blurInput(e) {
 				if (e.key == 'Enter') this.textInputHandle.blur();
 			},
@@ -132,14 +127,7 @@
 			liSelectedCondition(problem) {
 				return this.listCollapsed && this.selectedProblem.name === problem.name;
 			},
-			limitNameLength(name, length = 15) {
-				if (name.length >= length) {
-					let chars = name.split('').slice(0, length);
-					let newName = chars.join('').concat('...');
-					return newName;
-				}
-				return name;
-			},
+
 			handleFocus() {
 				this.$store.commit('toggleTextInputFocus');
 			},
