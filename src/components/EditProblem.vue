@@ -26,18 +26,14 @@
 						<div v-if="ENABLE_GRADES" class="slider-width">
 							<grade-slider></grade-slider>
 						</div>
-						<input
-							id="add-problem-name-input"
-							class="input-name input"
-							:class="{ 'border-red': errorFlags.name }"
-							name="nazwa"
-							type="text"
-							placeholder="nazwa"
-							v-model="nameValue"
-							@change="() => (errorFlags.name = false)"
-							@focusin="() => handleFocus(true)"
-							@focusout="() => handleFocus(false)"
-						/>
+						<name-input
+							:init-value="{ name: nameValue, author: authorNameValue }"
+							:set-name="setName"
+							:set-author="setAuthor"
+							:error-name="errorFlags.name"
+							:set-error-name="setErrorFlag"
+							v-if="inputReady"
+						></name-input>
 					</div>
 				</div>
 
@@ -62,6 +58,7 @@
 	module.exports = {
 		components: {
 			board: httpVueLoader('components/Board.vue'),
+			'name-input': httpVueLoader('components/subComponents/NameAuthInput.vue'),
 			'grade-slider': httpVueLoader('components/SingleSlider.vue'),
 			'error-modal': httpVueLoader('components/ErrorModal.vue'),
 			'delete-modal': httpVueLoader('components/DeleteModal.vue'),
@@ -69,6 +66,8 @@
 		data() {
 			return {
 				nameValue: '',
+				authorNameValue: '',
+				inputReady: false,
 				errorFlags: {
 					name: false,
 				},
@@ -83,19 +82,20 @@
 			};
 		},
 		mounted() {
-			this.nameValue = this.editProblemState.editedProblem.name;
-			this.oldGrips = Object.assign(
-				{},
-				this.editProblemState.editedProblem
-			).grips;
-			this.oldName = this.editProblemState.editedProblem.name;
-			sendProblem(this.editProblemState.editedProblem);
+			//set text input initial values
+			const editProblem = this.editProblemState.editedProblem;
+			this.nameValue = editProblem.name;
+			if (editProblem.author) this.authorNameValue = editProblem.author;
 
-			this.textInputHandle = document.getElementById('add-problem-name-input');
-			this.textInputHandle.addEventListener('keyup', this.blurInput);
-		},
-		beforeUnmount() {
-			this.textInputHandle.removeEventListener('keyup', this.blurInput);
+			//after setting input initial values render input
+			this.inputReady = true;
+
+			// set reference grips and name value
+			this.oldGrips = Object.assign({}, editProblem).grips;
+			this.oldName = this.editProblemState.editedProblem.name;
+
+			//display problem
+			sendProblem(this.editProblemState.editedProblem);
 		},
 		computed: {
 			editProblemState() {
@@ -115,6 +115,15 @@
 			},
 		},
 		methods: {
+			setName(newName) {
+				this.nameValue = newName;
+			},
+			setAuthor(newAuthor) {
+				this.authorNameValue = newAuthor;
+			},
+			setErrorFlag(newState) {
+				this.errorFlags.name = newState;
+			},
 			toggleZoom() {
 				this.boardZoom = !this.boardZoom;
 			},
@@ -138,6 +147,7 @@
 					name: this.nameValue,
 					grade: newGrade,
 					grips: this.editProblemState.editedProblem.grips,
+					author: this.authorNameValue,
 				};
 				if (this.validateProblem(newProblem)) {
 					let newList = this.problemList.map((problem) => {
@@ -157,17 +167,20 @@
 			},
 
 			hasProblemChanged() {
-				let nameChanged = !(this.nameValue === this.oldName);
+				let nameChanged = this.nameValue !== this.oldName;
 				let gripsChanged = !this.compareGrips(
 					this.selectedProblem.grips,
 					this.editProblemState.editedProblem.grips
 				);
-				let gradeChanged = !(
-					this.editProblemState.newGrade === this.selectedProblem.grade
-				);
-				let condition = !(gripsChanged || nameChanged || gradeChanged);
-				if (condition) return false;
-				return true;
+				let gradeChanged =
+					this.editProblemState.newGrade !== this.selectedProblem.grade;
+
+				let authorChanged =
+					this.editProblemState.editedProblem.author !== this.authorNameValue;
+				let condition =
+					gripsChanged || nameChanged || gradeChanged || authorChanged;
+				if (condition) return true;
+				return false;
 			},
 
 			compareGrips(grips1, grips2) {
@@ -212,14 +225,6 @@
 				if (matchArray.length === 0) return true;
 				if (matchArray[0].name === this.oldName) return true;
 				return this.handleNameError('Ta nazwa już istnieje');
-			},
-
-			handleFocus(inOut) {
-				if (inOut) return this.$store.commit('toggleTextInputFocus');
-				return setTimeout(
-					() => this.$store.commit('toggleTextInputFocus'),
-					200
-				);
 			},
 		},
 	};

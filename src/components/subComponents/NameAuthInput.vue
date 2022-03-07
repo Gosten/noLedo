@@ -41,6 +41,12 @@
 		mounted() {
 			this.textInputHandle = document.getElementById('add-problem-name-input');
 			this.textInputHandle.addEventListener('keyup', this.blurInput);
+
+			console.log({ ...this.initValue });
+			if (this.initValue) {
+				this.nameValue = this.initValue.name;
+				this.authNameValue = this.initValue.author;
+			}
 		},
 		beforeUnmount() {
 			this.textInputHandle.removeEventListener('keyup', this.blurInput);
@@ -51,6 +57,7 @@
 			setErrorName: Function,
 			errorName: Boolean,
 			load: Boolean,
+			initValue: Object,
 		},
 		data() {
 			return {
@@ -65,12 +72,6 @@
 			};
 		},
 		computed: {
-			// nameLengthLimit() {
-			// 	return this.nameValue.length >= 20;
-			// },
-			// authorLengthLimit() {
-			// 	return this.authNameValue.length >= 10;
-			// },
 			textInputFocus() {
 				return this.$store.getters.getTextInputFocus;
 			},
@@ -114,6 +115,7 @@
 
 	.text-input-container {
 		display: grid;
+		width: 100%;
 		grid-template-columns: 2fr 1fr;
 	}
 	.no-author {
