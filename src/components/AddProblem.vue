@@ -29,6 +29,8 @@
 						<name-input
 							:set-name="setName"
 							:set-author="setAuthor"
+							:error-name="errorFlags.name"
+							:set-error-name="setErrorFlag"
 						></name-input>
 					</div>
 				</div>
@@ -109,6 +111,9 @@
 			},
 			setAuthor(newAuthor) {
 				this.authNameValue = newAuthor;
+			},
+			setErrorFlag(newState) {
+				this.errorFlags.name = newState;
 			},
 			toggleZoom() {
 				this.boardZoom = !this.boardZoom;

@@ -5,36 +5,30 @@
 				id="add-problem-name-input"
 				class="input-name input"
 				:class="{
-					'border-red': errorFlags.name || nameLengthLimit,
-					'limit-description': 1,
+					'border-red': errorName,
 				}"
 				name="nazwa"
 				type="text"
 				placeholder="nazwa"
+				:maxlength="nameLengthLimit"
 				autocomplete="off"
 				v-model="nameValue"
-				@input="(e) => handleNameInput(e.target.value, true, setName)"
+				@input="(e) => handleNameInput(e, true, setName)"
 				@focusin="() => handleFocus(true)"
 				@focusout="() => handleFocus(false)"
 			/>
-			<p :class="{ opacity: !nameLengthLimit }" v-if="!load">
-				Nazwa nie może mieć więcej niż 20 znaków
-			</p>
 		</div>
 		<div class="name-input-container" v-if="ENABLE_AUTHOR">
 			<input
 				id="add-problem-author-input"
 				class="input-name input"
-				:class="{
-					'border-red': errorFlags.auth || authorLengthLimit,
-					'limit-description': 1,
-				}"
 				name="nazwa"
 				type="text"
 				placeholder="autor"
+				:maxlength="authorLengthLimit"
 				autocomplete="off"
 				v-model="authNameValue"
-				@input="(e) => handleNameInput(e.target.value, false, setAuthor)"
+				@input="(e) => handleNameInput(e, false, setAuthor)"
 				@focusin="() => handleFocus(true)"
 				@focusout="() => handleFocus(false)"
 			/>
@@ -54,6 +48,8 @@
 		props: {
 			setName: Function,
 			setAuthor: Function,
+			setErrorName: Function,
+			errorName: Boolean,
 			load: Boolean,
 		},
 		data() {
@@ -62,21 +58,19 @@
 				ENABLE_AUTHOR,
 				nameValue: '',
 				authNameValue: '',
-				errorFlags: {
-					name: false,
-					auth: false,
-				},
+				nameLengthLimit: 20,
+				authorLengthLimit: 10,
 				boardZoom: false,
 				textInputHandle: undefined,
 			};
 		},
 		computed: {
-			nameLengthLimit() {
-				return this.nameValue.length >= 20;
-			},
-			authorLengthLimit() {
-				return this.nameValue.length >= 10;
-			},
+			// nameLengthLimit() {
+			// 	return this.nameValue.length >= 20;
+			// },
+			// authorLengthLimit() {
+			// 	return this.authNameValue.length >= 10;
+			// },
 			textInputFocus() {
 				return this.$store.getters.getTextInputFocus;
 			},
@@ -86,18 +80,13 @@
 				if (e.key == 'Enter') this.textInputHandle.blur();
 			},
 
-			checkNameUniqueness(name) {
-				let matchArray = this.problemList.filter(
-					(problem) => problem.name === name
-				);
-				if (matchArray.length === 0) return true;
-				return this.handleNameError('Ta nazwa już istnieje');
-			},
+			handleNameInput(event, name, callback) {
+				const value = event.target.value;
+				if (!this.load) this.setErrorName(false);
+				// let newValue = value.replace(/ +/g, ' '); //reduce multiple spaces to a single one
+				// newValue = newValue.replace(/(^ *| *$)/g, ''); //remove space from begining end end of name
 
-			handleNameInput(value, name, callback) {
-				this.errorFlags.name = false;
-				let newValue = value.replace(/ +/g, ' '); //reduce multiple spaces to a single one
-				newValue = newValue.replace(/(^ *| *$)/g, ''); //remove space from begining end end of name
+				newValue = value.replace(/(^ *| *$)/g, ''); //remove space
 				callback(newValue);
 				if (name) this.nameValue = newValue;
 				else this.authNameValue = newValue;
