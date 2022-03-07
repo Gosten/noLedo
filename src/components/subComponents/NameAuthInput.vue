@@ -11,12 +11,13 @@
 				name="nazwa"
 				type="text"
 				placeholder="nazwa"
+				autocomplete="off"
 				v-model="nameValue"
-				@change="(e) => handleNameInput(e.target.value, nameValue, setName)"
+				@input="(e) => handleNameInput(e.target.value, true, setName)"
 				@focusin="() => handleFocus(true)"
 				@focusout="() => handleFocus(false)"
 			/>
-			<p :class="{ opacity: !nameLengthLimit }">
+			<p :class="{ opacity: !nameLengthLimit }" v-if="!load">
 				Nazwa nie może mieć więcej niż 20 znaków
 			</p>
 		</div>
@@ -31,10 +32,9 @@
 				name="nazwa"
 				type="text"
 				placeholder="autor"
+				autocomplete="off"
 				v-model="authNameValue"
-				@change="
-					(e) => handleNameInput(e.target.value, authNameValue, setAuthor)
-				"
+				@input="(e) => handleNameInput(e.target.value, false, setAuthor)"
 				@focusin="() => handleFocus(true)"
 				@focusout="() => handleFocus(false)"
 			/>
@@ -54,6 +54,7 @@
 		props: {
 			setName: Function,
 			setAuthor: Function,
+			load: Boolean,
 		},
 		data() {
 			return {
@@ -93,12 +94,13 @@
 				return this.handleNameError('Ta nazwa już istnieje');
 			},
 
-			handleNameInput(value, state, callback) {
+			handleNameInput(value, name, callback) {
 				this.errorFlags.name = false;
 				let newValue = value.replace(/ +/g, ' '); //reduce multiple spaces to a single one
 				newValue = newValue.replace(/(^ *| *$)/g, ''); //remove space from begining end end of name
 				callback(newValue);
-				return (state = newValue);
+				if (name) this.nameValue = newValue;
+				else this.authNameValue = newValue;
 			},
 
 			handleFocus(inOut) {

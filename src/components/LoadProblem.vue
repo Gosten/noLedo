@@ -45,15 +45,11 @@
 				<div v-if="ENABLE_GRADES" class="slider-width">
 					<slider-component></slider-component>
 				</div>
-				<input
-					id="name-filter-input"
-					class="input-name"
-					type="text"
-					placeholder="nazwa"
-					v-model="nameFilter"
-					@focusin="handleFocus"
-					@focusout="handleFocus"
-				/>
+				<name-input
+					:set-name="setNameFilter"
+					:set-author="setAuthorFilter"
+					:load="true"
+				></name-input>
 			</div>
 		</transition>
 
@@ -75,6 +71,7 @@
 <script>
 	module.exports = {
 		components: {
+			'name-input': httpVueLoader('components/subComponents/NameAuthInput.vue'),
 			'loading-modal': httpVueLoader('components/LoadingModal.vue'),
 			'slider-component': httpVueLoader('components/DoubleSlider.vue'),
 			board: httpVueLoader('components/Board.vue'),
@@ -83,6 +80,7 @@
 			return {
 				listCollapsed: false,
 				nameFilter: '',
+				authorFilter: '',
 				GRADES,
 				gradeFilter: {
 					from: 0,
@@ -96,8 +94,11 @@
 			};
 		},
 		methods: {
-			blurInput(e) {
-				if (e.key == 'Enter') this.textInputHandle.blur();
+			setNameFilter(newVal) {
+				this.nameFilter = newVal;
+			},
+			setAuthorFilter(newVal) {
+				this.authorFilter = newVal;
 			},
 			handleProblemSelect(problem) {
 				if (!this.listCollapsed) {
@@ -127,18 +128,8 @@
 			liSelectedCondition(problem) {
 				return this.listCollapsed && this.selectedProblem.name === problem.name;
 			},
-
-			handleFocus() {
-				this.$store.commit('toggleTextInputFocus');
-			},
-		},
-		mounted() {
-			this.textInputHandle = document.getElementById('name-filter-input');
-			this.textInputHandle.addEventListener('keyup', this.blurInput);
 		},
 		beforeUnmount() {
-			this.textInputHandle.removeEventListener('keyup', this.blurInput);
-
 			this.sliderInstance.destroy();
 		},
 
@@ -154,14 +145,28 @@
 					if (this.ENABLE_GRADES) {
 						const fromGrade = mapGrade(this.filterGrades.value1);
 						const toGrade = mapGrade(this.filterGrades.value2);
-						let listByGrade = this.problemList.filter(
+						//filter by grade
+						let filteredList = this.problemList.filter(
 							(problem) =>
 								problem.grade >= fromGrade && problem.grade <= toGrade
 						);
-						let listByName = listByGrade.filter((problem) =>
+						//filter by name
+						filteredList = filteredList.filter((problem) =>
 							problem.name.toUpperCase().match(this.nameFilter.toUpperCase())
 						);
-						return listByName;
+
+						//filter by author
+						if (this.authorFilter) {
+							filteredList = filteredList.filter((problem) => {
+								if (problem.author) {
+									return problem.author
+										.toUpperCase()
+										.match(this.authorFilter.toUpperCase());
+								}
+							});
+						}
+
+						return filteredList;
 					}
 					return this.problemList;
 				} else return undefined;
