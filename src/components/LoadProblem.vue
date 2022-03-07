@@ -30,7 +30,7 @@
 				}"
 				@click="() => handleProblemSelect(problem)"
 			>
-				<span>{{ limitNameLength(problem.name) }}</span>
+				<span>{{ parseName(problem) }}</span>
 				<span v-if="ENABLE_GRADES">{{ problem.grade }}</span>
 			</li>
 		</ul>
@@ -95,6 +95,12 @@
 			};
 		},
 		methods: {
+			parseName(problem) {
+				//connect problem name with author
+				const shortName = this.limitNameLength(problem.name, 10);
+				if (problem.author) return `${shortName} (${problem.author})`;
+				return this.limitNameLength(problem.name, 15);
+			},
 			blurInput(e) {
 				if (e.key == 'Enter') this.textInputHandle.blur();
 			},
