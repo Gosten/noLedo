@@ -9,15 +9,17 @@
 			'even-size': evenSize,
 		}"
 	>
-		<div v-if="sizeSet" id="grid-container" class="board-grid-container">
-			<div
-				v-for="(grip, index) in BOARD_CONFIG.gripPositions"
-				:key="index"
-				class="grip-container grip-selector"
-				:class="{ 'grip-active': gripClassCondition(index) }"
-				@click="handleClick(index)"
-			>
-				<div class="grip" :class="{ [gripColors[index]]: true }"></div>
+		<div class="scroll-container">
+			<div v-if="sizeSet" id="grid-container" class="board-grid-container">
+				<div
+					v-for="(grip, index) in BOARD_CONFIG.gripPositions"
+					:key="index"
+					class="grip-container grip-selector"
+					:class="{ 'grip-active': gripClassCondition(index) }"
+					@click="handleClick(index)"
+				>
+					<div class="grip" :class="{ [gripColors[index]]: true }"></div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -96,6 +98,8 @@
 					'--empty-grip-size': `${emptyGripSize}px`,
 					'--grip-selection-size': `${gripSelectionSize}px`,
 					'--grip-selection-border': `${gripSelectionBorder}px`,
+					'--scroll-container-width': `${gripContSize * columns}px`,
+					'--scroll-container-height': `${gripContSize * rows}px`,
 				};
 				this.setSizeChanged(!reset);
 			},

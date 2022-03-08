@@ -72,12 +72,14 @@
 	padding: 1em;
 }
 
-.board-zoom .board-container {
+.board-zoom .board-grid-container {
 	transform-origin: top left;
 	transform: scale(2) !important;
 }
 
-.board-zoom {
+.board-zoom .scroll-container {
+	width: 100%;
+	height: 100%;
 	overflow: scroll !important;
 }
 

@@ -15,10 +15,16 @@
 	transition: opacity 0.2s ease-in-out;
 }
 
-.board-grid-container {
+.scroll-container {
 	position: absolute;
-	display: grid;
+	width: var(--scroll-container-width);
+	height: var(--scroll-container-height);
+}
 
+.board-grid-container {
+	display: grid;
+	width: var(--scroll-container-width);
+	height: var(--scroll-container-height);
 	grid-template-columns: repeat(var(--columns), auto);
 	grid-template-rows: repeat(var(--rows), auto);
 }
