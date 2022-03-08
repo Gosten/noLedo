@@ -72,7 +72,7 @@
 	padding: 1em;
 }
 
-.board-zoom .board-grid-container {
+.board-zoom .board-container {
 	transform-origin: top left;
 	transform: scale(2) !important;
 }
