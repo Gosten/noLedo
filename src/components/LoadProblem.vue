@@ -12,8 +12,10 @@
 			}"
 		>
 			<li class="list-label">
-				<span>Nazwa</span>
-				<span v-if="ENABLE_GRADES">Wycena</span>
+				<span @click="() => handleSort('name')">Nazwa</span>
+				<span v-if="ENABLE_GRADES" @click="() => handleSort('grade')"
+					>Wycena</span
+				>
 			</li>
 			<li
 				class="li-0"
@@ -91,9 +93,14 @@
 				parseName,
 				ENABLE_GRADES,
 				textInputHandle: undefined,
+				sort: { key: '', order: false },
 			};
 		},
 		methods: {
+			handleSort(key) {
+				if (this.sort.key === key) this.sort.order = !this.sort.order;
+				else this.sort = { key, order: true };
+			},
 			setNameFilter(newVal) {
 				this.nameFilter = newVal;
 			},
@@ -142,33 +149,45 @@
 			},
 			filteredList() {
 				if (this.problemList) {
+					let newList = [...this.problemList];
+
+					//filter by name
+					newList = newList.filter((problem) =>
+						problem.name.toUpperCase().match(this.nameFilter.toUpperCase())
+					);
+
+					//filter by grade
 					if (this.ENABLE_GRADES) {
 						const fromGrade = mapGrade(this.filterGrades.value1);
 						const toGrade = mapGrade(this.filterGrades.value2);
-						//filter by grade
-						let filteredList = this.problemList.filter(
+
+						newList = newList.filter(
 							(problem) =>
 								problem.grade >= fromGrade && problem.grade <= toGrade
 						);
-						//filter by name
-						filteredList = filteredList.filter((problem) =>
-							problem.name.toUpperCase().match(this.nameFilter.toUpperCase())
-						);
-
-						//filter by author
-						if (this.authorFilter) {
-							filteredList = filteredList.filter((problem) => {
-								if (problem.author) {
-									return problem.author
-										.toUpperCase()
-										.match(this.authorFilter.toUpperCase());
-								}
-							});
-						}
-
-						return filteredList;
 					}
-					return this.problemList;
+
+					//filter by author
+					if (this.authorFilter) {
+						newList = newList.filter((problem) => {
+							if (problem.author) {
+								return problem.author
+									.toUpperCase()
+									.match(this.authorFilter.toUpperCase());
+							}
+						});
+					}
+
+					//sort list
+					if (this.sort.key) {
+						const { key, order } = this.sort;
+						newList = newList.sort((p1, p2) => {
+							if (order) return p1[key].localeCompare(p2[key]);
+							return p2[key].localeCompare(p1[key]);
+						});
+					}
+
+					return newList;
 				} else return undefined;
 			},
 			filterGrades() {
