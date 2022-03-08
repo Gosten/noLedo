@@ -75,13 +75,19 @@
 					getEvenNumber(Math.floor((baseSize * gripContSize) / 100));
 
 				const gripSize = getFracSize(BOARD_CONFIG.gripSize);
+
 				const emptyGripSize = getFracSize(BOARD_CONFIG.emptyGripSize);
 				const gripSelectionSize = getFracSize(BOARD_CONFIG.gripSelectionSize);
 				const gripSelectionBorder =
 					(BOARD_CONFIG.gripSelectionBorder * gripContSize) / 100;
 
+				// hide board when grip size is samller than 3px
+				let opacity = '1';
+				if (gripSize < 3) opacity = '0';
+
 				// console.log({ width, height, minSize, gripContSize });
 				this.boardSize = {
+					opacity,
 					'--board-width': `calc(${width}px - 2em)`,
 					'--board-height': `${height}px`,
 					'--min-size': `${minSize}px`,
