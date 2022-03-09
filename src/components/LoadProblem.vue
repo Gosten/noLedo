@@ -244,6 +244,7 @@
 	}
 
 	.bottom-section {
+		max-width: 500px;
 		position: absolute;
 		display: flex;
 		flex-direction: column;
