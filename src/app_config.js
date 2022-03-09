@@ -10,6 +10,9 @@ const ENABLE_GRADES = true;
 // enable problem author
 const ENABLE_AUTHOR = true;
 
+// enable space in problem names
+const ENABLE_SPACE_NAMES = true;
+
 // toggle splash screen
 const INTRO = false;
 

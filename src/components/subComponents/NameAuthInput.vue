@@ -59,6 +59,7 @@
 			return {
 				BOARD_CONFIG,
 				ENABLE_AUTHOR,
+				ENABLE_SPACE_NAMES,
 				inputVal: {
 					name: '',
 					author: '',
@@ -84,7 +85,7 @@
 				if (!this.load) this.setErrorName(false);
 				let newValue = value.replace(/ +/g, ' '); //reduce multiple spaces to a single one
 				newValue = newValue.replace(/(^ *)/g, ''); //remove space from begining end end of name
-				// newValue = newValue.replace(/(^ *| *$)/g, ''); //remove space from begining end end of name
+				if (!this.ENABLE_SPACE_NAMES) newValue = value.replace(/ /g, '');
 				callback(newValue);
 				this.inputVal.name = newValue;
 			},
