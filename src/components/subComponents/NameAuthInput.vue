@@ -7,30 +7,27 @@
 				:class="{
 					'border-red': errorName,
 				}"
-				name="nazwa"
+				name="name"
 				type="text"
 				placeholder="nazwa"
 				:maxlength="nameLengthLimit"
 				autocomplete="off"
-				v-model="nameValue"
-				@input="(e) => handleNameInput(e, true, setName)"
-				@focusin="() => handleFocus(true)"
-				@focusout="() => handleFocus(false)"
+				v-model="inputVal.name"
+				@input="(e) => handleNameInput(e, setName)"
+				@change="(e) => handleChange(e, setName)"
 			/>
 		</div>
 		<div class="name-input-container" v-if="ENABLE_AUTHOR">
 			<input
 				id="add-problem-author-input"
 				class="input-name input"
-				name="nazwa"
+				name="author"
 				type="text"
 				placeholder="autor"
 				:maxlength="authorLengthLimit"
 				autocomplete="off"
-				v-model="authNameValue"
-				@input="(e) => handleNameInput(e, false, setAuthor)"
-				@focusin="() => handleFocus(true)"
-				@focusout="() => handleFocus(false)"
+				v-model="inputVal.author"
+				@input="(e) => handleAuthInput(e, setAuthor)"
 			/>
 		</div>
 	</div>
@@ -42,10 +39,9 @@
 			this.textInputHandle = document.getElementById('add-problem-name-input');
 			this.textInputHandle.addEventListener('keyup', this.blurInput);
 
-			console.log({ ...this.initValue });
 			if (this.initValue) {
-				this.nameValue = this.initValue.name;
-				this.authNameValue = this.initValue.author;
+				this.inputVal.name = this.initValue.name;
+				this.inputVal.author = this.initValue.author;
 			}
 		},
 		beforeUnmount() {
@@ -63,8 +59,10 @@
 			return {
 				BOARD_CONFIG,
 				ENABLE_AUTHOR,
-				nameValue: '',
-				authNameValue: '',
+				inputVal: {
+					name: '',
+					author: '',
+				},
 				nameLengthLimit: 20,
 				authorLengthLimit: 10,
 				boardZoom: false,
@@ -81,24 +79,30 @@
 				if (e.key == 'Enter') this.textInputHandle.blur();
 			},
 
-			handleNameInput(event, name, callback) {
+			handleNameInput(event, callback) {
 				const value = event.target.value;
 				if (!this.load) this.setErrorName(false);
-				// let newValue = value.replace(/ +/g, ' '); //reduce multiple spaces to a single one
+				let newValue = value.replace(/ +/g, ' '); //reduce multiple spaces to a single one
+				newValue = newValue.replace(/(^ *)/g, ''); //remove space from begining end end of name
 				// newValue = newValue.replace(/(^ *| *$)/g, ''); //remove space from begining end end of name
-
-				newValue = value.replace(/(^ *| *$)/g, ''); //remove space
 				callback(newValue);
-				if (name) this.nameValue = newValue;
-				else this.authNameValue = newValue;
+				this.inputVal.name = newValue;
 			},
-
-			handleFocus(inOut) {
-				if (inOut) return this.$store.commit('toggleTextInputFocus');
-				return setTimeout(
-					() => this.$store.commit('toggleTextInputFocus'),
-					200
-				);
+			handleChange(event, callback) {
+				//remove trailing space
+				const value = event.target.value;
+				const newValue = value.replace(/( $)/g, '');
+				console.log('change type', event.type);
+				console.log({ value, newValue });
+				callback(newValue);
+				this.inputVal.name = newValue;
+			},
+			handleAuthInput(event, callback) {
+				const value = event.target.value;
+				if (!this.load) this.setErrorName(false);
+				let newValue = value.replace(/ /g, ''); //remove space
+				callback(newValue);
+				this.inputVal.author = newValue;
 			},
 		},
 	};
