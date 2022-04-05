@@ -61,7 +61,7 @@
 					<board board-id="board-L"></board>
 				</div>
 				<div id="list-buttons" class="button-container" v-if="listCollapsed">
-					<button class="button" @click="editProblem">Edytuj problem</button>
+					<!-- <button class="button" @click="editProblem">Edytuj problem</button> -->
 					<button class="button" @click="showProblemList">Pokaż listę</button>
 					<button class="button" @click="loadProblem">Wczytaj</button>
 				</div>
