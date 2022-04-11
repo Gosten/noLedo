@@ -1,6 +1,9 @@
 // enable board zoom in addProblem and editProblem
 const ENABLE_BOARD_DESCRIPTION = true;
 
+// enable multi color grip tap
+const ENABLE_MULTI_TAP = true;
+
 // toggle board scaling in active problem
 const ACTIVE_PROBLEM_SCALING = false;
 
