@@ -1,11 +1,20 @@
-function multiClick(state) {
-  if (!ENABLE_MULTI_TAP) return !state;
+function multiClick(gripState, allGrips) {
+  if (!ENABLE_MULTI_TAP) return !gripState;
   const lastKey = Object.keys(BOARD_CONFIG.multiTapColors)
     .map((key) => Number(key))
     .pop();
-  const currentState = state ? state : 0;
+  const currentState = gripState ? gripState : 0;
   let newState = currentState + 1;
+
   if (newState > lastKey) newState = 0;
+
+  // If there is another top grip, change new state to 0
+  if (newState === lastKey) {
+    if (Object.values(allGrips).includes(lastKey)) {
+      newState = 0;
+    }
+  }
+
   return newState;
 }
 
@@ -61,7 +70,7 @@ const store = new Vuex.Store({
       state.addProblem.problemState[index] = value;
     },
     toggleProblemState(state, payload) {
-      const newState = multiClick(state.addProblem.problemState[payload]);
+      const newState = multiClick(state.addProblem.problemState[payload], state.addProblem.problemState);
       //   console.log({ oldState: state.addProblem.problemState[payload], newState });
       state.addProblem.problemState[payload] = newState;
     },
