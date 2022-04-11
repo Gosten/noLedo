@@ -41,6 +41,10 @@
 	border-color: var(--selection-4) !important;
 	opacity: 0;
 }
+.grip-selection-0-limit::after{
+	border-color: var(--selection-3) !important;
+	opacity: 0;
+}
 
 .grip-selection-1::after{
 	border-color: var(--selection-1) !important;

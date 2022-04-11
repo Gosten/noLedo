@@ -32,6 +32,14 @@ module.exports = {
     getGripSelectionColor(grip) {
       const colorIndex = this.gripClassCondition(grip);
       if (typeof colorIndex === "number") {
+        if (colorIndex === 0) {
+          const lastKey = Object.keys(BOARD_CONFIG.multiTapColors)
+            .map((key) => Number(key))
+            .pop();
+          if (Object.values(this.problemState).includes(lastKey)) {
+            return `grip-selection-${colorIndex}-limit`;
+          }
+        }
         return `grip-selection-${colorIndex}`;
       }
     },
