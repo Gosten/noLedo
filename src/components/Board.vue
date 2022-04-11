@@ -45,15 +45,24 @@ module.exports = {
         if (this.BOARD_CONFIG.gripPositions[index]) {
           if (this.isScene(ADD_PROBLEM)) this.$store.commit("toggleProblemState", index);
           if (this.isScene(EDIT_PROBLEM)) this.$store.commit("editProblemStateGrip", index);
-          if (this.isScene(ADD_PROBLEM) || this.isScene(EDIT_PROBLEM)) this.sendGripMessage(index);
+          if (this.isScene(ADD_PROBLEM) || this.isScene(EDIT_PROBLEM)) this.sendGripMessage(index, grip);
         }
       }
     },
-    sendGripMessage(index) {
-      let i = this.diodeIndexes[index];
-      let diodeState = this.problemState[index] ? 255 : 0;
+    sendGripMessage(index, grip) {
       let msg = { topic: "display" };
-      msg.payload = `${i},0,${diodeState},0`;
+      if (!ENABLE_BOARD_DESCRIPTION) {
+        let i = this.diodeIndexes[index];
+        let diodeState = this.problemState[index] ? 255 : 0;
+        msg.payload = `${i},0,${diodeState},0`;
+      } else {
+        const colorIndex = this.gripClassCondition(grip);
+        const diodeColor = BOARD_CONFIG.multiTapColors[colorIndex];
+        let i = this.diodeIndexes[grip.index];
+        const payload = `${i},${diodeColor.join(",")}`;
+        msg.payload = payload;
+      }
+
       uibuilder.send(msg);
     },
     gripClassCondition(grip) {
