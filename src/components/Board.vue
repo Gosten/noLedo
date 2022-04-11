@@ -15,7 +15,7 @@
           v-for="(grip, index) in describedBoard"
           :key="index"
           class="grip-container grip-selector"
-          :class="{ 'grip-active': gripClassCondition(grip) }"
+          :class="{ 'grip-active': gripClassCondition(grip), [getGripSelectionColor(grip)]: ENABLE_BOARD_DESCRIPTION }"
           @click="handleClick(grip)"
         >
           <div v-if="isGrip(grip)" class="grip" :class="{ [gripColors[grip.index]]: true }"></div>
@@ -29,6 +29,12 @@
 <script>
 module.exports = {
   methods: {
+    getGripSelectionColor(grip) {
+      const colorIndex = this.gripClassCondition(grip);
+      if (typeof colorIndex === "number") {
+        return `grip-selection-${colorIndex}`;
+      }
+    },
     isGrip(grip) {
       // console.log(grip, typeof grip === "object");
       return typeof grip === "object";

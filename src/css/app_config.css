@@ -11,6 +11,11 @@
 	--color-4: hsl(329, 47%, 62%);
 	--color-5: hsl(31, 89%, 69%);
 	--color-6: hsl(0, 0%, 80%);
+
+	--selection-1: rgb(0, 255, 0);
+	--selection-2: rgb(255, 0, 0);
+	--selection-3: rgb(0, 0, 255);
+	--selection-4: rgb(255, 174, 0);
 }
 
 .grip-color-1 {
@@ -31,3 +36,26 @@
 .grip-color-6 {
 	background: var(--color-6);
 }
+
+.grip-selection-0::after{
+	border-color: var(--selection-4) !important;
+	opacity: 0;
+}
+
+.grip-selection-1::after{
+	border-color: var(--selection-1) !important;
+}
+
+.grip-selection-2::after{
+	border-color: var(--selection-2) !important;
+}
+
+.grip-selection-3::after{
+	border-color: var(--selection-3) !important;
+}
+
+.grip-selection-4::after{
+	border-color: var(--selection-4) !important;
+}
+
+
