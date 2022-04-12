@@ -2,7 +2,7 @@
   <div id="intro-scene">
     <div class="intro-container">
       <transition name="intro">
-        <img class="splash-img" src="./images/LW_Logo.png" alt="" />
+        <img v-if="fade" class="splash-img" src="./images/LW_Logo.png" alt="" />
         <!-- <h1 v-if="fade">LED<span class="green">o</span>Wall</h1> -->
       </transition>
     </div>

@@ -198,7 +198,8 @@ module.exports = {
       //   Add row labels
       describedBoard = describedBoard.map((row, index) => {
         // const rowLabel = rows - index;
-        const rowLabel = String.fromCharCode(65 + index);
+        const ascii = rows - 1 - index;
+        const rowLabel = String.fromCharCode(65 + ascii);
         // return [rowLabel, ...row, rowLabel];
         return [rowLabel, ...row, rowLabel];
       });
