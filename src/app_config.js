@@ -20,7 +20,7 @@ const ENABLE_AUTHOR = true;
 const ENABLE_SPACE_NAMES = true;
 
 // toggle splash screen
-const INTRO = false;
+const INTRO = true;
 
 const GRADES = ["3a", "3b", "3c", "4a", "4b", "4c", "5a", "5b", "5c", "6a", "6b", "6c", "7a", "7b", "7c"];
 
