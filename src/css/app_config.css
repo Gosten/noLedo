@@ -38,11 +38,11 @@
 }
 
 .grip-selection-0::after{
-	border-color: var(--selection-4) !important;
+	border-color: var(--selection-4) !important; /* tu musi pójść kolor ostatni*/
 	opacity: 0;
 }
 .grip-selection-0-limit::after{
-	border-color: var(--selection-3) !important;
+	border-color: var(--selection-3) !important; /* tu musi pójść kolor PRZEDostatni*/
 	opacity: 0;
 }
 

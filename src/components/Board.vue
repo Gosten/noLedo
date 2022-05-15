@@ -6,19 +6,33 @@
     :class="{
       'more-cols': moreCols,
       'more-rows': moreRows,
-      'even-size': evenSize,
+      'even-size': evenSize
     }"
   >
+    <div class="background-image-container">
+      <img
+        class="board-background-image"
+        src="images/board-background.svg"
+        alt="background-image"
+      />
+    </div>
     <div class="scroll-container">
       <div v-if="sizeSet" id="grid-container" class="board-grid-container">
         <div
           v-for="(grip, index) in describedBoard"
           :key="index"
           class="grip-container grip-selector"
-          :class="{ 'grip-active': gripClassCondition(grip), [getGripSelectionColor(grip)]: ENABLE_BOARD_DESCRIPTION }"
+          :class="{
+            'grip-active': gripClassCondition(grip),
+            [getGripSelectionColor(grip)]: ENABLE_BOARD_DESCRIPTION
+          }"
           @click="handleClick(grip)"
         >
-          <div v-if="isGrip(grip)" class="grip" :class="{ [gripColors[grip.index]]: true }"></div>
+          <div
+            v-if="isGrip(grip)"
+            class="grip"
+            :class="{ [gripColors[grip.index]]: true }"
+          ></div>
           <div v-if="!isGrip(grip)" class="board-description">{{ grip }}</div>
         </div>
       </div>
@@ -51,9 +65,12 @@ module.exports = {
       if (this.isGrip(grip)) {
         const { index } = grip;
         if (this.BOARD_CONFIG.gripPositions[index]) {
-          if (this.isScene(ADD_PROBLEM)) this.$store.commit("toggleProblemState", index);
-          if (this.isScene(EDIT_PROBLEM)) this.$store.commit("editProblemStateGrip", index);
-          if (this.isScene(ADD_PROBLEM) || this.isScene(EDIT_PROBLEM)) this.sendGripMessage(index, grip);
+          if (this.isScene(ADD_PROBLEM))
+            this.$store.commit("toggleProblemState", index);
+          if (this.isScene(EDIT_PROBLEM))
+            this.$store.commit("editProblemStateGrip", index);
+          if (this.isScene(ADD_PROBLEM) || this.isScene(EDIT_PROBLEM))
+            this.sendGripMessage(index, grip);
         }
       }
     },
@@ -76,8 +93,10 @@ module.exports = {
     gripClassCondition(grip) {
       if (this.isGrip(grip)) {
         const { index } = grip;
-        if (this.isScene(LOAD_PROBLEM)) return this.selectedProblem.grips[index];
-        if (this.isScene(ACTIVE_PROBLEM)) return this.activeProblem.grips[index];
+        if (this.isScene(LOAD_PROBLEM))
+          return this.selectedProblem.grips[index];
+        if (this.isScene(ACTIVE_PROBLEM))
+          return this.activeProblem.grips[index];
         if (this.isScene(ADD_PROBLEM)) {
           return this.problemState[index];
         }
@@ -107,19 +126,25 @@ module.exports = {
       const getEvenNumber = (n) => n - (n % 2);
       gripContSize = getEvenNumber(gripContSize);
 
-      const getFracSize = (baseSize) => getEvenNumber(Math.floor((baseSize * gripContSize) / 100));
+      const getFracSize = (baseSize) =>
+        getEvenNumber(Math.floor((baseSize * gripContSize) / 100));
 
       const gripSize = getFracSize(BOARD_CONFIG.gripSize);
 
       const emptyGripSize = getFracSize(BOARD_CONFIG.emptyGripSize);
       const gripSelectionSize = getFracSize(BOARD_CONFIG.gripSelectionSize);
-      const gripSelectionBorder = (BOARD_CONFIG.gripSelectionBorder * gripContSize) / 100;
+      const gripSelectionBorder =
+        (BOARD_CONFIG.gripSelectionBorder * gripContSize) / 100;
 
       // hide board when grip size is samller than 3px
       let opacity = "1";
       if (gripSize < 3) opacity = "0";
 
       // console.log({ width, height, minSize, gripContSize });
+
+      // Board image offset
+      const boardImgTop = getFracSize(BOARD_CONFIG.boardImgTop);
+      const boardImgLeft = getFracSize(BOARD_CONFIG.boardImgLeft);
 
       const fontSize = getFracSize(BOARD_CONFIG.descriptionFontSize);
       this.boardVariables = {
@@ -139,6 +164,8 @@ module.exports = {
         "--grid-container-width": columns > rows ? "100%" : "auto",
         "--grid-container-height": columns > rows ? "auto" : "100%",
         "--description-font-size": `${fontSize}px`,
+        "--board-image-top": `${boardImgTop}px`,
+        "--board-image-left": `${boardImgLeft}px`
       };
       this.setSizeChanged(!reset);
     },
@@ -154,7 +181,7 @@ module.exports = {
       setTimeout(() => {
         if (!this.sizeSet) this.setSizeChanged(true);
       }, 10);
-    },
+    }
   },
   computed: {
     problemState() {
@@ -164,7 +191,9 @@ module.exports = {
       return this.$store.getters.getEditedProblem;
     },
     interactionCondition() {
-      return this.activeScene === ADD_PROBLEM || this.activeScene === EDIT_PROBLEM;
+      return (
+        this.activeScene === ADD_PROBLEM || this.activeScene === EDIT_PROBLEM
+      );
     },
     activeProblem() {
       return this.$store.getters.getActiveProblem;
@@ -178,7 +207,10 @@ module.exports = {
     diodeIndexes: () => diodeIndexes,
     gripImages: () => gripImages,
     describedBoard() {
-      const tempBoard = [...BOARD_CONFIG.gripPositions].map((color, index) => ({ color, index }));
+      const tempBoard = [...BOARD_CONFIG.gripPositions].map((color, index) => ({
+        color,
+        index
+      }));
       if (!ENABLE_BOARD_DESCRIPTION) return tempBoard;
       const { rows, columns } = BOARD_CONFIG;
 
@@ -205,20 +237,24 @@ module.exports = {
       });
 
       // let colsLabel = new Array(columns).fill(undefined).map((x, index) => String.fromCharCode(65 + index));
-      let colsLabel = new Array(columns).fill(undefined).map((x, index) => index + 1);
+      let colsLabel = new Array(columns)
+        .fill(undefined)
+        .map((x, index) => index + 1);
       colsLabel = [undefined, ...colsLabel, undefined];
       describedBoard = [colsLabel, ...describedBoard, colsLabel];
       const output = [];
       describedBoard.forEach((row) => row.forEach((elem) => output.push(elem)));
       return output;
-    },
+    }
   },
   data() {
     return {
       ACTIVE_PROBLEM,
       BOARD_CONFIG,
       ENABLE_BOARD_DESCRIPTION,
-      gripColors: BOARD_CONFIG.gripPositions.map((color) => `grip-color-${color}`),
+      gripColors: BOARD_CONFIG.gripPositions.map(
+        (color) => `grip-color-${color}`
+      ),
       boardSize: {},
       moreRows: BOARD_CONFIG.columns < BOARD_CONFIG.rows,
       moreCols: BOARD_CONFIG.columns > BOARD_CONFIG.rows,
@@ -229,11 +265,11 @@ module.exports = {
       resizeObserver: undefined,
       appResizeObserver: undefined,
       firstUpdate: true,
-      boardVariables: {},
+      boardVariables: {}
     };
   },
   props: {
-    boardId: String,
+    boardId: String
   },
   mounted() {
     this.resizeObserver = new ResizeObserver(() => this.handleBoardResize());
@@ -255,7 +291,7 @@ module.exports = {
     this.resizeObserver.unobserve(this.boardHandle);
 
     window.removeEventListener("resize", this.handleAppResize);
-  },
+  }
 };
 </script>
 
@@ -271,12 +307,37 @@ module.exports = {
 .even-size .board-grid-container {
   justify-content: center;
   align-items: center;
-  grid-template-columns: repeat(var(--columns), calc(var(--min-size) / var(--rows)));
-  grid-template-rows: repeat(var(--columns), calc(var(--min-size) / var(--rows)));
+  grid-template-columns: repeat(
+    var(--columns),
+    calc(var(--min-size) / var(--rows))
+  );
+  grid-template-rows: repeat(
+    var(--columns),
+    calc(var(--min-size) / var(--rows))
+  );
 }
 
 .board-description {
   font-size: var(--description-font-size);
   font-weight: 700;
 }
+
+.background-image-container {
+  width: var(--scroll-container-width);
+  height: var(--scroll-container-height);
+  padding: var(--grip-cont-size);
+}
+.board-background-image {
+  width: 100%;
+  transform: translate(var(--board-image-left), var(--board-image-top));
+}
+
+.grip {
+  background: transparent !important;
+}
+
+/* .grip-container {
+  box-sizing: border-box;
+  border: 1px solid green;
+} */
 </style>
