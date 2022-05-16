@@ -9,7 +9,7 @@
       'even-size': evenSize
     }"
   >
-    <div class="background-image-container">
+    <div v-if="sizeSet" class="background-image-container">
       <img
         class="board-background-image"
         src="images/board-background.svg"
