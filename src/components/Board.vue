@@ -10,6 +10,7 @@
     }"
   >
     <div v-if="sizeSet" class="background-image-container">
+      <p class="temp" v-if="tempCondition()">WERSJA TYMCZASOWA</p>
       <img
         class="board-background-image"
         src="images/board-background.svg"
@@ -43,6 +44,13 @@
 <script>
 module.exports = {
   methods: {
+    tempCondition() {
+      return (
+        this.isScene(ADD_PROBLEM) ||
+        this.isScene(ACTIVE_PROBLEM) ||
+        this.isScene(EDIT_PROBLEM)
+      );
+    },
     getGripSelectionColor(grip) {
       const colorIndex = this.gripClassCondition(grip);
       if (typeof colorIndex === "number") {
@@ -323,6 +331,7 @@ module.exports = {
 }
 
 .background-image-container {
+  position: relative;
   width: var(--scroll-container-width);
   height: var(--scroll-container-height);
   padding: var(--grip-cont-size);
@@ -334,6 +343,17 @@ module.exports = {
 
 .grip {
   background: transparent !important;
+}
+
+.temp {
+  position: absolute;
+  width: var(--scroll-container-width);
+  left: 0;
+  display: block;
+  text-align: center;
+  color: grey;
+  top: -2.5em;
+  /* font-size: 1em; */
 }
 
 /* .grip-container {
