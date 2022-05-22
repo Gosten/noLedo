@@ -153,6 +153,7 @@ module.exports = {
       // Board image offset
       const boardImgTop = getFracSize(BOARD_CONFIG.boardImgTop);
       const boardImgLeft = getFracSize(BOARD_CONFIG.boardImgLeft);
+      const boardImgPadding = ENABLE_BOARD_DESCRIPTION ? gripContSize : 0;
 
       const fontSize = getFracSize(BOARD_CONFIG.descriptionFontSize);
       this.boardVariables = {
@@ -173,7 +174,8 @@ module.exports = {
         "--grid-container-height": columns > rows ? "auto" : "100%",
         "--description-font-size": `${fontSize}px`,
         "--board-image-top": `${boardImgTop}px`,
-        "--board-image-left": `${boardImgLeft}px`
+        "--board-image-left": `${boardImgLeft}px`,
+        "--board-image-padding": `${boardImgPadding}px`
       };
       this.setSizeChanged(!reset);
     },
@@ -334,7 +336,7 @@ module.exports = {
   position: relative;
   width: var(--scroll-container-width);
   height: var(--scroll-container-height);
-  padding: var(--grip-cont-size);
+  padding: var(--board-image-padding);
 }
 .board-background-image {
   width: 100%;
