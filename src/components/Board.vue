@@ -9,7 +9,7 @@
       'even-size': evenSize
     }"
   >
-    <board-image v-if="sizeSet"></board-image>
+    <board-image v-if="sizeSet" :canvas-size="canvasSize"></board-image>
     <div class="scroll-container">
       <div v-if="sizeSet" id="grid-container" class="board-grid-container">
         <div
@@ -141,6 +141,16 @@ module.exports = {
       const boardImgLeft = getFracSize(BOARD_CONFIG.boardImgLeft);
       const boardImgPadding = ENABLE_BOARD_DESCRIPTION ? gripContSize : 0;
 
+      const scrollContainerWidth = gripContSize * columns;
+      const scrollContainerHeight = gripContSize * rows;
+      const canvasWidth = scrollContainerWidth - 2 * boardImgPadding;
+      const canvasHeight = scrollContainerHeight - 2 * boardImgPadding;
+
+      this.canvasSize = {
+        width: canvasWidth,
+        height: canvasHeight
+      };
+
       const fontSize = getFracSize(BOARD_CONFIG.descriptionFontSize);
       this.boardVariables = {
         opacity,
@@ -152,8 +162,8 @@ module.exports = {
         "--empty-grip-size": `${emptyGripSize}px`,
         "--grip-selection-size": `${gripSelectionSize}px`,
         "--grip-selection-border": `${gripSelectionBorder}px`,
-        "--scroll-container-width": `${gripContSize * columns}px`,
-        "--scroll-container-height": `${gripContSize * rows}px`,
+        "--scroll-container-width": `${scrollContainerWidth}px`,
+        "--scroll-container-height": `${scrollContainerHeight}px`,
         "--columns": columns,
         "--rows": rows,
         "--grid-container-width": columns > rows ? "100%" : "auto",
@@ -261,7 +271,8 @@ module.exports = {
       resizeObserver: undefined,
       appResizeObserver: undefined,
       firstUpdate: true,
-      boardVariables: {}
+      boardVariables: {},
+      canvasSize: null
     };
   },
   props: {
