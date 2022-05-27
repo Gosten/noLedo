@@ -21,37 +21,37 @@ function multiClick(gripState, allGrips) {
 const store = new Vuex.Store({
   state: {
     menu: {
-      menuActive: true,
-      activeScene: "",
-      // menuActive: false,
-      // activeScene: 'ADD_PROBLEM',
+      // menuActive: true,
+      // activeScene: "",
+      menuActive: false,
+      activeScene: "ADD_PROBLEM",
       sceneLoaded: true,
-      activeProblem: undefined,
+      activeProblem: undefined
     },
     selectedProblem: {},
     editProblem: {
       editedProblem: {},
       newName: "",
       newGrade: "",
-      deleteModal: false,
+      deleteModal: false
     },
     addProblem: {
       problemState: {},
       errorState: {
         active: false,
-        message: "asdasd",
+        message: "asdasd"
       },
       addModal: false,
       selectedGrade: 0,
-      newProblem: {},
+      newProblem: {}
     },
     problemList: [],
     filterSlider: {
       value1: 0,
-      value2: 0,
+      value2: 0
     },
     intro: INTRO,
-    textInputFocus: false,
+    textInputFocus: false
   },
   mutations: {
     toggleTextInputFocus(state) {
@@ -70,7 +70,10 @@ const store = new Vuex.Store({
       state.addProblem.problemState[index] = value;
     },
     toggleProblemState(state, payload) {
-      const newState = multiClick(state.addProblem.problemState[payload], state.addProblem.problemState);
+      const newState = multiClick(
+        state.addProblem.problemState[payload],
+        state.addProblem.problemState
+      );
       //   console.log({ oldState: state.addProblem.problemState[payload], newState });
       state.addProblem.problemState[payload] = newState;
     },
@@ -112,7 +115,8 @@ const store = new Vuex.Store({
       state.editProblem.newGrade = payload;
     },
     editProblemStateGrip(state, payload) {
-      state.editProblem.editedProblem.grips[payload] = !state.editProblem.editedProblem.grips[payload];
+      state.editProblem.editedProblem.grips[payload] =
+        !state.editProblem.editedProblem.grips[payload];
     },
     setAddProblemNewProblem(state, payload) {
       state.addProblem.newProblem = payload;
@@ -122,12 +126,15 @@ const store = new Vuex.Store({
     },
     toggleIntro(state) {
       state.intro = !state.intro;
-    },
+    }
   },
   actions: {
     toggleErrorModal(state, payload) {
       this.commit("setErrorState", payload);
-      setTimeout(() => this.commit("setErrorState", { active: false, message: "" }), 1300);
+      setTimeout(
+        () => this.commit("setErrorState", { active: false, message: "" }),
+        1300
+      );
     },
     toggleEditModal(state, payload) {
       this.commit("setErrorState", payload);
@@ -139,7 +146,7 @@ const store = new Vuex.Store({
     selectScne(state, payload) {
       this.commit("selectScne", payload);
       setTimeout(() => this.commit("toggleMenu"), 250);
-    },
+    }
   },
   getters: {
     getActiveScene: (state) => state.menu.activeScene,
@@ -157,6 +164,6 @@ const store = new Vuex.Store({
     getEditProblemState: (state) => state.editProblem,
     getDeleteModalState: (state) => state.editProblem.deleteModal,
     getIntro: (state) => state.intro,
-    getTextInputFocus: (state) => state.textInputFocus,
-  },
+    getTextInputFocus: (state) => state.textInputFocus
+  }
 });

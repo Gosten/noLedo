@@ -26,8 +26,12 @@
             v-if="isGrip(grip)"
             class="grip"
             :class="{ [gripColors[grip.index]]: true }"
-          ></div>
-          <div v-if="!isGrip(grip)" class="board-description">{{ grip }}</div>
+          >
+            {{ grip.index }}
+          </div>
+          <div v-if="!isGrip(grip)" class="board-description">
+            {{ grip.index }}
+          </div>
         </div>
       </div>
     </div>
@@ -50,6 +54,10 @@ module.exports = {
         }
         return `grip-selection-${colorIndex}`;
       }
+    },
+    isSuppressed(index) {
+      const rest = index % 28;
+      return rest;
     },
     isGrip(grip) {
       // console.log(grip, typeof grip === "object");
@@ -132,7 +140,7 @@ module.exports = {
 
       // hide board when grip size is samller than 3px
       let opacity = "1";
-      if (gripSize < 3) opacity = "0";
+      // if (gripSize < 3) opacity = "0";
 
       // console.log({ width, height, minSize, gripContSize });
 
@@ -213,11 +221,10 @@ module.exports = {
     diodeIndexes: () => diodeIndexes,
     gripImages: () => gripImages,
     describedBoard() {
-      const tempBoard = [...BOARD_CONFIG.gripPositions].map((color, index) => ({
-        color,
-        index
-      }));
-      if (!ENABLE_BOARD_DESCRIPTION) return tempBoard;
+      const tempBoard = [...BOARD_CONFIG.gripPositions]
+        .map((color, index) => ({ color, index }))
+        .filter(({ index }) => this.isSuppressed(index));
+      if (!ENABLE_BOARD_DESCRIPTION) return [...tempBoard];
       const { rows, columns } = BOARD_CONFIG;
 
       let describedBoard = Array(rows)
@@ -345,10 +352,11 @@ module.exports = {
 
 .grip {
   background: transparent !important;
+  font-size: 0.7em;
 }
 
-/* .grip-container {
+.grip-container {
   box-sizing: border-box;
   border: 1px solid green;
-} */
+}
 </style>

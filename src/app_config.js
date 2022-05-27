@@ -1,5 +1,12 @@
+// class Grip {
+//   static position = {}
+//   static selection = {}
+
+//   constructor()
+// }
+
 // enable board zoom in addProblem and editProblem
-const ENABLE_BOARD_DESCRIPTION = true;
+const ENABLE_BOARD_DESCRIPTION = false;
 
 // enable multi color grip tap
 const ENABLE_MULTI_TAP = true;
@@ -20,7 +27,7 @@ const ENABLE_AUTHOR = true;
 const ENABLE_SPACE_NAMES = true;
 
 // toggle splash screen
-const INTRO = true;
+const INTRO = false;
 
 const GRADES = [
   "3a",
@@ -43,27 +50,33 @@ const GRADES = [
 const DEFAULT_GRADE = 5; // Index of GRADES array
 
 const BOARD_CONFIG = {
-  //Board dimension
-  rows: 19,
-  columns: 28,
+  // Resolution of
+  imageResolution: {
+    width: 2868,
+    height: 1981
+  },
 
-  //Board background image position offset in % of container size
+  // Board dimension
+  rows: 19,
+  columns: 27,
+
+  // Board background image position offset in % of container size
   boardImgTop: -35,
   boardImgLeft: 0,
 
   // rows: 4,
   // columns: 4,
 
-  //Size of grip, empty grip and grip selection in % of container size
+  // Size of grip, empty grip and grip selection in % of container size
   gripSize: 40,
   emptyGripSize: 20,
   gripSelectionSize: 90,
   gripSelectionBorder: 4,
 
-  //Font size of row/column description in % of container size
+  // Font size of row/column description in % of container size
   descriptionFontSize: 50,
 
-  //For testing
+  // For testing
   horizontalActiveBoardZoomModifier: 0.5,
 
   multiTapColors: {
@@ -74,12 +87,20 @@ const BOARD_CONFIG = {
     4: [255, 255, 0] // fourth tap
   },
 
-  //Array that defines types of grips and their position. Array must contain the same number of elements as ( columns * rows )
+  // Array that defines types of grips and their position. Array must contain the same number of elements as ( columns * rows )
   // 0 - empty position
   // 1 - color 1
   // 2 - color 2 ...
   // to change colors check css/app_config.css
   // gripPositions: [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4],
+
+  // gripMap: {
+  //   {
+  //     position: {
+
+  //     }
+  //   }
+  // }
 
   gripPositions: [
     //    0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,
@@ -155,9 +176,9 @@ const BOARD_CONFIG = {
     1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2,
     1, 2,
     //    504,505,506,507,508,509,510,511,512,513,514,515,516,517,518,519,520,521,522,523,524,525,526,527,528,529,530,531,
-    1,
-    2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1,
-    2, 1
+    2,
+    1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2,
+    1, 2
   ]
 };
 
