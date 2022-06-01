@@ -9,38 +9,33 @@
       'even-size': evenSize
     }"
   >
-    <board-image v-if="sizeSet" :canvas-size="canvasSize"></board-image>
-    <div class="scroll-container">
-      <div v-if="sizeSet" id="grid-container" class="board-grid-container">
-        <div
-          v-for="(grip, index) in describedBoard"
-          :key="index"
-          class="grip-container grip-selector"
-          :class="{
-            'grip-active': gripClassCondition(grip),
-            [getGripSelectionColor(grip)]: ENABLE_BOARD_DESCRIPTION
-          }"
-          @click="handleClick(grip)"
-        >
-          <div
-            v-if="isGrip(grip)"
-            class="grip"
-            :class="{ [gripColors[grip.index]]: true }"
-          >
-            {{ grip.index }}
-          </div>
-          <div v-if="!isGrip(grip)" class="board-description">
-            {{ grip.index }}
-          </div>
-        </div>
-      </div>
-    </div>
+    <board-image v-if="sizeSet"></board-image>
+    <interactive-layer
+      v-if="sizeSet"
+      :handle-click="handleClick"
+      :get-display-problem="getDisplayProblem"
+      :selected-problem="selectedProblem"
+      :active-problem="activeProblem"
+      :problem-state="problemState"
+      :edited-problem="editedProblem"
+    >
+    </interactive-layer>
   </div>
 </template>
 
 <script>
 module.exports = {
   methods: {
+    getDisplayProblem() {
+      if (this.isScene(LOAD_PROBLEM)) return this.selectedProblem;
+      if (this.isScene(ACTIVE_PROBLEM)) return this.activeProblem;
+      if (this.isScene(ADD_PROBLEM)) {
+        return this.problemState;
+      }
+      if (this.isScene(EDIT_PROBLEM)) {
+        return this.editedProblem;
+      }
+    },
     getGripSelectionColor(grip) {
       const colorIndex = this.gripClassCondition(grip);
       if (typeof colorIndex === "number") {
@@ -55,56 +50,39 @@ module.exports = {
         return `grip-selection-${colorIndex}`;
       }
     },
-    isSuppressed(index) {
-      const rest = index % 28;
-      return rest;
+    handleClick(id) {
+      if (this.isScene(ADD_PROBLEM))
+        this.$store.commit("toggleProblemState", id);
+      if (this.isScene(EDIT_PROBLEM))
+        this.$store.commit("editProblemStateGrip", id);
+      if (this.isScene(ADD_PROBLEM) || this.isScene(EDIT_PROBLEM))
+        this.sendGripMessage(id);
     },
-    isGrip(grip) {
-      // console.log(grip, typeof grip === "object");
-      return typeof grip === "object";
-    },
-    handleClick(grip) {
-      if (this.isGrip(grip)) {
-        const { index } = grip;
-        if (this.BOARD_CONFIG.gripPositions[index]) {
-          if (this.isScene(ADD_PROBLEM))
-            this.$store.commit("toggleProblemState", index);
-          if (this.isScene(EDIT_PROBLEM))
-            this.$store.commit("editProblemStateGrip", index);
-          if (this.isScene(ADD_PROBLEM) || this.isScene(EDIT_PROBLEM))
-            this.sendGripMessage(index, grip);
-        }
-      }
-    },
-    sendGripMessage(index, grip) {
-      let msg = { topic: "display" };
-      if (!ENABLE_BOARD_DESCRIPTION) {
-        let i = this.diodeIndexes[index];
-        let diodeState = this.problemState[index] ? 255 : 0;
-        msg.payload = `${i},0,${diodeState},0`;
+    sendGripMessage(id) {
+      let diodes = gripMap[id];
+      let color = "0,0,0";
+      if (!ENABLE_MULTI_TAP) {
+        let diodeState = this.problemState[id] ? 255 : 0;
+        color = `0,${diodeState},0`;
       } else {
-        const colorIndex = this.gripClassCondition(grip);
+        const colorIndex = this.gripClassCondition(id);
         const diodeColor = BOARD_CONFIG.multiTapColors[colorIndex];
-        let i = this.diodeIndexes[grip.index];
-        const payload = `${i},${diodeColor.join(",")}`;
-        msg.payload = payload;
+        color = `${diodeColor.join(",")}`;
       }
-
-      uibuilder.send(msg);
+      const messages = diodes.map((index) => ({
+        topic: "display",
+        payload: `${index},${color}`
+      }));
+      messages.forEach((msg) => uibuilder.send(msg));
     },
-    gripClassCondition(grip) {
-      if (this.isGrip(grip)) {
-        const { index } = grip;
-        if (this.isScene(LOAD_PROBLEM))
-          return this.selectedProblem.grips[index];
-        if (this.isScene(ACTIVE_PROBLEM))
-          return this.activeProblem.grips[index];
-        if (this.isScene(ADD_PROBLEM)) {
-          return this.problemState[index];
-        }
-        if (this.isScene(EDIT_PROBLEM)) {
-          return this.editedProblem.grips[index];
-        }
+    gripClassCondition(id) {
+      if (this.isScene(LOAD_PROBLEM)) return this.selectedProblem.grips[id];
+      if (this.isScene(ACTIVE_PROBLEM)) return this.activeProblem.grips[id];
+      if (this.isScene(ADD_PROBLEM)) {
+        return this.problemState[id];
+      }
+      if (this.isScene(EDIT_PROBLEM)) {
+        return this.editedProblem.grips[id];
       }
     },
     isScene(sceneType) {
@@ -219,55 +197,52 @@ module.exports = {
       return this.$store.getters.getSelectedProblem;
     },
     diodeIndexes: () => diodeIndexes,
-    gripImages: () => gripImages,
-    describedBoard() {
-      const tempBoard = [...BOARD_CONFIG.gripPositions]
-        .map((color, index) => ({ color, index }))
-        .filter(({ index }) => this.isSuppressed(index));
-      if (!ENABLE_BOARD_DESCRIPTION) return [...tempBoard];
-      const { rows, columns } = BOARD_CONFIG;
+    gripImages: () => gripImages
+    // describedBoard() {
+    //   const tempBoard = [...BOARD_CONFIG.gripPositions]
+    //     .map((color, index) => ({ color, index }))
+    //     .filter(({ index }) => this.isSuppressed(index));
+    //   if (!ENABLE_BOARD_DESCRIPTION) return [...tempBoard];
+    //   const { rows, columns } = BOARD_CONFIG;
 
-      let describedBoard = Array(rows)
-        .fill(undefined)
-        .map((x) => Array(columns).fill(undefined));
-      for (let row = 0; row < rows; row++) {
-        for (let col = 0; col < columns; col++) {
-          const index = row * columns + col;
-          // console.log(tempBoard[index]);
-          // console.log(describedBoard[row][col]);
-          describedBoard[row][col] = tempBoard[index];
-          // console.table(describedBoard);
-        }
-      }
-      // console.log(describedBoard);
-      //   Add row labels
-      describedBoard = describedBoard.map((row, index) => {
-        // const rowLabel = rows - index;
-        const ascii = rows - 1 - index;
-        const rowLabel = String.fromCharCode(65 + ascii);
-        // return [rowLabel, ...row, rowLabel];
-        return [rowLabel, ...row, rowLabel];
-      });
+    //   let describedBoard = Array(rows)
+    //     .fill(undefined)
+    //     .map((x) => Array(columns).fill(undefined));
+    //   for (let row = 0; row < rows; row++) {
+    //     for (let col = 0; col < columns; col++) {
+    //       const index = row * columns + col;
+    //       // console.log(tempBoard[index]);
+    //       // console.log(describedBoard[row][col]);
+    //       describedBoard[row][col] = tempBoard[index];
+    //       // console.table(describedBoard);
+    //     }
+    //   }
+    //   // console.log(describedBoard);
+    //   //   Add row labels
+    //   describedBoard = describedBoard.map((row, index) => {
+    //     // const rowLabel = rows - index;
+    //     const ascii = rows - 1 - index;
+    //     const rowLabel = String.fromCharCode(65 + ascii);
+    //     // return [rowLabel, ...row, rowLabel];
+    //     return [rowLabel, ...row, rowLabel];
+    //   });
 
-      // let colsLabel = new Array(columns).fill(undefined).map((x, index) => String.fromCharCode(65 + index));
-      let colsLabel = new Array(columns)
-        .fill(undefined)
-        .map((x, index) => index + 1);
-      colsLabel = [undefined, ...colsLabel, undefined];
-      describedBoard = [colsLabel, ...describedBoard, colsLabel];
-      const output = [];
-      describedBoard.forEach((row) => row.forEach((elem) => output.push(elem)));
-      return output;
-    }
+    //   // let colsLabel = new Array(columns).fill(undefined).map((x, index) => String.fromCharCode(65 + index));
+    //   let colsLabel = new Array(columns)
+    //     .fill(undefined)
+    //     .map((x, index) => index + 1);
+    //   colsLabel = [undefined, ...colsLabel, undefined];
+    //   describedBoard = [colsLabel, ...describedBoard, colsLabel];
+    //   const output = [];
+    //   describedBoard.forEach((row) => row.forEach((elem) => output.push(elem)));
+    //   return output;
+    // }
   },
   data() {
     return {
       ACTIVE_PROBLEM,
       BOARD_CONFIG,
       ENABLE_BOARD_DESCRIPTION,
-      gripColors: BOARD_CONFIG.gripPositions.map(
-        (color) => `grip-color-${color}`
-      ),
       boardSize: {},
       moreRows: BOARD_CONFIG.columns < BOARD_CONFIG.rows,
       moreCols: BOARD_CONFIG.columns > BOARD_CONFIG.rows,
@@ -290,8 +265,6 @@ module.exports = {
     this.boardHandle = document.getElementById(this.boardId);
     this.resizeObserver.observe(this.boardHandle);
     window.addEventListener("resize", this.handleAppResize);
-    // console.table(this.describedBoard);
-    // console.log(this.describedBoard);
   },
   updated() {
     if (this.firstUpdate) {
@@ -307,14 +280,15 @@ module.exports = {
     window.removeEventListener("resize", this.handleAppResize);
   },
   components: {
-    "board-image": httpVueLoader("components/subComponents/BoardImage.vue")
+    "board-image": httpVueLoader("components/Board/BoardImage.vue"),
+    "interactive-layer": httpVueLoader("components/Board/InteractiveLayer.vue")
   }
 };
 </script>
 
 <style scoped>
-@import "../css/Board.css";
-@import "../css/app_config.css";
+@import "../../css/Board.css";
+@import "../../css/app_config.css";
 
 .grip-container {
   height: var(--grip-cont-size);

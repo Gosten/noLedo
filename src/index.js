@@ -8,7 +8,7 @@ const TOPIC = {
   LOAD: "load",
   SAVE: "save",
   LOAD_STATE: "loadState",
-  SAVE_STATE: "saveState",
+  SAVE_STATE: "saveState"
 };
 let doubleSliderInstance = undefined;
 const setInstance = (instance) => (doubleSliderInstance = instance);
@@ -18,12 +18,13 @@ function mapGrade(index) {
 }
 
 function getDiodeColor(diodeIndex, colorState) {
-  if (!ENABLE_BOARD_DESCRIPTION) {
+  if (!ENABLE_MULTI_TAP) {
     let diodeState = (gripState) => (gripState ? 255 : 0);
     return `${diodeIndex},0,${diodeState(colorState)},0`;
   }
   let diodeColor = [0, 0, 0];
-  if (typeof colorState === "number") diodeColor = BOARD_CONFIG.multiTapColors[colorState];
+  if (typeof colorState === "number")
+    diodeColor = BOARD_CONFIG.multiTapColors[colorState];
   return `${diodeIndex},${diodeColor.join(",")}`;
 }
 
@@ -33,6 +34,22 @@ function sendProblem({ grips }) {
     .map((key, index) => getDiodeColor(diodeIndexes[index], grips[key]))
     .filter((elem, index) => diodeIndexes[index] !== undefined)
     .join("|");
+  uibuilder.send(msg);
+}
+function sendProblem({ grips }) {
+  let msg = { topic: "display" };
+  const colorMapGroupped = Object.keys(grips).map((key) => ({
+    diodes: gripMap[key],
+    color: grips[key]
+  }));
+  const colorMap = {};
+  colorMapGroupped.forEach((grip) =>
+    grip.diodes.forEach((d) => (colorMap[d] = grip.color))
+  );
+  msg.payload = Object.keys(colorMap)
+    .map((diodeIndex) => getDiodeColor(diodeIndex, colorMap[diodeIndex]))
+    .join("|");
+
   uibuilder.send(msg);
 }
 
@@ -49,7 +66,7 @@ const app1 = new Vue({
     "load-problem": httpVueLoader("components/LoadProblem.vue"),
     "active-problem": httpVueLoader("components/ActiveProblem.vue"),
     "app-component": httpVueLoader("components/AppComponent.vue"),
-    "menu-bar": httpVueLoader("components/Menu.vue"),
+    "menu-bar": httpVueLoader("components/Menu.vue")
   },
 
   computed: {
@@ -61,7 +78,7 @@ const app1 = new Vue({
     },
     isActiveProblem() {
       return this.$store.getters.getActiveScene === ACTIVE_PROBLEM;
-    },
+    }
   },
 
   methods: {},
@@ -94,5 +111,5 @@ const app1 = new Vue({
         //console.log('loaded_state: ', loadedState);
       }
     });
-  },
+  }
 });

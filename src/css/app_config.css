@@ -37,29 +37,29 @@
 	background: var(--color-6);
 }
 
-.grip-selection-0::after{
-	border-color: var(--selection-4) !important; /* tu musi pójść kolor ostatni*/
+.grip-selection-0{
+	stroke: var(--selection-4) !important; /* tu musi pójść kolor ostatni*/
 	opacity: 0;
 }
-.grip-selection-0-limit::after{
-	border-color: var(--selection-3) !important; /* tu musi pójść kolor PRZEDostatni*/
+.grip-selection-0-limit{
+	stroke: var(--selection-3) !important; /* tu musi pójść kolor PRZEDostatni*/
 	opacity: 0;
 }
 
-.grip-selection-1::after{
-	border-color: var(--selection-1) !important;
+.grip-selection-1{
+	stroke: var(--selection-1) !important;
 }
 
-.grip-selection-2::after{
-	border-color: var(--selection-2) !important;
+.grip-selection-2{
+	stroke: var(--selection-2) !important;
 }
 
-.grip-selection-3::after{
-	border-color: var(--selection-3) !important;
+.grip-selection-3{
+	stroke: var(--selection-3) !important;
 }
 
-.grip-selection-4::after{
-	border-color: var(--selection-4) !important;
+.grip-selection-4{
+	stroke: var(--selection-4) !important;
 }
 
 

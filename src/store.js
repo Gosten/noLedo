@@ -70,6 +70,7 @@ const store = new Vuex.Store({
       state.addProblem.problemState[index] = value;
     },
     toggleProblemState(state, payload) {
+      console.log(payload, state);
       const newState = multiClick(
         state.addProblem.problemState[payload],
         state.addProblem.problemState
@@ -77,9 +78,9 @@ const store = new Vuex.Store({
       //   console.log({ oldState: state.addProblem.problemState[payload], newState });
       state.addProblem.problemState[payload] = newState;
     },
-    clearProblemState(state, payloaod) {
-      let newProblemState = {};
-      payloaod.forEach((grip, index) => (newProblemState[index] = false));
+    clearProblemState(state, payload) {
+      const newProblemState = {};
+      Object.keys(payload).forEach((key) => (newProblemState[key] = false));
       state.addProblem.problemState = newProblemState;
       sendProblem({ grips: newProblemState });
     },
