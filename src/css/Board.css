@@ -13,12 +13,10 @@
 
 	position: relative;
 	transition: opacity 0.2s ease-in-out;
-}
 
-.scroll-container {
-	position: absolute;
-	width: var(--scroll-container-width);
-	height: var(--scroll-container-height);
+
+	touch-action: pan-x pan-y pinch-zoom !important;
+
 }
 
 .board-grid-container {

@@ -9,17 +9,21 @@
       'even-size': evenSize
     }"
   >
-    <board-image v-if="sizeSet"></board-image>
-    <interactive-layer
-      v-if="sizeSet"
-      :handle-click="handleClick"
-      :get-display-problem="getDisplayProblem"
-      :selected-problem="selectedProblem"
-      :active-problem="activeProblem"
-      :problem-state="problemState"
-      :edited-problem="editedProblem"
-    >
-    </interactive-layer>
+    <div class="scroll-container">
+      <div class="zoom-target">
+        <board-image v-if="sizeSet"></board-image>
+        <interactive-layer
+          v-if="sizeSet"
+          :handle-click="handleClick"
+          :get-display-problem="getDisplayProblem"
+          :selected-problem="selectedProblem"
+          :active-problem="activeProblem"
+          :problem-state="problemState"
+          :edited-problem="editedProblem"
+        >
+        </interactive-layer>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -319,6 +323,7 @@ module.exports = {
   height: var(--scroll-container-height);
   padding: var(--board-image-padding);
 }
+
 .board-background-image {
   width: 100%;
   transform: translate(var(--board-image-left), var(--board-image-top));

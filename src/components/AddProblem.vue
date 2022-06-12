@@ -2,16 +2,30 @@
   <div id="add-problem" class="grid-content">
     <div class="top-conainer" :class="{ 'zoom-off': !ENABLE_ZOOM }">
       <div v-if="ENABLE_ZOOM" class="zoom-container flex-container-blank">
-        <div class="zoom" @click="toggleZoom()">
-          <img v-if="!boardZoom" src="images/zoomIn.svg" alt="zoomIn" />
-          <img v-if="boardZoom" src="images/zoomOut.svg" alt="zoomOut" />
+        <button
+          v-if="zoom.active"
+          class="zoom-btn button"
+          @click="dispatchZoomAction(ZOOM_TOGGLE)"
+        >
+          Powrót
+        </button>
+        <div class="zoom" @click="dispatchZoomAction(ZOOM_OUT)">
+          <img v-if="zoom.active" src="images/zoomOut.svg" alt="zoomOut" />
+        </div>
+        <div
+          class="zoom"
+          :class="{ 'disable-zoomIn': isMaxZoom() }"
+          @click="!isMaxZoom() && dispatchZoomAction(ZOOM_IN)"
+        >
+          <img src="images/zoomIn.svg" alt="zoomIn" />
         </div>
       </div>
 
       <div
         id="board-style-AP"
         class="board-position"
-        :class="{ 'board-zoom': boardZoom }"
+        :class="{ 'board-zoom': zoom.active }"
+        :style="zoomScale"
       >
         <transition name="board-fade">
           <board board-id="board-AdP"></board>
@@ -53,6 +67,7 @@
 <script>
 module.exports = {
   mounted() {
+    this.setZoomScale(this.zoom.scale);
     this.$store.commit("clearProblemState", gripMap);
   },
   beforeUnmount() {
@@ -71,7 +86,13 @@ module.exports = {
       ENABLE_ZOOM,
       ENABLE_GRADES,
       ENABLE_AUTHOR,
-      textInputHandle: undefined
+      textInputHandle: undefined,
+      ZOOM_IN: "zoomIn",
+      ZOOM_OUT: "zoomOut",
+      ZOOM_TOGGLE: "toggleZoom",
+      zoomScale: {
+        "--zoom": 2
+      }
     };
   },
   components: {
@@ -103,9 +124,23 @@ module.exports = {
     },
     textInputFocus() {
       return this.$store.getters.getTextInputFocus;
+    },
+    zoom() {
+      return this.$store.getters.getZoom;
     }
   },
   methods: {
+    isMaxZoom() {
+      const { active, scale, max } = this.zoom;
+      return active && scale === max;
+    },
+    setZoomScale(scale) {
+      this.zoomScale["--zoom"] = scale;
+    },
+    dispatchZoomAction(action) {
+      this.$store.commit(action);
+      this.setZoomScale(this.zoom.scale);
+    },
     setName(newName) {
       this.nameValue = newName;
     },
@@ -115,10 +150,6 @@ module.exports = {
     setErrorFlag(newState) {
       this.errorFlags.name = newState;
     },
-    toggleZoom() {
-      this.boardZoom = !this.boardZoom;
-    },
-
     handleChange(value) {
       this.gradeValue = value;
     },

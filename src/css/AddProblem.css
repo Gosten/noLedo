@@ -59,6 +59,7 @@
 	border-radius: 5px;
 	z-index: 10;
 	padding: 3px;
+	margin-left: 10px;
 }
 
 .zoom img {
@@ -67,15 +68,35 @@
 }
 
 .zoom-container {
-	align-items: flex-end;
+	justify-content: flex-end;
+	align-items: center;
 	width: 100%;
 	padding: 1em;
+	flex-direction: row;
+	height: 4em;
+}
+.scroll-container {
+	height: fit-content;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	/* overflow: hidden; */
 }
 
-.board-zoom .board-grid-container {
-	transform-origin: top left;
-	transform: scale(2) !important;
+.zoom-target{
+	transition: all .2s;
+	width: fit-content;
+	transform-origin: left top;
 }
+
+.disable-zoomIn{
+	opacity: 0.5;
+}
+
+.board-zoom .zoom-target {
+  transform: scale(var(--zoom)) !important;
+}
+
 
 .board-zoom .scroll-container {
 	width: 100%;
@@ -83,6 +104,10 @@
 	overflow: scroll !important;
 }
 
+.zoom-btn{
+	margin: 0;
+	width: fit-content;
+}
 .top-conainer {
 	width: 100%;
 	display: grid;
