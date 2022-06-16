@@ -112,7 +112,6 @@ module.exports = {
         this.listCollapsed = true;
         this.$store.commit("selectProblem", problem);
       }
-      getBoardSize();
     },
     showProblemList() {
       this.listCollapsed = false;

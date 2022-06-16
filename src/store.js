@@ -88,12 +88,10 @@ const store = new Vuex.Store({
       state.addProblem.problemState[index] = value;
     },
     toggleProblemState(state, payload) {
-      console.log(payload, state);
       const newState = multiClick(
         state.addProblem.problemState[payload],
         state.addProblem.problemState
       );
-      //   console.log({ oldState: state.addProblem.problemState[payload], newState });
       state.addProblem.problemState[payload] = newState;
     },
     clearProblemState(state, payload) {

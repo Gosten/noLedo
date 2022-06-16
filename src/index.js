@@ -53,11 +53,6 @@ function sendProblem({ grips }) {
   uibuilder.send(msg);
 }
 
-function getBoardSize() {
-  let board = document.getElementById("board-container");
-  console.log(board);
-}
-
 const app1 = new Vue({
   el: "#app",
 
