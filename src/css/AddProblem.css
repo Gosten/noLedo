@@ -104,6 +104,15 @@
 	overflow: scroll !important;
 }
 
+.zoom-icon-black{
+	background-color: black;
+	border-radius: 5px;
+}
+
+.zoom-icon-black img{
+	filter: invert(1);
+}
+
 .zoom-btn{
 	margin: 0;
 	width: fit-content;

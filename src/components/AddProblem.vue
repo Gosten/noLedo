@@ -14,7 +14,10 @@
         </div>
         <div
           class="zoom"
-          :class="{ 'disable-zoomIn': isMaxZoom() }"
+          :class="{
+            'disable-zoomIn': isMaxZoom(),
+            'zoom-icon-black': !zoom.active
+          }"
           @click="!isMaxZoom() && dispatchZoomAction(ZOOM_IN)"
         >
           <img src="images/zoomIn.svg" alt="zoomIn" />
