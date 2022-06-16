@@ -1,6 +1,10 @@
 <template>
   <div id="add-problem" class="grid-content">
-    <div class="top-conainer" :class="{ 'zoom-off': !ENABLE_ZOOM }">
+    <div
+      id="add-problem-top"
+      class="top-conainer"
+      :class="{ 'zoom-off': !ENABLE_ZOOM }"
+    >
       <div v-if="ENABLE_ZOOM" class="zoom-container flex-container-blank">
         <button
           v-if="zoom.active"
@@ -34,21 +38,25 @@
           <board board-id="board-AdP"></board>
         </transition>
       </div>
+
+      <board-legend></board-legend>
+      <scroll-arrow></scroll-arrow>
     </div>
 
-    <div class="flex-container-blank">
+    <div class="flex-container-blank" id="add-bottom">
       <div class="bottom">
+        <scroll-arrow :reverse="true"></scroll-arrow>
         <div class="input-container">
           <div class="name-grade-container">
-            <div v-if="ENABLE_GRADES" class="slider-width">
-              <grade-slider></grade-slider>
-            </div>
             <name-input
               :set-name="setName"
               :set-author="setAuthor"
               :error-name="errorFlags.name"
               :set-error-name="setErrorFlag"
             ></name-input>
+            <div v-if="ENABLE_GRADES" class="slider-width">
+              <grade-slider></grade-slider>
+            </div>
           </div>
         </div>
         <div class="button-container">
@@ -104,7 +112,9 @@ module.exports = {
     "error-modal": httpVueLoader("components/ErrorModal.vue"),
     "problem-modal": httpVueLoader("components/AddProblemModal.vue"),
     "loading-modal": httpVueLoader("components/LoadingModal.vue"),
-    "grade-slider": httpVueLoader("components/SingleSlider.vue")
+    "grade-slider": httpVueLoader("components/SingleSlider.vue"),
+    "board-legend": httpVueLoader("components/subComponents/BoardLegend.vue"),
+    "scroll-arrow": httpVueLoader("components/subComponents/ScrollArrow.vue")
   },
   computed: {
     problmState() {

@@ -1,5 +1,5 @@
 .input-container {
-	width: 100%;
+	width: 80%;
 	max-width: 500px;
 	display: flex;
 	flex-direction: column;
@@ -39,9 +39,11 @@
 	align-items: center;
 	width: calc(100vw - 2em);
 	max-width: 500px;
-	max-height: 300px;
+	/* max-height: 300px; */
 	/* transition: all 0.5s; */
-	height: auto;
+	height: calc(var(--window-height) - 60px);
+	scroll-snap-align: end;
+	margin-top: 60px;
 }
 
 .grid-content {
@@ -50,6 +52,9 @@
 	width: 100%;
 	padding-top: 60px;
 	grid-template-rows: 1fr auto;
+
+	overflow: auto;
+	scroll-snap-type: y mandatory !important;
 }
 
 .zoom {
@@ -118,6 +123,8 @@
 	width: fit-content;
 }
 .top-conainer {
+	height: calc(var(--window-height) - 60px);
+	scroll-snap-align: end;
 	width: 100%;
 	display: grid;
 	grid-template-rows: auto 1fr;
@@ -126,4 +133,8 @@
 	width: 100%;
 	height: 100%;
 	display: block;
+}
+
+#add-problem{
+	
 }
