@@ -58,7 +58,7 @@ const BOARD_CONFIG = {
     0: [0, 0, 0],
     1: [0, 255, 0], // first tap
     2: [255, 0, 0], // secound tap
-    3: [0, 0, 255], // third tap
-    4: [255, 255, 0] // fourth tap
+    3: [0, 0, 255] // third tap
+    // 4: [255, 255, 0] // fourth tap
   }
 };

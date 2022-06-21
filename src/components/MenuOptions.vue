@@ -24,13 +24,13 @@
         >
           <span>Aktywny</span><span>problem</span>
         </div>
-        <div
+        <!-- <div
           class="menu-option"
           :class="{ 'selected-option': menuSelection === ACTIVE_PROBLEM }"
           @click="goFullscreen()"
         >
           <span>Fullscreen</span>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

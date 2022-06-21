@@ -9,11 +9,11 @@ function multiClick(gripState, allGrips) {
   if (newState > lastKey) newState = 0;
 
   // If there is another top grip, change new state to 0
-  if (newState === lastKey) {
-    if (Object.values(allGrips).includes(lastKey)) {
-      newState = 0;
-    }
-  }
+  // if (newState === lastKey) {
+  //   if (Object.values(allGrips).includes(lastKey)) {
+  //     newState = 0;
+  //   }
+  // }
 
   return newState;
 }
