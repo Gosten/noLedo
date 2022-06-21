@@ -89,7 +89,7 @@
 }
 
 .zoom-target{
-	transition: all .2s;
+	transition: all .1s;
 	width: fit-content;
 	transform-origin: left top;
 }
@@ -99,6 +99,7 @@
 }
 
 .board-zoom .zoom-target {
+	transition: all .3s;
   transform: scale(var(--zoom)) !important;
 }
 
