@@ -3,13 +3,17 @@
     <div id="board-style" class="width-100 flex-container-blank">
       <board board-id="board-AcP"></board>
     </div>
+    <div class="active-problem-bottom-container">
+      <board-legend></board-legend>
+    </div>
   </div>
 </template>
 
 <script>
 module.exports = {
   components: {
-    board: httpVueLoader("components/Board/Board.vue")
+    board: httpVueLoader("components/Board/Board.vue"),
+    "board-legend": httpVueLoader("components/subComponents/BoardLegend.vue")
   },
   data() {
     return {
@@ -55,5 +59,10 @@ module.exports = {
   height: 100%;
   justify-content: center;
   padding: 1em;
+}
+
+.active-problem-bottom-container {
+  position: absolute;
+  bottom: 0;
 }
 </style>
