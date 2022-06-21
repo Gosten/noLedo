@@ -24,14 +24,16 @@ module.exports = {
   min-width: 20%;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
   margin-inline: 2px;
 }
 .legend-item p {
   margin-inline: 3px;
   font-size: 0.9em;
+  margin-left: .5em;
 }
 .legend-grip {
+  margin-top: .3em;
   position: relative;
 }
 .outline {
@@ -58,7 +60,7 @@ module.exports = {
           />
         </svg>
       </div>
-      <p>- chwyt</p>
+      <p>chwyt</p>
     </div>
     <div class="legend-item">
       <div class="legend-grip">
@@ -70,7 +72,7 @@ module.exports = {
           />
         </svg>
       </div>
-      <p>- start / top</p>
+      <p>start / top</p>
     </div>
     <div class="legend-item">
       <div class="legend-grip">
@@ -82,6 +84,6 @@ module.exports = {
           />
         </svg>
       </div>
-      <p>- stopień</p>
+      <p>stopień</p>
     </div>
 </template>
