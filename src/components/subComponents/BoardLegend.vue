@@ -38,6 +38,7 @@ module.exports = {
 }
 .outline {
   left: 0;
+  top: 0;
   width: 1.5em;
   height: 1.5em;
   position: absolute;

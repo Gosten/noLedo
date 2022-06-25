@@ -73,7 +73,7 @@
 <script>
 module.exports = {
   components: {
-    "name-input": httpVueLoader("components/subComponents/NameAuthInput.vue"),
+    "name-input": httpVueLoader("components/subComponents/NameInputLoad.vue"),
     "loading-modal": httpVueLoader("components/LoadingModal.vue"),
     "slider-component": httpVueLoader("components/DoubleSlider.vue"),
     board: httpVueLoader("components/Board/Board.vue")
