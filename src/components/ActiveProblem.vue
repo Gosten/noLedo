@@ -1,6 +1,12 @@
 <template>
   <div id="active-container" class="container">
-    <div id="board-style" class="width-100 flex-container-blank">
+    <zoom-component :scene="ACTIVE_PROBLEM"></zoom-component>
+    <div
+      id="board-style"
+      class="width-100 flex-container-blank"
+      :class="{ 'board-zoom': zoom.active }"
+      :style="zoomScale"
+    >
       <board board-id="board-AcP"></board>
     </div>
     <div class="active-problem-bottom-container">
@@ -13,11 +19,15 @@
 module.exports = {
   components: {
     board: httpVueLoader("components/Board/Board.vue"),
-    "board-legend": httpVueLoader("components/subComponents/BoardLegend.vue")
+    "board-legend": httpVueLoader("components/subComponents/BoardLegend.vue"),
+    "zoom-component": httpVueLoader(
+      "components/subComponents/ZoomComponent.vue"
+    )
   },
   data() {
     return {
       BOARD_CONFIG,
+      ACTIVE_PROBLEM,
       scaleBoard: {}
     };
   },
@@ -31,6 +41,12 @@ module.exports = {
   computed: {
     activeProblem() {
       return this.$store.getters.getActiveProblem;
+    },
+    zoom() {
+      return this.$store.getters.getZoom(ACTIVE_PROBLEM);
+    },
+    zoomScale() {
+      return this.$store.getters.getZoomScale(ACTIVE_PROBLEM);
     }
   }
 };
@@ -39,6 +55,7 @@ module.exports = {
 <style scoped>
 .container {
   display: flex;
+  flex-direction: column;
   padding-top: 60px;
   height: 100%;
   overflow: hidden;
@@ -59,10 +76,5 @@ module.exports = {
   height: 100%;
   justify-content: center;
   padding: 1em;
-}
-
-.active-problem-bottom-container {
-  position: absolute;
-  bottom: 0;
 }
 </style>
