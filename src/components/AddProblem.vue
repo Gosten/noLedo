@@ -5,28 +5,7 @@
       class="top-conainer"
       :class="{ 'zoom-off': !ENABLE_ZOOM }"
     >
-      <div v-if="ENABLE_ZOOM" class="zoom-container flex-container-blank">
-        <button
-          v-if="zoom.active"
-          class="zoom-btn button"
-          @click="dispatchZoomAction(ZOOM_TOGGLE)"
-        >
-          Powrót
-        </button>
-        <div class="zoom" @click="dispatchZoomAction(ZOOM_OUT)">
-          <img v-if="zoom.active" src="images/zoomOut.svg" alt="zoomOut" />
-        </div>
-        <div
-          class="zoom"
-          :class="{
-            'disable-zoomIn': isMaxZoom(),
-            'zoom-icon-black': !zoom.active
-          }"
-          @click="!isMaxZoom() && dispatchZoomAction(ZOOM_IN)"
-        >
-          <img src="images/zoomIn.svg" alt="zoomIn" />
-        </div>
-      </div>
+      <zoom-component :scene="ADD_PROBLEM"></zoom-component>
 
       <div
         id="board-style-AP"
@@ -78,7 +57,6 @@
 <script>
 module.exports = {
   mounted() {
-    this.setZoomScale(this.zoom.scale);
     this.$store.commit("clearProblemState", gripMap);
   },
   beforeUnmount() {
@@ -97,13 +75,8 @@ module.exports = {
       ENABLE_ZOOM,
       ENABLE_GRADES,
       ENABLE_AUTHOR,
-      textInputHandle: undefined,
-      ZOOM_IN: "zoomIn",
-      ZOOM_OUT: "zoomOut",
-      ZOOM_TOGGLE: "toggleZoom",
-      zoomScale: {
-        "--zoom": 2
-      }
+      ADD_PROBLEM,
+      textInputHandle: undefined
     };
   },
   components: {
@@ -114,7 +87,10 @@ module.exports = {
     "loading-modal": httpVueLoader("components/LoadingModal.vue"),
     "grade-slider": httpVueLoader("components/SingleSlider.vue"),
     "board-legend": httpVueLoader("components/subComponents/BoardLegend.vue"),
-    "scroll-arrow": httpVueLoader("components/subComponents/ScrollArrow.vue")
+    "scroll-arrow": httpVueLoader("components/subComponents/ScrollArrow.vue"),
+    "zoom-component": httpVueLoader(
+      "components/subComponents/ZoomComponent.vue"
+    )
   },
   computed: {
     problmState() {
@@ -139,21 +115,13 @@ module.exports = {
       return this.$store.getters.getTextInputFocus;
     },
     zoom() {
-      return this.$store.getters.getZoom;
+      return this.$store.getters.getZoom(ADD_PROBLEM);
+    },
+    zoomScale() {
+      return this.$store.getters.getZoomScale(ADD_PROBLEM);
     }
   },
   methods: {
-    isMaxZoom() {
-      const { active, scale, max } = this.zoom;
-      return active && scale === max;
-    },
-    setZoomScale(scale) {
-      this.zoomScale["--zoom"] = scale;
-    },
-    dispatchZoomAction(action) {
-      this.$store.commit(action);
-      this.setZoomScale(this.zoom.scale);
-    },
     setName(newName) {
       this.nameValue = newName;
     },

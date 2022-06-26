@@ -52,25 +52,36 @@ const store = new Vuex.Store({
     },
     intro: INTRO,
     textInputFocus: false,
-    zoom: {
-      active: false,
-      scale: 2,
-      max: 8
+    zoomMap: {
+      [ADD_PROBLEM]: {
+        active: false,
+        scale: 2,
+        max: 8
+      },
+      [ACTIVE_PROBLEM]: {
+        active: false,
+        scale: 2,
+        max: 8
+      }
     }
   },
   mutations: {
-    zoomIn(state) {
-      const { scale, max, active } = state.zoom;
-      if (active && scale < max) state.zoom.scale += 2;
-      if (!active) state.zoom.active = true;
+    zoomIn(state, scene) {
+      console.log("zoomIn", scene);
+      const { scale, max, active } = state.zoomMap[scene];
+      if (active && scale < max) state.zoomMap[scene].scale += 2;
+      if (!active) state.zoomMap[scene].active = true;
+      console.log(state.zoomMap);
     },
-    zoomOut(state) {
-      const { scale } = state.zoom;
-      if (scale > 2) state.zoom.scale -= 2;
-      if (scale === 2) state.zoom.active = false;
+    zoomOut(state, scene) {
+      console.log("zoomOut");
+      const { scale } = state.zoomMap[scene];
+      if (scale > 2) state.zoomMap[scene].scale -= 2;
+      if (scale === 2) state.zoomMap[scene].active = false;
     },
-    toggleZoom({ zoom }) {
-      zoom.active = !zoom.active;
+    toggleZoom({ zoomMap }, scene) {
+      console.log("Togglezoom");
+      zoomMap[scene].active = !zoomMap[scene].active;
     },
     toggleTextInputFocus(state) {
       state.textInputFocus = !state.textInputFocus;
@@ -182,6 +193,7 @@ const store = new Vuex.Store({
     getDeleteModalState: (state) => state.editProblem.deleteModal,
     getIntro: (state) => state.intro,
     getTextInputFocus: (state) => state.textInputFocus,
-    getZoom: (state) => state.zoom
+    getZoom: (state) => (scene) => state.zoomMap[scene],
+    getZoomScale: (state) => (scene) => `--zoom: ${state.zoomMap[scene].scale}`
   }
 });
