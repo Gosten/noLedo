@@ -20,14 +20,6 @@ function getDiodeColor(diodeIndex, colorState) {
 
 function sendProblem({ grips }) {
   let msg = { topic: "display" };
-  msg.payload = Object.keys(grips)
-    .map((key, index) => getDiodeColor(diodeIndexes[index], grips[key]))
-    .filter((elem, index) => diodeIndexes[index] !== undefined)
-    .join("|");
-  uibuilder.send(msg);
-}
-function sendProblem({ grips }) {
-  let msg = { topic: "display" };
   const colorMapGroupped = Object.keys(grips).map((key) => ({
     diodes: gripMap[key],
     color: grips[key]

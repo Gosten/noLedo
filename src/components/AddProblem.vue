@@ -19,12 +19,15 @@
       </div>
 
       <board-legend></board-legend>
-      <scroll-arrow></scroll-arrow>
+      <scroll-arrow scroll-container-id="add-problem"></scroll-arrow>
     </div>
 
     <div class="flex-container-blank" id="add-bottom">
       <div class="bottom">
-        <scroll-arrow :reverse="true"></scroll-arrow>
+        <scroll-arrow
+          scroll-container-id="add-problem"
+          :reverse="true"
+        ></scroll-arrow>
         <div class="input-container">
           <div class="name-grade-container">
             <name-input

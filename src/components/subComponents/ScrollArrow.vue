@@ -22,7 +22,7 @@ module.exports = {
     }
   },
   mounted() {
-    this.scrollContainer = document.getElementById("add-problem");
+    this.scrollContainer = document.getElementById(this.scrollContainerId);
     this.containerHeight = this.scrollContainer.offsetHeight;
 
     const getScrollPosition = () => {
@@ -31,7 +31,8 @@ module.exports = {
     this.scrollContainer.addEventListener("scroll", getScrollPosition);
   },
   props: {
-    reverse: Boolean
+    reverse: Boolean,
+    scrollContainerId: String
   }
 };
 </script>

@@ -1,31 +1,35 @@
 <template>
   <div id="edit-problem" class="grid-content">
-    <div class="top-conainer" :class="{ 'zoom-off': !ENABLE_ZOOM }">
-      <div v-if="ENABLE_ZOOM" class="zoom-container flex-container-blank">
-        <div class="zoom" @click="toggleZoom()">
-          <img v-if="!boardZoom" src="images/zoomIn.svg" alt="zoomIn" />
-          <img v-if="boardZoom" src="images/zoomOut.svg" alt="zoomOut" />
-        </div>
-      </div>
+    <div
+      id="add-problem-top"
+      class="top-conainer"
+      :class="{ 'zoom-off': !ENABLE_ZOOM }"
+    >
+      <zoom-component :scene="ADD_PROBLEM"></zoom-component>
 
       <div
         id="board-style-EP"
         class="board-position"
-        :class="{ 'board-zoom': boardZoom }"
+        :class="{ 'board-zoom': zoom.active }"
+        :style="zoomScale"
       >
         <transition name="board-fade">
           <board board-id="board-E"></board>
         </transition>
       </div>
+
+      <board-legend></board-legend>
+      <scroll-arrow scroll-container-id="edit-problem"></scroll-arrow>
     </div>
 
     <div class="flex-container-blank">
       <div class="bottom">
+        <scroll-arrow
+          scroll-container-id="edit-problem"
+          :reverse="true"
+        ></scroll-arrow>
         <div class="input-container">
           <div class="name-grade-container">
-            <div v-if="ENABLE_GRADES" class="slider-width">
-              <grade-slider></grade-slider>
-            </div>
             <name-input
               :init-value="{ name: nameValue, author: authorNameValue }"
               :set-name="setName"
@@ -34,6 +38,9 @@
               :set-error-name="setErrorFlag"
               v-if="inputReady"
             ></name-input>
+            <div v-if="ENABLE_GRADES" class="slider-width">
+              <grade-slider></grade-slider>
+            </div>
           </div>
         </div>
 
@@ -61,7 +68,12 @@ module.exports = {
     "name-input": httpVueLoader("components/subComponents/NameAuthInput.vue"),
     "grade-slider": httpVueLoader("components/SingleSlider.vue"),
     "error-modal": httpVueLoader("components/ErrorModal.vue"),
-    "delete-modal": httpVueLoader("components/DeleteModal.vue")
+    "delete-modal": httpVueLoader("components/DeleteModal.vue"),
+    "board-legend": httpVueLoader("components/subComponents/BoardLegend.vue"),
+    "scroll-arrow": httpVueLoader("components/subComponents/ScrollArrow.vue"),
+    "zoom-component": httpVueLoader(
+      "components/subComponents/ZoomComponent.vue"
+    )
   },
   data() {
     return {
@@ -78,7 +90,8 @@ module.exports = {
       textInputHandle: undefined,
       boardZoom: false,
       ENABLE_ZOOM,
-      ENABLE_GRADES
+      ENABLE_GRADES,
+      ADD_PROBLEM
     };
   },
   mounted() {
@@ -112,6 +125,12 @@ module.exports = {
     },
     activeProblem() {
       return this.$store.getters.getActiveProblem;
+    },
+    zoom() {
+      return this.$store.getters.getZoom(ADD_PROBLEM);
+    },
+    zoomScale() {
+      return this.$store.getters.getZoomScale(ADD_PROBLEM);
     }
   },
   methods: {

@@ -143,8 +143,11 @@ const store = new Vuex.Store({
       state.editProblem.newGrade = payload;
     },
     editProblemStateGrip(state, payload) {
-      state.editProblem.editedProblem.grips[payload] =
-        !state.editProblem.editedProblem.grips[payload];
+      const newState = multiClick(
+        state.editProblem.editedProblem.grips[payload],
+        state.editProblem.editedProblem.grips
+      );
+      state.editProblem.editedProblem.grips[payload] = newState;
     },
     setAddProblemNewProblem(state, payload) {
       state.addProblem.newProblem = payload;
