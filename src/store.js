@@ -33,6 +33,7 @@ const store = new Vuex.Store({
       editedProblem: {},
       newName: "",
       newGrade: "",
+      newComment: "",
       deleteModal: false
     },
     addProblem: {
@@ -138,6 +139,9 @@ const store = new Vuex.Store({
     },
     editProblemStateName(state, payload) {
       state.editProblem.newName = payload;
+    },
+    editProblemStateComment(state, payload) {
+      state.editProblem.newComment = payload;
     },
     editProblemStateGrade(state, payload) {
       state.editProblem.newGrade = payload;

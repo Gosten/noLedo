@@ -5,6 +5,8 @@
 	flex-direction: column;
 	padding: 1em;
 	margin-bottom: 0em;
+	height: 100%;
+	justify-content: center;
 }
 
 .board-position {

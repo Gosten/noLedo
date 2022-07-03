@@ -40,6 +40,7 @@
               <grade-slider></grade-slider>
             </div>
           </div>
+          <comment-field :set-comment="setComment"></comment-field>
         </div>
         <div class="button-container">
           <button class="button" @click="addProblem">Dodaj problem</button>
@@ -70,6 +71,7 @@ module.exports = {
       BOARD_CONFIG,
       nameValue: "",
       authNameValue: "",
+      commentValue: "",
       errorFlags: {
         name: false
       },
@@ -93,7 +95,8 @@ module.exports = {
     "scroll-arrow": httpVueLoader("components/subComponents/ScrollArrow.vue"),
     "zoom-component": httpVueLoader(
       "components/subComponents/ZoomComponent.vue"
-    )
+    ),
+    "comment-field": httpVueLoader("components/subComponents/CommentField.vue")
   },
   computed: {
     problmState() {
@@ -131,6 +134,9 @@ module.exports = {
     setAuthor(newAuthor) {
       this.authNameValue = newAuthor;
     },
+    setComment(newComment) {
+      this.commentValue = newComment;
+    },
     setErrorFlag(newState) {
       this.errorFlags.name = newState;
     },
@@ -147,7 +153,8 @@ module.exports = {
         name: this.nameValue,
         grade: mapGrade(this.gradeValue),
         grips: this.problmState,
-        author: this.authNameValue
+        author: this.authNameValue,
+        comment: this.commentValue || ""
       };
       if (this.validateProblem(newProblem)) {
         let newList = [...this.problemList, newProblem];
