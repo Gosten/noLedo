@@ -13,13 +13,13 @@
 module.exports = {
   data() {
     return {
-      fade: true,
+      fade: true
     };
   },
   mounted() {
-    setTimeout(() => (this.fade = false), 800);
-    setTimeout(() => this.$store.commit("toggleIntro"), 1500);
-  },
+    setTimeout(() => (this.fade = false), 2000);
+    setTimeout(() => this.$store.commit("toggleIntro"), 4000);
+  }
 };
 </script>
 
@@ -30,7 +30,7 @@ module.exports = {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 99;
+  z-index: 200;
   width: 100vw;
   height: 100vh;
   font-family: "Russo One", sans-serif;

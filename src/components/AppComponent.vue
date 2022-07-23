@@ -17,6 +17,7 @@
     <transition name="intro-component-fade">
       <intro v-if="intro"></intro>
     </transition>
+    <landscape-block></landscape-block>
   </div>
 </template>
 
@@ -28,7 +29,8 @@ module.exports = {
     "active-problem": httpVueLoader("components/ActiveProblem.vue"),
     "edit-problem": httpVueLoader("components/EditProblem.vue"),
     "menu-bar": httpVueLoader("components/Menu.vue"),
-    intro: httpVueLoader("components/Intro.vue")
+    intro: httpVueLoader("components/Intro.vue"),
+    "landscape-block": httpVueLoader("components/LandscapeBlock.vue")
   },
   computed: {
     isAddProblem() {

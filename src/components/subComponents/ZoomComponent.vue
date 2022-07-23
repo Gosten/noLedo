@@ -27,10 +27,6 @@
 module.exports = {
   mounted() {
     this.setZoomScale(this.zoom.scale);
-    this.$store.commit("clearProblemState", gripMap);
-  },
-  beforeUnmount() {
-    this.textInputHandle.removeEventListener("keyup", this.blurInput);
   },
   data() {
     return {
