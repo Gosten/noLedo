@@ -97,12 +97,20 @@
 
 .board-zoom .zoom-target {
 	transition: all .3s;
-  transform: scale(var(--zoom)) !important;
+	position: relative;
+	width: calc(var(--scroll-container-width) * var(--zoom)) !important;
+  height: calc(var(--scroll-container-height) * var(--zoom)) !important;
+}
+
+.board-zoom .background-image-container {
+	transition: all .3s;
+	width: calc(var(--scroll-container-width) * var(--zoom)) !important;
+  height: calc(var(--scroll-container-height) * var(--zoom)) !important;
 }
 
 
 .board-zoom .scroll-container {
-	width: 100%;
+	width: var(--scroll-container-width);
 	height: 100%;
 	overflow: scroll !important;
 }
