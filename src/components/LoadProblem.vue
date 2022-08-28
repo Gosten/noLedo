@@ -150,6 +150,13 @@ module.exports = {
       if (this.problemList) {
         let newList = [...this.problemList];
 
+        //sort by timestamp
+        newList = newList.sort((a, b) => {
+          if (b.timestamp && a.timestamp) return b.timestamp - a.timestamp;
+          if (b.timestamp) return 1;
+          return -1;
+        });
+
         //filter by name
         newList = newList.filter((problem) =>
           problem.name.toUpperCase().match(this.nameFilter.toUpperCase())

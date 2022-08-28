@@ -154,10 +154,11 @@ module.exports = {
         grade: mapGrade(this.gradeValue),
         grips: this.problmState,
         author: this.authNameValue,
-        comment: this.commentValue || ""
+        comment: this.commentValue || "",
+        timestamp: Date.now()
       };
       if (this.validateProblem(newProblem)) {
-        let newList = [...this.problemList, newProblem];
+        let newList = [newProblem, ...this.problemList];
 
         uibuilder.send({
           topic: "save",
