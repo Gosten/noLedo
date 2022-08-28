@@ -9,20 +9,10 @@
     >
       <board board-id="board-AcP"></board>
     </div>
-    <comment-display
-      :comment-value="activeProblem.comment"
-      :show-modal="showCommentModal"
-    ></comment-display>
+    <comment-display :comment-value="activeProblem.comment" />
     <div class="active-problem-bottom-container">
       <board-legend></board-legend>
     </div>
-    <transition name="fade">
-      <comment-modal
-        v-if="isCommentModalOpen"
-        :hide-modal="hideCommentModal"
-        :comment="activeProblem.comment"
-      ></comment-modal>
-    </transition>
   </div>
 </template>
 
@@ -36,8 +26,7 @@ module.exports = {
     ),
     "comment-display": httpVueLoader(
       "components/subComponents/CommentDisplay.vue"
-    ),
-    "comment-modal": httpVueLoader("components/subComponents/CommentModal.vue")
+    )
   },
   data() {
     return {
@@ -63,14 +52,6 @@ module.exports = {
     },
     zoomScale() {
       return this.$store.getters.getZoomScale(ACTIVE_PROBLEM);
-    }
-  },
-  methods: {
-    hideCommentModal() {
-      this.isCommentModalOpen = false;
-    },
-    showCommentModal() {
-      this.isCommentModalOpen = true;
     }
   }
 };
@@ -100,13 +81,5 @@ module.exports = {
   height: 100%;
   justify-content: center;
   padding: 1em;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
 }
 </style>

@@ -1,8 +1,15 @@
 <template>
   <div class="comment-container">
-    <div v-if="commentValue" class="comment-box" @click="showModal">
+    <div v-if="commentValue" class="comment-box" @click="showCommentModal">
       {{ comment }}
     </div>
+    <transition name="fade">
+      <comment-modal
+        v-if="isCommentModalOpen"
+        :hide-modal="hideCommentModal"
+        :comment="commentValue"
+      ></comment-modal>
+    </transition>
   </div>
 </template>
 
@@ -19,14 +26,25 @@ module.exports = {
         .concat("...");
     }
   },
+  components: {
+    "comment-modal": httpVueLoader("components/subComponents/CommentModal.vue")
+  },
+  methods: {
+    hideCommentModal() {
+      this.isCommentModalOpen = false;
+    },
+    showCommentModal() {
+      this.isCommentModalOpen = true;
+    }
+  },
   data() {
     return {
-      COMMENT_DISPLAY_LENGTH
+      COMMENT_DISPLAY_LENGTH,
+      isCommentModalOpen: false
     };
   },
   props: {
-    commentValue: String,
-    showModal: Function
+    commentValue: String
   }
 };
 </script>
@@ -48,5 +66,13 @@ module.exports = {
   max-height: 15em;
   overflow: hidden;
   height: fit-content;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
