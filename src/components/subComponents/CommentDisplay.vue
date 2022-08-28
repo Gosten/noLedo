@@ -1,6 +1,6 @@
 <template>
-  <div class="comment-container">
-    <div v-if="commentValue" class="comment-box" @click="showCommentModal">
+  <div v-if="commentValue" class="comment-container">
+    <div class="comment-box" @click="showCommentModal">
       {{ comment }}
     </div>
     <transition name="fade">

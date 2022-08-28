@@ -9,7 +9,7 @@
     >
       <board board-id="board-AcP"></board>
     </div>
-    <comment-display :comment-value="activeProblem.comment" />
+    <comment-display :comment-value="activeProblem.comment"></comment-display>
     <div class="active-problem-bottom-container">
       <board-legend></board-legend>
     </div>

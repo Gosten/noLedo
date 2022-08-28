@@ -60,6 +60,9 @@
         <div id="board-style-L" class="board-position-container">
           <board board-id="board-L"></board>
         </div>
+        <comment-display
+          :comment-value="selectedProblem.comment"
+        ></comment-display>
         <div id="list-buttons" class="button-container" v-if="listCollapsed">
           <!-- <button class="button" @click="editProblem">Edytuj problem</button> -->
           <button class="button" @click="showProblemList">Pokaż listę</button>
@@ -76,7 +79,10 @@ module.exports = {
     "name-input": httpVueLoader("components/subComponents/NameInputLoad.vue"),
     "loading-modal": httpVueLoader("components/LoadingModal.vue"),
     "slider-component": httpVueLoader("components/DoubleSlider.vue"),
-    board: httpVueLoader("components/Board/Board.vue")
+    board: httpVueLoader("components/Board/Board.vue"),
+    "comment-display": httpVueLoader(
+      "components/subComponents/CommentDisplay.vue"
+    )
   },
   data() {
     return {
