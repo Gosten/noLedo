@@ -84,6 +84,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	position: relative;
 	/* overflow: hidden; */
 }
 
@@ -98,6 +99,9 @@
 .board-zoom .zoom-target {
 	transition: all .3s;
 	position: relative;
+	top: 0;
+	left: 0;
+	position: absolute;
 	width: calc(var(--scroll-container-width) * var(--zoom)) !important;
   height: calc(var(--scroll-container-height) * var(--zoom)) !important;
 }
