@@ -67,23 +67,23 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-    zoomIn(state, scene) {
-      console.log("zoomIn", scene);
-      const { scale, max, active } = state.zoomMap[scene];
-      if (active && scale < max) state.zoomMap[scene].scale += 2;
-      if (!active) state.zoomMap[scene].active = true;
-      console.log(state.zoomMap);
-    },
-    zoomOut(state, scene) {
-      console.log("zoomOut");
-      const { scale } = state.zoomMap[scene];
-      if (scale > 2) state.zoomMap[scene].scale -= 2;
-      if (scale === 2) state.zoomMap[scene].active = false;
-    },
-    toggleZoom({ zoomMap }, scene) {
-      console.log("Togglezoom");
-      zoomMap[scene].active = !zoomMap[scene].active;
-    },
+    // zoomIn(state, scene) {
+    //   console.log("zoomIn", scene);
+    //   const { scale, max, active } = state.zoomMap[scene];
+    //   if (active && scale < max) state.zoomMap[scene].scale += 2;
+    //   if (!active) state.zoomMap[scene].active = true;
+    //   console.log(state.zoomMap);
+    // },
+    // zoomOut(state, scene) {
+    //   console.log("zoomOut");
+    //   const { scale } = state.zoomMap[scene];
+    //   if (scale > 2) state.zoomMap[scene].scale -= 2;
+    //   if (scale === 2) state.zoomMap[scene].active = false;
+    // },
+    // toggleZoom({ zoomMap }, scene) {
+    //   console.log("Togglezoom");
+    //   zoomMap[scene].active = !zoomMap[scene].active;
+    // },
     toggleTextInputFocus(state) {
       state.textInputFocus = !state.textInputFocus;
     },

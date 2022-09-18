@@ -1,12 +1,6 @@
 <template>
   <div id="active-container" class="container">
-    <zoom-component :scene="ACTIVE_PROBLEM"></zoom-component>
-    <div
-      id="board-style"
-      class="width-100 flex-container-blank"
-      :class="{ 'board-zoom': zoom.active }"
-      :style="zoomScale"
-    >
+    <div id="board-style" class="width-100 flex-container-blank">
       <board board-id="board-AcP"></board>
     </div>
     <comment-display :comment-value="activeProblem.comment"></comment-display>
@@ -21,9 +15,6 @@ module.exports = {
   components: {
     board: httpVueLoader("components/Board/Board.vue"),
     "board-legend": httpVueLoader("components/subComponents/BoardLegend.vue"),
-    "zoom-component": httpVueLoader(
-      "components/subComponents/ZoomComponent.vue"
-    ),
     "comment-display": httpVueLoader(
       "components/subComponents/CommentDisplay.vue"
     )

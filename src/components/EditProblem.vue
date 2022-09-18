@@ -1,18 +1,7 @@
 <template>
   <div id="edit-problem" class="grid-content">
-    <div
-      id="add-problem-top"
-      class="top-conainer"
-      :class="{ 'zoom-off': !ENABLE_ZOOM }"
-    >
-      <zoom-component :scene="ADD_PROBLEM"></zoom-component>
-
-      <div
-        id="board-style-EP"
-        class="board-position"
-        :class="{ 'board-zoom': zoom.active }"
-        :style="zoomScale"
-      >
+    <div id="add-problem-top" class="top-conainer">
+      <div id="board-style-EP" class="board-position">
         <transition name="board-fade">
           <board board-id="board-E"></board>
         </transition>
@@ -70,10 +59,7 @@ module.exports = {
     "error-modal": httpVueLoader("components/ErrorModal.vue"),
     "delete-modal": httpVueLoader("components/DeleteModal.vue"),
     "board-legend": httpVueLoader("components/subComponents/BoardLegend.vue"),
-    "scroll-arrow": httpVueLoader("components/subComponents/ScrollArrow.vue"),
-    "zoom-component": httpVueLoader(
-      "components/subComponents/ZoomComponent.vue"
-    )
+    "scroll-arrow": httpVueLoader("components/subComponents/ScrollArrow.vue")
   },
   data() {
     return {
