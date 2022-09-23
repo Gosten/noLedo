@@ -1,120 +1,115 @@
 .board-container {
-	font-size: 16px !important;
+  font-size: 16px !important;
 
-	height: 100%;
-	width: 100%;
+  /* height: 100%; */
+  width: 100%;
+  height: calc(var(--window-height) - 260px);
+  /* width: calc(100vw - 4em); */
 
-	--rows-or-columns: max(var(--rows), var(--columns));
-	--grip-box-size: calc(var(--container-width) / var(--rows-or-columns));
+  --rows-or-columns: max(var(--rows), var(--columns));
+  --grip-box-size: calc(var(--container-width) / var(--rows-or-columns));
 
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
 
-	position: relative;
-	transition: opacity 0.2s ease-in-out;
+  position: relative;
+  transition: opacity 0.2s ease-in-out;
 
-
-	touch-action: pan-x pan-y pinch-zoom !important;
-
+  touch-action: pan-x pan-y pinch-zoom !important;
 }
 
 .board-grid-container {
-	display: grid;
-	width: var(--scroll-container-width);
-	height: var(--scroll-container-height);
-	grid-template-columns: repeat(var(--columns), auto);
-	grid-template-rows: repeat(var(--rows), auto);
+  display: grid;
+  width: var(--scroll-container-width);
+  height: var(--scroll-container-height);
+  grid-template-columns: repeat(var(--columns), auto);
+  grid-template-rows: repeat(var(--rows), auto);
 }
 
 .grip-container {
-	aspect-ratio: 1;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .grip {
-	width: var(--grip-size);
-	height: var(--grip-size);
-	border-radius: 50%;
+  width: var(--grip-size);
+  height: var(--grip-size);
+  border-radius: 50%;
 }
 
 .grip-color-0 {
-	width: var(--empty-grip-size);
-	height: var(--empty-grip-size);
-	background: hsl(0, 0%, 0%);
+  width: var(--empty-grip-size);
+  height: var(--empty-grip-size);
+  background: hsl(0, 0%, 0%);
 }
 
 .grip-selector {
-	position: relative;
+  position: relative;
 }
 .grip-selector::after {
-	box-sizing: border-box;
-	content: '';
-	position: absolute;
-	width: var(--grip-selection-size);
-	height: var(--grip-selection-size);
-	border-radius: 50%;
-	border: var(--grip-selection-border) solid rgb(0, 255, 0);
-	opacity: 0;
-	transition: opacity 0.4s;
-	transition-timing-function: cubic-bezier(0.88, 0.72, 0, 0.66);
+  box-sizing: border-box;
+  content: "";
+  position: absolute;
+  width: var(--grip-selection-size);
+  height: var(--grip-selection-size);
+  border-radius: 50%;
+  border: var(--grip-selection-border) solid rgb(0, 255, 0);
+  opacity: 0;
+  transition: opacity 0.4s;
+  transition-timing-function: cubic-bezier(0.88, 0.72, 0, 0.66);
 }
 
 .grip-active::after {
-	opacity: 1;
+  opacity: 1;
 }
 
 .board-position {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: var(--container-width);
-	padding-inline: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--container-width);
+  padding-inline: 1em;
 }
 #load-problem .board-position {
-	align-items: flex-start;
+  align-items: flex-start;
 }
-
-
 
 .scroll-container {
-	height: fit-content;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	position: relative;
-	/* overflow: hidden; */
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  /* overflow: hidden; */
 }
 
-.zoom-target{
-	transition: all .1s;
-	width: fit-content;
-	transform-origin: left top;
+.zoom-target {
+  transition: all 0.1s;
+  width: fit-content;
+  transform-origin: left top;
 }
-
-
 
 .board-zoom .zoom-target {
-	transition: all .3s;
-	position: relative;
-	top: 0;
-	left: 0;
-	position: absolute;
-	width: calc(var(--scroll-container-width) * var(--zoom)) !important;
+  transition: all 0.3s;
+  position: relative;
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: calc(var(--scroll-container-width) * var(--zoom)) !important;
   height: calc(var(--scroll-container-height) * var(--zoom)) !important;
 }
 
 .board-zoom .background-image-container {
-	transition: all .3s;
-	width: calc(var(--scroll-container-width) * var(--zoom)) !important;
+  transition: all 0.3s;
+  width: calc(var(--scroll-container-width) * var(--zoom)) !important;
   height: calc(var(--scroll-container-height) * var(--zoom)) !important;
 }
 
-
 .board-zoom .scroll-container {
-	width: var(--scroll-container-width);
-	height: 100%;
-	overflow: scroll !important;
+  width: var(--scroll-container-width);
+  height: 100%;
+  overflow: scroll !important;
 }

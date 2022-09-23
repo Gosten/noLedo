@@ -9,21 +9,16 @@
       'even-size': evenSize
     }"
   >
-    <div class="scroll-container">
-      <div class="zoom-target">
-        <board-image v-if="sizeSet"></board-image>
-        <interactive-layer
-          v-if="sizeSet"
-          :handle-click="handleClick"
-          :get-display-problem="getDisplayProblem"
-          :selected-problem="selectedProblem"
-          :active-problem="activeProblem"
-          :problem-state="problemState"
-          :edited-problem="editedProblem"
-        >
-        </interactive-layer>
-      </div>
-    </div>
+    <interactive-layer
+      v-if="sizeSet"
+      :handle-click="handleClick"
+      :get-display-problem="getDisplayProblem"
+      :selected-problem="selectedProblem"
+      :active-problem="activeProblem"
+      :problem-state="problemState"
+      :edited-problem="editedProblem"
+    >
+    </interactive-layer>
   </div>
 </template>
 
