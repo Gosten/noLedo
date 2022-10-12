@@ -10,7 +10,6 @@
     }"
   >
     <interactive-layer
-      v-if="sizeSet"
       :handle-click="handleClick"
       :get-display-problem="getDisplayProblem"
       :selected-problem="selectedProblem"
@@ -158,20 +157,6 @@ module.exports = {
         "--board-image-left": `${boardImgLeft}px`,
         "--board-image-padding": `${boardImgPadding}px`
       };
-      this.setSizeChanged(!reset);
-    },
-    setSizeChanged(state) {
-      this.sizeSet = state;
-      this.$emit("resize", state);
-    },
-    handleAppResize() {
-      //reset board size
-      this.setSizeChanged(false);
-
-      //app resize without board resize
-      setTimeout(() => {
-        if (!this.sizeSet) this.setSizeChanged(true);
-      }, 10);
     }
   },
   computed: {
@@ -263,20 +248,10 @@ module.exports = {
     this.resizeObserver = new ResizeObserver(() => this.handleBoardResize());
     this.boardHandle = document.getElementById(this.boardId);
     this.resizeObserver.observe(this.boardHandle);
-    window.addEventListener("resize", this.handleAppResize);
-  },
-  updated() {
-    if (this.firstUpdate) {
-      this.handleAppResize();
-      //console.log('first update');
-      this.firstUpdate = false;
-    }
   },
   created() {},
   destroyed() {
     this.resizeObserver.unobserve(this.boardHandle);
-
-    window.removeEventListener("resize", this.handleAppResize);
   },
   components: {
     "board-image": httpVueLoader("components/Board/BoardImage.vue"),

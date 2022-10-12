@@ -58,13 +58,21 @@ module.exports = {
     }
   },
   data() {
-    return {};
+    return {
+      zoomElement: null
+    };
   },
   mounted() {
     this.updateSelectors();
     setTimeout(() => this.updateSelectors(), 500);
     let el = document.getElementById("pinch-zoom-1");
-    new PinchZoom(el, { setOffsetsOnce: true, draggableUnzoomed: false });
+    this.zoomElement = new PinchZoom(el, {
+      setOffsetsOnce: true,
+      draggableUnzoomed: false
+    });
+  },
+  beforeDestroy() {
+    this.zoomElement.destroy();
   },
   updated() {},
   props: {

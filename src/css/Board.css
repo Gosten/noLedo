@@ -1,9 +1,9 @@
 .board-container {
   font-size: 16px !important;
 
-  /* height: 100%; */
+  height: 100%;
   width: 100%;
-  height: calc(var(--window-height) - 260px);
+  /* height: calc(var(--window-height) - 260px); */
   /* width: calc(100vw - 4em); */
 
   --rows-or-columns: max(var(--rows), var(--columns));
