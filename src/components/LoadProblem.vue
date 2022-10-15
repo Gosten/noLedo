@@ -8,6 +8,9 @@ module.exports = {
     board: httpVueLoader("components/Board/Board.vue"),
     "comment-display": httpVueLoader(
       "components/subComponents/CommentDisplay.vue"
+    ),
+    "sorting-arrows": httpVueLoader(
+      "components/subComponents/SortingArrows.vue"
     )
   },
   data() {
@@ -222,10 +225,14 @@ module.exports = {
       }"
     >
       <li class="list-label">
-        <span @click="() => handleSort('name')">Nazwa</span>
+        <span @click="() => handleSort('name')"
+          >Nazwa
+          <sorting-arrows :sort-object="sort" sort-key="name"></sorting-arrows
+        ></span>
         <span v-if="ENABLE_GRADES" @click="() => handleSort('grade')"
-          >Wycena</span
-        >
+          >Wycena
+          <sorting-arrows :sort-object="sort" sort-key="grade"></sorting-arrows>
+        </span>
       </li>
       <li
         class="li-0"
