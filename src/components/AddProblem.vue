@@ -1,18 +1,7 @@
 <template>
   <div id="add-problem" class="grid-content">
-    <div
-      id="add-problem-top"
-      class="top-conainer"
-      :class="{ 'zoom-off': !ENABLE_ZOOM }"
-    >
-      <zoom-component :scene="ADD_PROBLEM"></zoom-component>
-
-      <div
-        id="board-style-AP"
-        class="board-position"
-        :class="{ 'board-zoom': zoom.active }"
-        :style="zoomScale"
-      >
+    <div id="add-problem-top" class="top-conainer">
+      <div id="board-style-AP" class="board-position">
         <transition name="board-fade">
           <board board-id="board-AdP"></board>
         </transition>
@@ -93,9 +82,6 @@ module.exports = {
     "grade-slider": httpVueLoader("components/SingleSlider.vue"),
     "board-legend": httpVueLoader("components/subComponents/BoardLegend.vue"),
     "scroll-arrow": httpVueLoader("components/subComponents/ScrollArrow.vue"),
-    "zoom-component": httpVueLoader(
-      "components/subComponents/ZoomComponent.vue"
-    ),
     "comment-field": httpVueLoader("components/subComponents/CommentField.vue")
   },
   computed: {

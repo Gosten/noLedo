@@ -68,7 +68,7 @@
 	scroll-snap-align: end;
 	width: 100%;
 	display: grid;
-	grid-template-rows: auto 1fr;
+	grid-template-rows: 1fr auto auto;
 }
 .top-conainer.zoom-off {
 	width: 100%;
