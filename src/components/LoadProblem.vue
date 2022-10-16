@@ -1,94 +1,21 @@
-<template>
-  <div id="load-problem" class="flex-container content-container">
-    <transition name="fade">
-      <loading-modal v-if="!problemList"></loading-modal>
-    </transition>
-
-    <ul
-      id="problem-list"
-      :class="{
-        collapsed: listCollapsed,
-        'focus-transition': textInputFocus
-      }"
-    >
-      <li class="list-label">
-        <span @click="() => handleSort('name')">Nazwa</span>
-        <span v-if="ENABLE_GRADES" @click="() => handleSort('grade')"
-          >Wycena</span
-        >
-      </li>
-      <li
-        class="li-0"
-        v-if="filteredList ? Object.keys(filteredList).length === 0 : false"
-      >
-        <span>brak wyników</span>
-      </li>
-      <li
-        v-for="(problem, index) in filteredList"
-        :key="problem.name"
-        :class="{
-          [listItemClass(index)]: true,
-          'li-selected': liSelectedCondition(problem)
-        }"
-        @click="() => handleProblemSelect(problem)"
-      >
-        <span>{{ parseName(problem) }}</span>
-        <span v-if="ENABLE_GRADES">{{ problem.grade }}</span>
-      </li>
-    </ul>
-
-    <transition name="board-fade">
-      <div
-        class="bottom-section filter-container"
-        v-if="!listCollapsed"
-        id="bottom"
-      >
-        <h3>Filtr<span v-if="ENABLE_GRADES">y</span></h3>
-        <div v-if="ENABLE_GRADES" class="slider-width">
-          <slider-component></slider-component>
-        </div>
-        <name-input
-          :set-name="setNameFilter"
-          :set-author="setAuthorFilter"
-          :load="true"
-        ></name-input>
-      </div>
-    </transition>
-
-    <transition name="button-fade">
-      <div id="bottom" class="bottom-section preview" v-if="listCollapsed">
-        <div id="board-style-L" class="board-position-container">
-          <board board-id="board-L"></board>
-        </div>
-        <comment-display
-          :comment-value="selectedProblem.comment"
-        ></comment-display>
-        <div id="list-buttons" class="button-container" v-if="listCollapsed">
-          <!-- <button class="button" @click="editProblem">Edytuj problem</button> -->
-          <button class="button" @click="showProblemList">Pokaż listę</button>
-          <button class="button" @click="loadProblem">Wczytaj</button>
-        </div>
-      </div>
-    </transition>
-  </div>
-</template>
-
 <script>
 module.exports = {
   components: {
     "name-input": httpVueLoader("components/subComponents/NameInputLoad.vue"),
+    filters: httpVueLoader("components/subComponents/ProblemFilters.vue"),
     "loading-modal": httpVueLoader("components/LoadingModal.vue"),
     "slider-component": httpVueLoader("components/DoubleSlider.vue"),
     board: httpVueLoader("components/Board/Board.vue"),
     "comment-display": httpVueLoader(
       "components/subComponents/CommentDisplay.vue"
+    ),
+    "sorting-arrows": httpVueLoader(
+      "components/subComponents/SortingArrows.vue"
     )
   },
   data() {
     return {
       listCollapsed: false,
-      nameFilter: "",
-      authorFilter: "",
       GRADES,
       gradeFilter: {
         from: 0,
@@ -99,10 +26,18 @@ module.exports = {
       parseName,
       ENABLE_GRADES,
       textInputHandle: undefined,
-      sort: { key: "", order: false }
+      sort: { key: "", order: false },
+      isFilterCollapsed: true,
+      textFilter: ""
     };
   },
   methods: {
+    setIsFilterCollapsed(isCollapsed) {
+      this.isFilterCollapsed = isCollapsed;
+    },
+    handleFilterInputChange({ textFilter }) {
+      this.textFilter = textFilter;
+    },
     handleSort(key) {
       if (this.sort.key === key) this.sort.order = !this.sort.order;
       else this.sort = { key, order: true };
@@ -121,6 +56,8 @@ module.exports = {
     },
     showProblemList() {
       this.listCollapsed = false;
+      this.isFilterCollapsed = true;
+      this.textFilter = "";
     },
     loadProblem() {
       this.$store.commit("selectScne", ACTIVE_PROBLEM);
@@ -155,19 +92,27 @@ module.exports = {
     filteredList() {
       if (this.problemList) {
         let newList = [...this.problemList];
-
         //sort by timestamp
         newList = newList.sort((a, b) => {
           if (b.timestamp && a.timestamp) return b.timestamp - a.timestamp;
           if (b.timestamp) return 1;
           return -1;
         });
+        console.log({ filterVal: this.textFilter });
+        if (this.textFilter) {
+          //filter by name
+          //filter by author
+          newList = newList.filter(
+            (problem) =>
+              problem.name.toUpperCase().match(this.textFilter.toUpperCase()) ||
+              (problem.author &&
+                problem.author
+                  .toUpperCase()
+                  .match(this.textFilter.toUpperCase()))
+          );
+        }
 
-        //filter by name
-        newList = newList.filter((problem) =>
-          problem.name.toUpperCase().match(this.nameFilter.toUpperCase())
-        );
-
+        console.log({ grade: this.filterGrades });
         //filter by grade
         if (this.ENABLE_GRADES) {
           const fromGrade = mapGrade(this.filterGrades.value1);
@@ -176,17 +121,6 @@ module.exports = {
           newList = newList.filter(
             (problem) => problem.grade >= fromGrade && problem.grade <= toGrade
           );
-        }
-
-        //filter by author
-        if (this.authorFilter) {
-          newList = newList.filter((problem) => {
-            if (problem.author) {
-              return problem.author
-                .toUpperCase()
-                .match(this.authorFilter.toUpperCase());
-            }
-          });
         }
 
         //sort list
@@ -271,13 +205,93 @@ module.exports = {
   height: 100%;
 }
 
-.filter-container {
-  border: 1px solid black;
-  background: white;
-  padding: 0 1em;
-}
-
 .focus-transition {
   transition: 0.05s height ease-out !important;
 }
 </style>
+
+<template>
+  <div id="load-problem" class="flex-container content-container">
+    <transition name="fade">
+      <loading-modal v-if="!problemList"></loading-modal>
+    </transition>
+
+    <ul
+      id="problem-list"
+      :class="{
+        collapsed: listCollapsed,
+        'focus-transition': textInputFocus,
+        'filter-section-collapsed': isFilterCollapsed
+      }"
+    >
+      <li class="list-label">
+        <span @click="() => handleSort('name')"
+          >Nazwa
+          <sorting-arrows :sort-object="sort" sort-key="name"></sorting-arrows
+        ></span>
+        <span v-if="ENABLE_GRADES" @click="() => handleSort('grade')"
+          >Wycena
+          <sorting-arrows :sort-object="sort" sort-key="grade"></sorting-arrows>
+        </span>
+      </li>
+      <li
+        class="li-0"
+        v-if="filteredList ? Object.keys(filteredList).length === 0 : false"
+      >
+        <span>brak wyników</span>
+      </li>
+      <li
+        v-for="(problem, index) in filteredList"
+        :key="problem.name"
+        :class="{
+          [listItemClass(index)]: true,
+          'li-selected': liSelectedCondition(problem)
+        }"
+        @click="() => handleProblemSelect(problem)"
+      >
+        <span>{{ parseName(problem) }}</span>
+        <span v-if="ENABLE_GRADES">{{ problem.grade }}</span>
+      </li>
+    </ul>
+
+    <transition name="board-fade">
+      <!-- <div
+        class="bottom-section filter-container"
+        v-if="!listCollapsed"
+        id="bottom"
+      >
+        <h3>Filtr<span v-if="ENABLE_GRADES">y</span></h3>
+        <div v-if="ENABLE_GRADES" class="slider-width">
+          <slider-component></slider-component>
+        </div>
+        <name-input
+          :set-name="setNameFilter"
+          :set-author="setAuthorFilter"
+          :load="true"
+        ></name-input>
+      </div> -->
+
+      <filters
+        v-if="!listCollapsed"
+        :handle-filter-input-change="handleFilterInputChange"
+        :set-is-filter-collapsed="setIsFilterCollapsed"
+      ></filters>
+    </transition>
+
+    <transition name="button-fade">
+      <div id="bottom" class="bottom-section preview" v-if="listCollapsed">
+        <div id="board-style-L" class="board-position-container">
+          <board board-id="board-L"></board>
+        </div>
+        <comment-display
+          :comment-value="selectedProblem.comment"
+        ></comment-display>
+        <div id="list-buttons" class="button-container" v-if="listCollapsed">
+          <!-- <button class="button" @click="editProblem">Edytuj problem</button> -->
+          <button class="button" @click="showProblemList">Pokaż listę</button>
+          <button class="button" @click="loadProblem">Wczytaj</button>
+        </div>
+      </div>
+    </transition>
+  </div>
+</template>
