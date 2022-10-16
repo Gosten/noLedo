@@ -55,7 +55,7 @@ module.exports = {
 
 .inner-container {
   width: inherit;
-  padding: inherit;
+  padding: 1em;
   padding-top: 3em;
   display: flex;
   flex-direction: column;
