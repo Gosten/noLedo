@@ -67,7 +67,6 @@ module.exports = {
     setTimeout(() => this.updateSelectors(), 500);
     let el = document.getElementById("pinch-zoom-1");
     this.zoomElement = new PinchZoom(el, {
-      setOffsetsOnce: true,
       draggableUnzoomed: false
     });
   },
@@ -81,7 +80,7 @@ module.exports = {
 };
 </script>
 
-<style scoped>
+<style scoped type="text/css">
 @import "../../css/app_config.css";
 
 #interaction-layer path {

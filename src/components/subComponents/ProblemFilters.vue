@@ -39,8 +39,8 @@ module.exports = {
 };
 </script>
 
-<style scoped>
-@import url("../css/LoadProblem.css");
+<style scoped type="text/css">
+@import url("../../css/LoadProblem.css");
 .border-red {
   border-color: red;
 }

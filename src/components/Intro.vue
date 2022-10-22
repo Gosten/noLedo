@@ -23,7 +23,7 @@ module.exports = {
 };
 </script>
 
-<style scoped>
+<style scoped type="text/css">
 #intro-scene {
   background: black;
   position: absolute;

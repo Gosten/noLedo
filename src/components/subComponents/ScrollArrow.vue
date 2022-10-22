@@ -37,7 +37,7 @@ module.exports = {
 };
 </script>
 
-<style scoped>
+<style scoped type="text/css">
 .scroll-arrow {
   background: white;
   width: fit-content;

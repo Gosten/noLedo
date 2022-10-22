@@ -2,7 +2,7 @@
 module.exports = {};
 </script>
 
-<style scoped>
+<style scoped type="text/css">
 #landscape-block {
   width: 100vw;
   height: 100vh;

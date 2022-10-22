@@ -20,7 +20,7 @@ module.exports = {
 };
 </script>
 
-<style scoped>
+<style scoped type="text/css">
 textarea {
   font-family: "Montserrat", sans-serif;
 }

@@ -260,7 +260,7 @@ module.exports = {
 };
 </script>
 
-<style scoped>
+<style scoped type="text/css">
 @import "../../css/Board.css";
 @import "../../css/app_config.css";
 
