@@ -28,7 +28,11 @@ module.exports = {
       textInputHandle: undefined,
       sort: { key: "", order: false },
       isFilterCollapsed: true,
-      textFilter: ""
+      textFilter: "",
+      touchstartX: 0,
+      isSwipeListenerSet: false,
+      selectedProblemIndex: null,
+      isProblemReloading: false
     };
   },
   methods: {
@@ -48,14 +52,15 @@ module.exports = {
     setAuthorFilter(newVal) {
       this.authorFilter = newVal;
     },
-    handleProblemSelect(problem) {
+    handleProblemSelect(problem, index) {
       if (!this.listCollapsed) {
         this.listCollapsed = true;
+        this.selectedProblemIndex = index;
         this.$store.commit("selectProblem", problem);
       }
     },
     showProblemList() {
-      this.listCollapsed = false;
+      this.handleListExpand();
       this.isFilterCollapsed = true;
       this.textFilter = "";
     },
@@ -76,6 +81,53 @@ module.exports = {
     },
     liSelectedCondition(problem) {
       return this.listCollapsed && this.selectedProblem.name === problem.name;
+    },
+    handleListCollapsed() {
+      const swipeHandle = document.getElementById("problem-swipe-container");
+      swipeHandle.addEventListener("touchstart", this.handleSwipeStart);
+      swipeHandle.addEventListener("touchend", this.handleSwipeEnd);
+      this.isSwipeListenerSet = true;
+    },
+    handleListExpand() {
+      const swipeHandle = document.getElementById("problem-swipe-container");
+      swipeHandle.removeEventListener("touchstart", this.handleSwipeStart);
+      swipeHandle.removeEventListener("touchend", this.handleSwipeEnd);
+      this.listCollapsed = false;
+    },
+    handleSwipeStart(e) {
+      const touch = (this.touchstartX = e.changedTouches[0].screenX);
+    },
+
+    handleSwipeEnd(e) {
+      const touchendX = e.changedTouches[0].screenX;
+      const diff = Math.abs(touchendX - this.touchstartX);
+      console.log({ start: this.touchstartX, end: touchendX, diff });
+      const diffCondition = diff > 50;
+      if (diffCondition && touchendX < this.touchstartX)
+        this.handleSwipe("right");
+      if (diffCondition && touchendX > this.touchstartX)
+        this.handleSwipe("left");
+
+      this.touchstartX = 0;
+      this.isSwipeListenerSet = false;
+    },
+
+    handleSwipe(dir) {
+      let nextIndex;
+      if (dir === "right") {
+        nextIndex = this.selectedProblemIndex + 1;
+      } else if (dir === "left") {
+        nextIndex = this.selectedProblemIndex - 1;
+      }
+      const nextProblem = this.filteredList[nextIndex];
+      if (nextProblem) {
+        this.selectedProblemIndex = nextIndex;
+        this.isProblemReloading = true;
+        setTimeout(() => {
+          this.isProblemReloading = false;
+        }, 50);
+        this.$store.commit("selectProblem", nextProblem);
+      }
     }
   },
   beforeUnmount() {
@@ -141,6 +193,12 @@ module.exports = {
     textInputFocus() {
       return this.$store.getters.getTextInputFocus;
     }
+  },
+  updated() {
+    const { isSwipeListenerSet, listCollapsed } = this;
+    if (!isSwipeListenerSet && listCollapsed) {
+      this.handleListCollapsed();
+    }
   }
 };
 </script>
@@ -163,6 +221,16 @@ module.exports = {
   transition: opacity 0.1s;
 }
 .board-fade-enter, .board-fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+.swipe-fade-enter-active {
+  /* transition: opacity .1s; */
+  transition: opacity 0.1s;
+}
+.swipe-fade-leave-active {
+  transition: opacity 0.1s;
+}
+.swipe-fade-enter, .swipe-fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
 
@@ -208,6 +276,19 @@ module.exports = {
 .focus-transition {
   transition: 0.05s height ease-out !important;
 }
+
+#problem-swipe-container {
+  width: 100%;
+  height: 100%;
+}
+
+.problem-swipe-inner-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
 </style>
 
 <template>
@@ -247,7 +328,7 @@ module.exports = {
           [listItemClass(index)]: true,
           'li-selected': liSelectedCondition(problem)
         }"
-        @click="() => handleProblemSelect(problem)"
+        @click="() => handleProblemSelect(problem, index)"
       >
         <span>{{ parseName(problem) }}</span>
         <span v-if="ENABLE_GRADES">{{ problem.grade }}</span>
@@ -280,12 +361,21 @@ module.exports = {
 
     <transition name="button-fade">
       <div id="bottom" class="bottom-section preview" v-if="listCollapsed">
-        <div id="board-style-L" class="board-position-container">
-          <board board-id="board-L"></board>
+        <div id="problem-swipe-container">
+          <transition name="swipe-fade">
+            <div
+              class="problem-swipe-inner-container"
+              v-if="!isProblemReloading"
+            >
+              <div id="board-style-L" class="board-position-container">
+                <board board-id="board-L"></board>
+              </div>
+              <comment-display
+                :comment-value="selectedProblem.comment"
+              ></comment-display>
+            </div>
+          </transition>
         </div>
-        <comment-display
-          :comment-value="selectedProblem.comment"
-        ></comment-display>
         <div id="list-buttons" class="button-container" v-if="listCollapsed">
           <!-- <button class="button" @click="editProblem">Edytuj problem</button> -->
           <button class="button" @click="showProblemList">Pokaż listę</button>
