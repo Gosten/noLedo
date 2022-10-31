@@ -93,6 +93,7 @@ module.exports = {
       swipeHandle.removeEventListener("touchstart", this.handleSwipeStart);
       swipeHandle.removeEventListener("touchend", this.handleSwipeEnd);
       this.listCollapsed = false;
+      this.isSwipeListenerSet = false;
     },
     handleSwipeStart(e) {
       const touch = (this.touchstartX = e.changedTouches[0].screenX);
@@ -101,7 +102,6 @@ module.exports = {
     handleSwipeEnd(e) {
       const touchendX = e.changedTouches[0].screenX;
       const diff = Math.abs(touchendX - this.touchstartX);
-      console.log({ start: this.touchstartX, end: touchendX, diff });
       const diffCondition = diff > 50;
       if (diffCondition && touchendX < this.touchstartX)
         this.handleSwipe("right");

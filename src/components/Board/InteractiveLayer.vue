@@ -69,6 +69,9 @@ module.exports = {
     this.zoomElement = new PinchZoom(el, {
       draggableUnzoomed: false
     });
+    if (this.isScene(LOAD_PROBLEM)) {
+      this.zoomElement.disable();
+    }
   },
   beforeDestroy() {
     this.zoomElement.destroy();
