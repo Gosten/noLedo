@@ -42,7 +42,7 @@ const GRADES = [
 
 const DEFAULT_GRADE = 5; // Index of GRADES array
 
-const COMMENT_DISPLAY_LENGTH = 150;
+const COMMENT_DISPLAY_LENGTH = 85;
 
 const BOARD_CONFIG = {
   // Board dimension

@@ -302,18 +302,18 @@ module.exports = {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: 2em 1fr 2em;
+  grid-template-columns: 1.5em 1fr 1.5em;
 }
 .problem-swipe-arrow {
   display: flex;
   align-items: center;
-  width: 2em;
+  width: 1.5em;
   height: 100%;
 }
 .problem-swipe-arrow img {
-  width: 2em;
+  width: 1.5em;
   left: 0;
-  opacity: 0.7;
+  opacity: 0.15;
   transform: translate(-0.6em);
 }
 
@@ -322,7 +322,7 @@ module.exports = {
 }
 
 .problem-swipe-arrow-disabled {
-  opacity: 0.4 !important;
+  opacity: 0 !important;
 }
 </style>
 

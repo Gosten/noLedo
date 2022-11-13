@@ -37,7 +37,11 @@
 module.exports = {
   mounted() {
     this.textInputHandle = document.getElementById("add-problem-name-input");
-    this.textInputHandle.addEventListener("keyup", this.blurInput);
+    this.textInputHandleAuth = document.getElementById(
+      "add-problem-author-input"
+    );
+    this.textInputHandle.addEventListener("keyup", this.blurInputName);
+    this.textInputHandleAuth.addEventListener("keyup", this.blurInputAuth);
 
     if (this.initValue) {
       this.inputVal.name = this.initValue.name;
@@ -45,7 +49,8 @@ module.exports = {
     }
   },
   beforeUnmount() {
-    this.textInputHandle.removeEventListener("keyup", this.blurInput);
+    this.textInputHandle.removeEventListener("keyup", this.blurInputName);
+    this.textInputHandleAuth.removeEventListener("keyup", this.blurInputAuth);
   },
   props: {
     setName: Function,
@@ -67,7 +72,8 @@ module.exports = {
       nameLengthLimit: 20,
       authorLengthLimit: 10,
       boardZoom: false,
-      textInputHandle: undefined
+      textInputHandle: undefined,
+      textInputHandleAuth: undefined
     };
   },
   computed: {
@@ -76,10 +82,12 @@ module.exports = {
     }
   },
   methods: {
-    blurInput(e) {
-      if (e.key == "Enter") this.textInputHandle.blur();
+    blurInputName(e) {
+      if (e.keyCode === 13) this.textInputHandle.blur();
     },
-
+    blurInputAuth(e) {
+      if (e.keyCode === 13) this.textInputHandleAuth.blur();
+    },
     handleNameInput(event, callback) {
       const value = event.target.value;
       if (!this.load) this.setErrorName(false);
