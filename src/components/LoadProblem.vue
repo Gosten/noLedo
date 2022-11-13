@@ -112,7 +112,7 @@ module.exports = {
       this.isSwipeListenerSet = false;
     },
 
-    handleSwipe(dir) {
+    getNextIndex(dir) {
       let nextIndex;
       if (dir === "right") {
         nextIndex = this.selectedProblemIndex + 1;
@@ -121,6 +121,15 @@ module.exports = {
       }
       const nextProblem = this.filteredList[nextIndex];
       if (nextProblem) {
+        return nextIndex;
+      }
+      return null;
+    },
+
+    handleSwipe(dir) {
+      const nextIndex = this.getNextIndex(dir);
+      if (nextIndex) {
+        const nextProblem = this.filteredList[nextIndex];
         this.selectedProblemIndex = nextIndex;
         this.isProblemReloading = true;
         setTimeout(() => {
@@ -239,7 +248,7 @@ module.exports = {
   transition-delay: 0.4s;
 }
 .button-fade-leave-active {
-  transition: opacity 0.3s;
+  transition: opacity 0s;
 }
 .button-fade-enter, .button-fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
@@ -283,11 +292,37 @@ module.exports = {
 }
 
 .problem-swipe-inner-container {
-  width: 100%;
+  /* width: 100%; */
   height: 100%;
   display: flex;
   align-items: center;
   flex-direction: column;
+}
+.problem-swipe-mid-container {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1.5em 1fr 1.5em;
+}
+.problem-swipe-arrow {
+  display: flex;
+  align-items: center;
+  width: 1.5em;
+  height: 100%;
+}
+.problem-swipe-arrow img {
+  width: 1.5em;
+  left: 0;
+  opacity: 0.15;
+  transform: translate(-0.6em);
+}
+
+.swipe-arrow-right {
+  transform: rotate(180deg);
+}
+
+.problem-swipe-arrow-disabled {
+  opacity: 0 !important;
 }
 </style>
 
@@ -363,16 +398,35 @@ module.exports = {
       <div id="bottom" class="bottom-section preview" v-if="listCollapsed">
         <div id="problem-swipe-container">
           <transition name="swipe-fade">
-            <div
-              class="problem-swipe-inner-container"
-              v-if="!isProblemReloading"
-            >
-              <div id="board-style-L" class="board-position-container">
-                <board board-id="board-L"></board>
+            <div class="problem-swipe-mid-container" v-if="!isProblemReloading">
+              <div class="problem-swipe-arrow swipe-arrow-left">
+                <img
+                  src="images/arrow_slim_horizontal.svg"
+                  alt=""
+                  :class="{
+                    'problem-swipe-arrow-disabled': !getNextIndex('left')
+                  }"
+                  @click="() => handleSwipe('left')"
+                />
               </div>
-              <comment-display
-                :comment-value="selectedProblem.comment"
-              ></comment-display>
+              <div class="problem-swipe-inner-container">
+                <div id="board-style-L" class="board-position-container">
+                  <board board-id="board-L"></board>
+                </div>
+                <comment-display
+                  :comment-value="selectedProblem.comment"
+                ></comment-display>
+              </div>
+              <div class="problem-swipe-arrow swipe-arrow-right">
+                <img
+                  src="images/arrow_slim_horizontal.svg"
+                  alt=""
+                  :class="{
+                    'problem-swipe-arrow-disabled': !getNextIndex('right')
+                  }"
+                  @click="() => handleSwipe('right')"
+                />
+              </div>
             </div>
           </transition>
         </div>

@@ -17,17 +17,29 @@ module.exports = {
     collapseFilters() {
       this.isCollapsed = true;
       this.setIsFilterCollapsed(true);
+    },
+    blurInput(e) {
+      if (e.keyCode === 13) this.textInputHandle.blur();
     }
   },
   data() {
     return {
       ENABLE_GRADES,
       inputValue: "",
-      isCollapsed: true
+      isCollapsed: true,
+      textInputHandle: undefined
     };
   },
-  mounted() {},
-  updated() {},
+  updated() {
+    if (!this.isCollapsed) {
+      this.textInputHandle = document.getElementById(
+        "add-problem-author-input"
+      );
+      this.textInputHandle.addEventListener("keyup", this.blurInput);
+    } else {
+      // this.textInputHandle.removeEventListener("keyup", this.blurInput);
+    }
+  },
   components: {
     "name-input": httpVueLoader("components/subComponents/NameInputLoad.vue"),
     "slider-component": httpVueLoader("components/DoubleSlider.vue")

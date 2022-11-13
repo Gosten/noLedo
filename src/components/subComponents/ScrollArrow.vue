@@ -67,7 +67,7 @@ module.exports = {
 <template>
   <div class="scroll-arrow-container" :class="{ visible: isVisible() }">
     <button class="scroll-arrow" :class="{ reverse }" @click="handleClick">
-      <img src="images/arrow.svg" alt="" />
+      <img src="images/arrow_slim.svg" alt="" />
     </button>
   </div>
 </template>
