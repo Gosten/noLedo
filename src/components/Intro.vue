@@ -2,8 +2,8 @@
   <div id="intro-scene">
     <div class="intro-container">
       <transition name="intro">
-        <img v-if="fade" class="splash-img" src="./images/LW_Logo.png" alt="" />
-        <!-- <h1 v-if="fade">LED<span class="green">o</span>Wall</h1> -->
+        <img v-if="fade" class="splash-img" src="./images/LW_logo.svg" alt="" />
+        <!-- <img v-if="fade" class="splash-img" src="./images/LW_logo_gif.gif" alt="" />-->
       </transition>
     </div>
   </div>
@@ -17,8 +17,8 @@ module.exports = {
     };
   },
   mounted() {
-    setTimeout(() => (this.fade = false), 2000);
-    setTimeout(() => this.$store.commit("toggleIntro"), 4000);
+    setTimeout(() => (this.fade = false), 3000);
+    setTimeout(() => this.$store.commit("toggleIntro"), 3700);
   }
 };
 </script>
