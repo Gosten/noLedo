@@ -120,7 +120,7 @@ module.exports = {
         nextIndex = this.selectedProblemIndex - 1;
       }
       const nextProblem = this.filteredList[nextIndex];
-      if (nextProblem) {
+      if (Boolean(nextProblem)) {
         return nextIndex;
       }
       return null;
@@ -128,7 +128,7 @@ module.exports = {
 
     handleSwipe(dir) {
       const nextIndex = this.getNextIndex(dir);
-      if (nextIndex) {
+      if (nextIndex !== null) {
         const nextProblem = this.filteredList[nextIndex];
         this.selectedProblemIndex = nextIndex;
         this.isProblemReloading = true;
@@ -404,7 +404,8 @@ module.exports = {
                   src="images/arrow_slim_horizontal.svg"
                   alt=""
                   :class="{
-                    'problem-swipe-arrow-disabled': !getNextIndex('left')
+                    'problem-swipe-arrow-disabled':
+                      getNextIndex('left') === null
                   }"
                   @click="() => handleSwipe('left')"
                 />
@@ -422,7 +423,8 @@ module.exports = {
                   src="images/arrow_slim_horizontal.svg"
                   alt=""
                   :class="{
-                    'problem-swipe-arrow-disabled': !getNextIndex('right')
+                    'problem-swipe-arrow-disabled':
+                      getNextIndex('right') === null
                   }"
                   @click="() => handleSwipe('right')"
                 />

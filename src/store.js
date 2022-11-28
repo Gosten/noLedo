@@ -52,8 +52,8 @@ const store = new Vuex.Store({
       value1: 0,
       value2: GRADES.length - 1
     },
-    // intro: INTRO,
-    intro: false,
+    intro: INTRO,
+    // intro: false,
     textInputFocus: false,
     zoomMap: {
       [ADD_PROBLEM]: {

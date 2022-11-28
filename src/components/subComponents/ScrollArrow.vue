@@ -48,6 +48,7 @@ module.exports = {
 .scroll-arrow img {
   width: 16em;
   height: 2.5em;
+  opacity: 0.15;
 }
 .reverse {
   transform: rotate(180deg);
