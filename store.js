@@ -186,13 +186,16 @@ const store = new Vuex.Store({
     },
     async fetchProblemList() {
       console.log("TEST fetching");
-
-      const response = await NoLedoApi.getProblemList();
-      if (response) {
+      try {
+        const response = await NoLedoApi.getProblemList();
         const { problemList } = response;
+        console.log("Problem list response", { problemList });
         this.commit("setProblemList", problemList);
+        return response;
+      } catch (error) {
+        console.log("Problem list fetch error", { problemList });
+        return null;
       }
-      return response;
     },
   },
   getters: {
