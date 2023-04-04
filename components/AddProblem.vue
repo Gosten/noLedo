@@ -62,7 +62,7 @@ module.exports = {
       authNameValue: "",
       commentValue: "",
       errorFlags: {
-        name: false
+        name: false,
       },
       mapGrade,
       boardZoom: false,
@@ -70,7 +70,7 @@ module.exports = {
       ENABLE_GRADES,
       ENABLE_AUTHOR,
       ADD_PROBLEM,
-      textInputHandle: undefined
+      textInputHandle: undefined,
     };
   },
   components: {
@@ -82,7 +82,7 @@ module.exports = {
     "grade-slider": httpVueLoader("components/SingleSlider.vue"),
     "board-legend": httpVueLoader("components/subComponents/BoardLegend.vue"),
     "scroll-arrow": httpVueLoader("components/subComponents/ScrollArrow.vue"),
-    "comment-field": httpVueLoader("components/subComponents/CommentField.vue")
+    "comment-field": httpVueLoader("components/subComponents/CommentField.vue"),
   },
   computed: {
     problmState() {
@@ -111,7 +111,7 @@ module.exports = {
     },
     zoomScale() {
       return this.$store.getters.getZoomScale(ADD_PROBLEM);
-    }
+    },
   },
   methods: {
     setName(newName) {
@@ -141,16 +141,23 @@ module.exports = {
         grips: this.problmState,
         author: this.authNameValue,
         comment: this.commentValue || "",
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
       if (this.validateProblem(newProblem)) {
-        let newList = [newProblem, ...this.problemList];
+        // let newList = [newProblem, ...this.problemList];
 
-        uibuilder.send({
-          topic: "save",
-          payload: JSON.stringify(newList)
-        });
-        uibuilder.send({ topic: TOPIC.LOAD });
+        //TODO add propper error handling
+        try {
+          NoLedoApi.addProblem(newProblem);
+        } catch (error) {
+          console.error(error);
+        }
+
+        // uibuilder.send({
+        //   topic: "save",
+        //   payload: JSON.stringify(newList)
+        // });
+        // uibuilder.send({ topic: TOPIC.LOAD });
 
         this.$store.commit("toggleAddProblemModal");
         this.$store.commit("setAddProblemNewProblem", newProblem);
@@ -184,7 +191,7 @@ module.exports = {
     handleError(errorMessage) {
       this.$store.dispatch("toggleErrorModal", {
         active: true,
-        message: errorMessage
+        message: errorMessage,
       });
       console.warn(errorMessage);
       return false;
@@ -193,8 +200,8 @@ module.exports = {
     handleNameError(errorMessage) {
       this.handleError(errorMessage);
       this.errorFlags.name = true;
-    }
-  }
+    },
+  },
 };
 </script>
 

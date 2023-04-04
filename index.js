@@ -24,7 +24,7 @@ function sendProblem({ grips }) {
     .filter((key) => gripMap[key])
     .map((key) => ({
       diodes: gripMap[key],
-      color: grips[key]
+      color: grips[key],
     }));
 
   const colorMap = {};
@@ -35,7 +35,7 @@ function sendProblem({ grips }) {
     .map((diodeIndex) => getDiodeColor(diodeIndex, colorMap[diodeIndex]))
     .join("|");
 
-  uibuilder.send(msg);
+  // uibuilder.send(msg);
 }
 
 const app1 = new Vue({
@@ -46,7 +46,7 @@ const app1 = new Vue({
     "load-problem": httpVueLoader("components/LoadProblem.vue"),
     "active-problem": httpVueLoader("components/ActiveProblem.vue"),
     "app-component": httpVueLoader("components/AppComponent.vue"),
-    "menu-bar": httpVueLoader("components/Menu.vue")
+    "menu-bar": httpVueLoader("components/Menu.vue"),
   },
 
   computed: {
@@ -58,38 +58,10 @@ const app1 = new Vue({
     },
     isActiveProblem() {
       return this.$store.getters.getActiveScene === ACTIVE_PROBLEM;
-    }
+    },
   },
-
-  methods: {},
-
   store,
   mounted: function () {
-    uibuilder.start();
-
-    var vueApp = this;
-    uibuilder.send({ topic: TOPIC.LOAD_STATE });
-    uibuilder.send({ topic: TOPIC.LOAD });
-
-    uibuilder.onChange("msg", function (msg) {
-      if (msg.topic === TOPIC.LOAD) {
-        if (msg.payload.length === 0) {
-          store.commit("setProblemList", []);
-          return console.warn("EMPTY PROBLEM LIST");
-        }
-        let newProblemList = JSON.parse(msg.payload);
-        console.log("loaded msg: ", newProblemList);
-        store.commit("setProblemList", newProblemList);
-      }
-      if (msg.topic === TOPIC.LOAD_STATE) {
-        //ActiveState
-        const loadedState = JSON.parse(msg.payload);
-        if (loadedState) {
-          //console.log(loadedState, Object.entries(loadedState).length);
-          store.commit("setActiveProblem", loadedState);
-        }
-        //console.log('loaded_state: ', loadedState);
-      }
-    });
-  }
+    store.dispatch("fetchProblemList");
+  },
 });

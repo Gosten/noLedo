@@ -62,7 +62,7 @@ module.exports = {
         topic: "display",
         payload: `${index},${color}`
       }));
-      messages.forEach((msg) => uibuilder.send(msg));
+      // messages.forEach((msg) => uibuilder.send(msg));
     },
     gripClassCondition(id) {
       if (this.isScene(LOAD_PROBLEM)) return this.selectedProblem.grips[id];

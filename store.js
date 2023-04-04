@@ -26,7 +26,7 @@ const store = new Vuex.Store({
       menuActive: false,
       activeScene: "LOAD_PROBLEM",
       sceneLoaded: true,
-      activeProblem: undefined
+      activeProblem: undefined,
     },
     selectedProblem: {},
     editProblem: {
@@ -34,23 +34,23 @@ const store = new Vuex.Store({
       newName: "",
       newGrade: "",
       newComment: "",
-      deleteModal: false
+      deleteModal: false,
     },
     addProblem: {
       problemState: {},
       errorState: {
         active: false,
-        message: "asdasd"
+        message: "asdasd",
       },
       addModal: false,
       selectedGrade: 0,
-      newProblem: {}
+      newProblem: {},
     },
     problemList: [],
     // problemList,
     filterSlider: {
       value1: 0,
-      value2: GRADES.length - 1
+      value2: GRADES.length - 1,
     },
     intro: INTRO,
     // intro: false,
@@ -59,14 +59,14 @@ const store = new Vuex.Store({
       [ADD_PROBLEM]: {
         active: false,
         scale: 2,
-        max: 8
+        max: 8,
       },
       [ACTIVE_PROBLEM]: {
         active: false,
         scale: 2,
-        max: 8
-      }
-    }
+        max: 8,
+      },
+    },
   },
   mutations: {
     // zoomIn(state, scene) {
@@ -112,7 +112,7 @@ const store = new Vuex.Store({
       const newProblemState = {};
       Object.keys(payload).forEach((key) => (newProblemState[key] = false));
       state.addProblem.problemState = newProblemState;
-      sendProblem({ grips: newProblemState });
+      // sendProblem({ grips: newProblemState });
     },
     setErrorState(state, payload) {
       state.addProblem.errorState = payload;
@@ -163,7 +163,7 @@ const store = new Vuex.Store({
     },
     toggleIntro(state) {
       state.intro = !state.intro;
-    }
+    },
   },
   actions: {
     toggleErrorModal(state, payload) {
@@ -183,7 +183,17 @@ const store = new Vuex.Store({
     selectScne(state, payload) {
       this.commit("selectScne", payload);
       setTimeout(() => this.commit("toggleMenu"), 250);
-    }
+    },
+    async fetchProblemList() {
+      console.log("TEST fetching");
+
+      const response = await NoLedoApi.getProblemList();
+      if (response) {
+        const { problemList } = response;
+        this.commit("setProblemList", problemList);
+      }
+      return response;
+    },
   },
   getters: {
     getActiveScene: (state) => state.menu.activeScene,
@@ -203,6 +213,6 @@ const store = new Vuex.Store({
     getIntro: (state) => state.intro,
     getTextInputFocus: (state) => state.textInputFocus,
     getZoom: (state) => (scene) => state.zoomMap[scene],
-    getZoomScale: (state) => (scene) => `--zoom: ${state.zoomMap[scene].scale}`
-  }
+    getZoomScale: (state) => (scene) => `--zoom: ${state.zoomMap[scene].scale}`,
+  },
 });

@@ -35,11 +35,11 @@ module.exports = {
     };
   },
   mounted() {
-    uibuilder.send({
-      topic: "saveState",
-      payload: JSON.stringify(this.activeProblem)
-    });
-    sendProblem(this.activeProblem);
+    // uibuilder.send({
+    //   topic: "saveState",
+    //   payload: JSON.stringify(this.activeProblem)
+    // });
+    // sendProblem(this.activeProblem);
   },
   computed: {
     activeProblem() {

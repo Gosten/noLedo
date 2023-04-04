@@ -94,7 +94,7 @@ module.exports = {
     this.oldName = this.editProblemState.editedProblem.name;
 
     //display problem
-    sendProblem(this.editProblemState.editedProblem);
+    // sendProblem(this.editProblemState.editedProblem);
   },
   computed: {
     editProblemState() {

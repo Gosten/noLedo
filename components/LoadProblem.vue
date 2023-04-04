@@ -11,7 +11,7 @@ module.exports = {
     ),
     "sorting-arrows": httpVueLoader(
       "components/subComponents/SortingArrows.vue"
-    )
+    ),
   },
   data() {
     return {
@@ -19,7 +19,7 @@ module.exports = {
       GRADES,
       gradeFilter: {
         from: 0,
-        to: GRADES.length - 1
+        to: GRADES.length - 1,
       },
       sliderInstance: undefined,
       mapGrade,
@@ -32,7 +32,8 @@ module.exports = {
       touchstartX: 0,
       isSwipeListenerSet: false,
       selectedProblemIndex: null,
-      isProblemReloading: false
+      isProblemReloading: false,
+      isProblemListLoading: false,
     };
   },
   methods: {
@@ -67,7 +68,7 @@ module.exports = {
     loadProblem() {
       this.$store.commit("selectScne", ACTIVE_PROBLEM);
       this.$store.commit("setActiveProblem", this.selectedProblem);
-      sendProblem(this.selectedProblem);
+      // sendProblem(this.selectedProblem);
     },
     editProblem() {
       this.$store.commit("selectScne", EDIT_PROBLEM);
@@ -137,7 +138,7 @@ module.exports = {
         }, 50);
         this.$store.commit("selectProblem", nextProblem);
       }
-    }
+    },
   },
   beforeUnmount() {
     this.sliderInstance.destroy();
@@ -201,14 +202,19 @@ module.exports = {
     },
     textInputFocus() {
       return this.$store.getters.getTextInputFocus;
-    }
+    },
   },
   updated() {
     const { isSwipeListenerSet, listCollapsed } = this;
     if (!isSwipeListenerSet && listCollapsed) {
       this.handleListCollapsed();
     }
-  }
+  },
+  async mounted() {
+    this.isProblemListLoading = true;
+    await this.$store.dispatch("fetchProblemList");
+    this.isProblemListLoading = false;
+  },
 };
 </script>
 
@@ -324,6 +330,37 @@ module.exports = {
 .problem-swipe-arrow-disabled {
   opacity: 0 !important;
 }
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: calc(100vw - 2em);
+  max-width: 500px;
+  padding: 0;
+  margin: 0;
+  top: calc(60px + 1em);
+  height: calc(100% - 60px - 7em);
+}
+
+.loader {
+  border: 4px solid hsl(0, 0%, 60%);
+  border-top: 4px solid transparent;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 </style>
 
 <template>
@@ -332,12 +369,16 @@ module.exports = {
       <loading-modal v-if="!problemList"></loading-modal>
     </transition>
 
+    <div v-if="isProblemListLoading" class="loader-container">
+      <div class="loader"></div>
+    </div>
     <ul
+      v-if="!isProblemListLoading"
       id="problem-list"
       :class="{
         collapsed: listCollapsed,
         'focus-transition': textInputFocus,
-        'filter-section-collapsed': isFilterCollapsed
+        'filter-section-collapsed': isFilterCollapsed,
       }"
     >
       <li class="list-label">
@@ -361,7 +402,7 @@ module.exports = {
         :key="problem.name"
         :class="{
           [listItemClass(index)]: true,
-          'li-selected': liSelectedCondition(problem)
+          'li-selected': liSelectedCondition(problem),
         }"
         @click="() => handleProblemSelect(problem, index)"
       >
@@ -405,7 +446,7 @@ module.exports = {
                   alt=""
                   :class="{
                     'problem-swipe-arrow-disabled':
-                      getNextIndex('left') === null
+                      getNextIndex('left') === null,
                   }"
                   @click="() => handleSwipe('left')"
                 />
@@ -424,7 +465,7 @@ module.exports = {
                   alt=""
                   :class="{
                     'problem-swipe-arrow-disabled':
-                      getNextIndex('right') === null
+                      getNextIndex('right') === null,
                   }"
                   @click="() => handleSwipe('right')"
                 />
