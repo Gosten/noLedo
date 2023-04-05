@@ -1,0 +1,17 @@
+.board-container {
+  font-size: 16px !important;
+  height: 100%;
+  width: 100%;
+}
+
+.board-position {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--container-width);
+  padding-inline: 1em;
+}
+
+#load-problem .board-position {
+  align-items: flex-start;
+}
