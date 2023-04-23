@@ -53,13 +53,13 @@
 <script>
 module.exports = {
   components: {
-    board: httpVueLoader("components/Board/Board.vue"),
-    "name-input": httpVueLoader("components/subComponents/NameAuthInput.vue"),
-    "grade-slider": httpVueLoader("components/SingleSlider.vue"),
-    "error-modal": httpVueLoader("components/ErrorModal.vue"),
-    "delete-modal": httpVueLoader("components/DeleteModal.vue"),
-    "board-legend": httpVueLoader("components/subComponents/BoardLegend.vue"),
-    "scroll-arrow": httpVueLoader("components/subComponents/ScrollArrow.vue")
+    board: httpVueLoader("./Board/Board.vue"),
+    "name-input": httpVueLoader("./subComponents/NameAuthInput.vue"),
+    "grade-slider": httpVueLoader("./SingleSlider.vue"),
+    "error-modal": httpVueLoader("./ErrorModal.vue"),
+    "delete-modal": httpVueLoader("./DeleteModal.vue"),
+    "board-legend": httpVueLoader("./subComponents/BoardLegend.vue"),
+    "scroll-arrow": httpVueLoader("./subComponents/ScrollArrow.vue")
   },
   data() {
     return {

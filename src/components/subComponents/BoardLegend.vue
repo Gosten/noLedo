@@ -30,10 +30,10 @@ module.exports = {
 .legend-item p {
   margin-inline: 3px;
   font-size: 0.9em;
-  margin-left: .5em;
+  margin-left: 0.5em;
 }
 .legend-grip {
-  margin-top: .3em;
+  margin-top: 0.3em;
   position: relative;
 }
 .outline {
@@ -53,7 +53,7 @@ module.exports = {
   <div class="legend-container">
     <div class="legend-item">
       <div class="legend-grip">
-        <img src="images/legend-grip-color.svg" alt="legend-green" />
+        <img src="../src/images/legend-grip-color.svg" alt="legend-green" />
         <svg class="outline" viewBox="0 0 76.32 71.15">
           <path
             class="grip-selection-1"
@@ -65,7 +65,7 @@ module.exports = {
     </div>
     <div class="legend-item">
       <div class="legend-grip">
-        <img src="images/legend-grip-color.svg" alt="legend-green" />
+        <img src="../src/images/legend-grip-color.svg" alt="legend-green" />
         <svg class="outline" viewBox="0 0 76.32 71.15">
           <path
             class="grip-selection-2"
@@ -77,7 +77,7 @@ module.exports = {
     </div>
     <div class="legend-item">
       <div class="legend-grip">
-        <img src="images/legend-grip-color.svg" alt="legend-green" />
+        <img src="../src/images/legend-grip-color.svg" alt="legend-green" />
         <svg class="outline" viewBox="0 0 76.32 71.15">
           <path
             class="grip-selection-3"
@@ -87,4 +87,5 @@ module.exports = {
       </div>
       <p>stopień</p>
     </div>
+  </div>
 </template>

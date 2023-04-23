@@ -1,17 +1,13 @@
 <script>
 module.exports = {
   components: {
-    "name-input": httpVueLoader("components/subComponents/NameInputLoad.vue"),
-    filters: httpVueLoader("components/subComponents/ProblemFilters.vue"),
-    "loading-modal": httpVueLoader("components/LoadingModal.vue"),
-    "slider-component": httpVueLoader("components/DoubleSlider.vue"),
-    board: httpVueLoader("components/Board/Board.vue"),
-    "comment-display": httpVueLoader(
-      "components/subComponents/CommentDisplay.vue"
-    ),
-    "sorting-arrows": httpVueLoader(
-      "components/subComponents/SortingArrows.vue"
-    ),
+    "name-input": httpVueLoader("./subComponents/NameInputLoad.vue"),
+    filters: httpVueLoader("./subComponents/ProblemFilters.vue"),
+    "loading-modal": httpVueLoader("./LoadingModal.vue"),
+    "slider-component": httpVueLoader("./DoubleSlider.vue"),
+    board: httpVueLoader("./Board/Board.vue"),
+    "comment-display": httpVueLoader("./subComponents/CommentDisplay.vue"),
+    "sorting-arrows": httpVueLoader("./subComponents/SortingArrows.vue")
   },
   data() {
     return {
@@ -19,7 +15,7 @@ module.exports = {
       GRADES,
       gradeFilter: {
         from: 0,
-        to: GRADES.length - 1,
+        to: GRADES.length - 1
       },
       sliderInstance: undefined,
       mapGrade,
@@ -33,7 +29,7 @@ module.exports = {
       isSwipeListenerSet: false,
       selectedProblemIndex: null,
       isProblemReloading: false,
-      isProblemListLoading: false,
+      isProblemListLoading: false
     };
   },
   methods: {
@@ -138,7 +134,7 @@ module.exports = {
         }, 50);
         this.$store.commit("selectProblem", nextProblem);
       }
-    },
+    }
   },
   beforeUnmount() {
     this.sliderInstance.destroy();
@@ -202,7 +198,7 @@ module.exports = {
     },
     textInputFocus() {
       return this.$store.getters.getTextInputFocus;
-    },
+    }
   },
   updated() {
     const { isSwipeListenerSet, listCollapsed } = this;
@@ -214,7 +210,7 @@ module.exports = {
     this.isProblemListLoading = true;
     await this.$store.dispatch("fetchProblemList");
     this.isProblemListLoading = false;
-  },
+  }
 };
 </script>
 
@@ -378,7 +374,7 @@ module.exports = {
       :class="{
         collapsed: listCollapsed,
         'focus-transition': textInputFocus,
-        'filter-section-collapsed': isFilterCollapsed,
+        'filter-section-collapsed': isFilterCollapsed
       }"
     >
       <li class="list-label">
@@ -402,7 +398,7 @@ module.exports = {
         :key="problem.name"
         :class="{
           [listItemClass(index)]: true,
-          'li-selected': liSelectedCondition(problem),
+          'li-selected': liSelectedCondition(problem)
         }"
         @click="() => handleProblemSelect(problem, index)"
       >
@@ -442,11 +438,11 @@ module.exports = {
             <div class="problem-swipe-mid-container" v-if="!isProblemReloading">
               <div class="problem-swipe-arrow swipe-arrow-left">
                 <img
-                  src="images/arrow_slim_horizontal.svg"
+                  src="../src/images/arrow_slim_horizontal.svg"
                   alt=""
                   :class="{
                     'problem-swipe-arrow-disabled':
-                      getNextIndex('left') === null,
+                      getNextIndex('left') === null
                   }"
                   @click="() => handleSwipe('left')"
                 />
@@ -461,11 +457,11 @@ module.exports = {
               </div>
               <div class="problem-swipe-arrow swipe-arrow-right">
                 <img
-                  src="images/arrow_slim_horizontal.svg"
+                  src="../src/images/arrow_slim_horizontal.svg"
                   alt=""
                   :class="{
                     'problem-swipe-arrow-disabled':
-                      getNextIndex('right') === null,
+                      getNextIndex('right') === null
                   }"
                   @click="() => handleSwipe('right')"
                 />

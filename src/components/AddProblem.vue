@@ -62,7 +62,7 @@ module.exports = {
       authNameValue: "",
       commentValue: "",
       errorFlags: {
-        name: false,
+        name: false
       },
       mapGrade,
       boardZoom: false,
@@ -70,19 +70,19 @@ module.exports = {
       ENABLE_GRADES,
       ENABLE_AUTHOR,
       ADD_PROBLEM,
-      textInputHandle: undefined,
+      textInputHandle: undefined
     };
   },
   components: {
-    board: httpVueLoader("components/Board/Board.vue"),
-    "name-input": httpVueLoader("components/subComponents/NameAuthInput.vue"),
-    "error-modal": httpVueLoader("components/ErrorModal.vue"),
-    "problem-modal": httpVueLoader("components/AddProblemModal.vue"),
-    "loading-modal": httpVueLoader("components/LoadingModal.vue"),
-    "grade-slider": httpVueLoader("components/SingleSlider.vue"),
-    "board-legend": httpVueLoader("components/subComponents/BoardLegend.vue"),
-    "scroll-arrow": httpVueLoader("components/subComponents/ScrollArrow.vue"),
-    "comment-field": httpVueLoader("components/subComponents/CommentField.vue"),
+    board: httpVueLoader("./Board/Board.vue"),
+    "name-input": httpVueLoader("./subComponents/NameAuthInput.vue"),
+    "error-modal": httpVueLoader("./ErrorModal.vue"),
+    "problem-modal": httpVueLoader("./AddProblemModal.vue"),
+    "loading-modal": httpVueLoader("./LoadingModal.vue"),
+    "grade-slider": httpVueLoader("./SingleSlider.vue"),
+    "board-legend": httpVueLoader("./subComponents/BoardLegend.vue"),
+    "scroll-arrow": httpVueLoader("./subComponents/ScrollArrow.vue"),
+    "comment-field": httpVueLoader("./subComponents/CommentField.vue")
   },
   computed: {
     problmState() {
@@ -111,7 +111,7 @@ module.exports = {
     },
     zoomScale() {
       return this.$store.getters.getZoomScale(ADD_PROBLEM);
-    },
+    }
   },
   methods: {
     setName(newName) {
@@ -141,7 +141,7 @@ module.exports = {
         grips: this.problmState,
         author: this.authNameValue,
         comment: this.commentValue || "",
-        timestamp: Date.now(),
+        timestamp: Date.now()
       };
       if (this.validateProblem(newProblem)) {
         // let newList = [newProblem, ...this.problemList];
@@ -191,7 +191,7 @@ module.exports = {
     handleError(errorMessage) {
       this.$store.dispatch("toggleErrorModal", {
         active: true,
-        message: errorMessage,
+        message: errorMessage
       });
       console.warn(errorMessage);
       return false;
@@ -200,8 +200,8 @@ module.exports = {
     handleNameError(errorMessage) {
       this.handleError(errorMessage);
       this.errorFlags.name = true;
-    },
-  },
+    }
+  }
 };
 </script>
 

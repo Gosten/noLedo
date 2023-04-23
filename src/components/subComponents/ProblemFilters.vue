@@ -41,8 +41,8 @@ module.exports = {
     }
   },
   components: {
-    "name-input": httpVueLoader("components/subComponents/NameInputLoad.vue"),
-    "slider-component": httpVueLoader("components/DoubleSlider.vue")
+    "name-input": httpVueLoader("./subComponents/NameInputLoad.vue"),
+    "slider-component": httpVueLoader("./DoubleSlider.vue")
   },
   props: {
     setIsFilterCollapsed: Function,

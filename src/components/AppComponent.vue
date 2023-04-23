@@ -24,13 +24,13 @@
 <script>
 module.exports = {
   components: {
-    "add-problem": httpVueLoader("components/AddProblem.vue"),
-    "load-problem": httpVueLoader("components/LoadProblem.vue"),
-    "active-problem": httpVueLoader("components/ActiveProblem.vue"),
-    "edit-problem": httpVueLoader("components/EditProblem.vue"),
-    "menu-bar": httpVueLoader("components/Menu.vue"),
-    intro: httpVueLoader("components/Intro.vue"),
-    "landscape-block": httpVueLoader("components/LandscapeBlock.vue")
+    "add-problem": httpVueLoader("./AddProblem.vue"),
+    "load-problem": httpVueLoader("./LoadProblem.vue"),
+    "active-problem": httpVueLoader("./ActiveProblem.vue"),
+    "edit-problem": httpVueLoader("./EditProblem.vue"),
+    "menu-bar": httpVueLoader("./Menu.vue"),
+    intro: httpVueLoader("./Intro.vue"),
+    "landscape-block": httpVueLoader("./LandscapeBlock.vue")
   },
   computed: {
     isAddProblem() {

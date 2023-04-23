@@ -115,8 +115,10 @@ module.exports = {
   created() {},
   destroyed() {},
   components: {
-    "board-image": httpVueLoader("components/Board/BoardImage.vue"),
-    "interactive-layer": httpVueLoader("components/Board/InteractiveLayer.vue")
+    "board-image": httpVueLoader("./Board/BoardImage.vue"),
+    "interactive-layer": httpVueLoader(
+      `../../../${LOCATION_SUBFOLDER_PATH}/InteractiveLayer.vue`
+    )
   }
 };
 </script>

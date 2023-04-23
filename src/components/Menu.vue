@@ -12,7 +12,7 @@
       </h1>
 
       <div id="menu-button" @click="handleMenuClick">
-        <img id="hamburger" src="./images/hamburger-icon.png" alt="menu" />
+        <img id="hamburger" src="../src/images/hamburger-icon.png" alt="menu" />
       </div>
     </div>
   </nav>
@@ -21,7 +21,7 @@
 <script>
 module.exports = {
   components: {
-    "menu-options": httpVueLoader("components/MenuOptions.vue")
+    "menu-options": httpVueLoader("./MenuOptions.vue")
   },
   data() {
     return {

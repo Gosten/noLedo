@@ -6,7 +6,7 @@
         <img
           v-if="fade"
           class="splash-img"
-          src="./images/LW_logo_gif.gif"
+          src="../src/images/LW_logo_gif.gif"
           alt=""
         />
       </transition>

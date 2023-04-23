@@ -24,7 +24,7 @@ function sendProblem({ grips }) {
     .filter((key) => gripMap[key])
     .map((key) => ({
       diodes: gripMap[key],
-      color: grips[key],
+      color: grips[key]
     }));
 
   const colorMap = {};
@@ -42,11 +42,11 @@ const app1 = new Vue({
   el: "#app",
 
   components: {
-    "add-problem": httpVueLoader("components/AddProblem.vue"),
-    "load-problem": httpVueLoader("components/LoadProblem.vue"),
-    "active-problem": httpVueLoader("components/ActiveProblem.vue"),
-    "app-component": httpVueLoader("components/AppComponent.vue"),
-    "menu-bar": httpVueLoader("components/Menu.vue"),
+    "add-problem": httpVueLoader("../src/components/AddProblem.vue"),
+    "load-problem": httpVueLoader("../src/components/LoadProblem.vue"),
+    "active-problem": httpVueLoader("../src/components/ActiveProblem.vue"),
+    "app-component": httpVueLoader("../src/components/AppComponent.vue"),
+    "menu-bar": httpVueLoader("../src/components/Menu.vue")
   },
 
   computed: {
@@ -58,10 +58,10 @@ const app1 = new Vue({
     },
     isActiveProblem() {
       return this.$store.getters.getActiveScene === ACTIVE_PROBLEM;
-    },
+    }
   },
   store,
   mounted: function () {
     store.dispatch("fetchProblemList");
-  },
+  }
 });

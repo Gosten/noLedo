@@ -19,11 +19,9 @@
 <script>
 module.exports = {
   components: {
-    board: httpVueLoader("components/Board/Board.vue"),
-    "board-legend": httpVueLoader("components/subComponents/BoardLegend.vue"),
-    "comment-display": httpVueLoader(
-      "components/subComponents/CommentDisplay.vue"
-    )
+    board: httpVueLoader("./Board/Board.vue"),
+    "board-legend": httpVueLoader("./subComponents/BoardLegend.vue"),
+    "comment-display": httpVueLoader("./subComponents/CommentDisplay.vue")
   },
   data() {
     return {
