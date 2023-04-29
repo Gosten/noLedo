@@ -117,7 +117,7 @@ module.exports = {
   components: {
     "board-image": httpVueLoader("./Board/BoardImage.vue"),
     "interactive-layer": httpVueLoader(
-      `../../../${LOCATION_SUBFOLDER_PATH}/InteractiveLayer.vue`
+      `../../../${LOCATION_NAME}/InteractiveLayer.vue`
     )
   }
 };

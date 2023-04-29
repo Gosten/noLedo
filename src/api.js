@@ -7,7 +7,9 @@ class API {
 
   async getProblemList() {
     try {
-      const response = await axios.get(`${this.apiUrl}/problem-list`);
+      const response = await axios.get(
+        `${this.apiUrl}/problem-list/${LOCATION_NAME}`
+      );
       return response.data;
     } catch (error) {
       console.error(error);
@@ -16,7 +18,10 @@ class API {
 
   async addProblem(problem) {
     try {
-      const response = await axios.post(`${this.apiUrl}/problem`, problem);
+      const response = await axios.post(
+        `${this.apiUrl}/problem/${LOCATION_NAME}`,
+        problem
+      );
       return response.data;
     } catch (error) {
       console.error(error);
@@ -25,11 +30,14 @@ class API {
 
   async deleteProblem(id) {
     try {
-      const response = await axios.delete(`${this.apiUrl}/problem`, {
-        params: {
-          id: id,
-        },
-      });
+      const response = await axios.delete(
+        `${this.apiUrl}/problem/${LOCATION_NAME}`,
+        {
+          params: {
+            id: id
+          }
+        }
+      );
       return response.data;
     } catch (error) {
       console.error(error);
@@ -38,11 +46,15 @@ class API {
 
   async patchProblem(id, newProblem) {
     try {
-      const response = await axios.patch(`${this.apiUrl}/problem`, newProblem, {
-        params: {
-          id: id,
-        },
-      });
+      const response = await axios.patch(
+        `${this.apiUrl}/problem/${LOCATION_NAME}`,
+        newProblem,
+        {
+          params: {
+            id: id
+          }
+        }
+      );
       return response.data;
     } catch (error) {
       console.error(error);
