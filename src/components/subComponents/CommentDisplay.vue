@@ -27,7 +27,7 @@ module.exports = {
     }
   },
   components: {
-    "comment-modal": httpVueLoader("./subComponents/CommentModal.vue")
+    "comment-modal": httpVueLoader("./CommentModal.vue")
   },
   methods: {
     hideCommentModal() {
