@@ -59,7 +59,7 @@ module.exports = {
     "error-modal": httpVueLoader("components/ErrorModal.vue"),
     "delete-modal": httpVueLoader("components/DeleteModal.vue"),
     "board-legend": httpVueLoader("components/subComponents/BoardLegend.vue"),
-    "scroll-arrow": httpVueLoader("components/subComponents/ScrollArrow.vue")
+    "scroll-arrow": httpVueLoader("components/subComponents/ScrollArrow.vue"),
   },
   data() {
     return {
@@ -67,7 +67,7 @@ module.exports = {
       authorNameValue: "",
       inputReady: false,
       errorFlags: {
-        name: false
+        name: false,
       },
       mapGrade,
       oldGrips: [],
@@ -77,7 +77,7 @@ module.exports = {
       boardZoom: false,
       ENABLE_ZOOM,
       ENABLE_GRADES,
-      ADD_PROBLEM
+      ADD_PROBLEM,
     };
   },
   mounted() {
@@ -117,7 +117,7 @@ module.exports = {
     },
     zoomScale() {
       return this.$store.getters.getZoomScale(ADD_PROBLEM);
-    }
+    },
   },
   methods: {
     setName(newName) {
@@ -152,7 +152,7 @@ module.exports = {
         name: this.nameValue,
         grade: newGrade,
         grips: this.editProblemState.editedProblem.grips,
-        author: this.authorNameValue
+        author: this.authorNameValue,
       };
       if (this.validateProblem(newProblem)) {
         let newList = this.problemList.map((problem) => {
@@ -165,7 +165,7 @@ module.exports = {
 
         this.$store.dispatch("toggleEditModal", {
           active: true,
-          message: editModalmessage
+          message: editModalmessage,
         });
         this.saveNewList(newList);
       }
@@ -199,7 +199,7 @@ module.exports = {
     handleError(errorMessage) {
       this.$store.dispatch("toggleErrorModal", {
         active: true,
-        message: errorMessage
+        message: errorMessage,
       });
       console.warn(errorMessage);
       return false;
@@ -230,8 +230,8 @@ module.exports = {
       if (matchArray.length === 0) return true;
       if (matchArray[0].name === this.oldName) return true;
       return this.handleNameError("Ta nazwa już istnieje");
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -24,7 +24,9 @@
 <script>
 module.exports = {
   components: {
-    "add-problem": httpVueLoader("components/AddProblem.vue"),
+    "add-problem": httpVueLoader(
+      "components/subComponents/AddProblemWrapper.vue"
+    ),
     "load-problem": httpVueLoader("components/LoadProblem.vue"),
     "active-problem": httpVueLoader("components/ActiveProblem.vue"),
     "edit-problem": httpVueLoader("components/EditProblem.vue"),

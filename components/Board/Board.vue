@@ -1,14 +1,26 @@
 <template>
-  <div :id="boardId" class="board-container">
-    <interactive-layer
-      :handle-click="handleClick"
-      :get-display-problem="getDisplayProblem"
-      :selected-problem="selectedProblem"
-      :active-problem="activeProblem"
-      :problem-state="problemState"
-      :edited-problem="editedProblem"
-    >
-    </interactive-layer>
+  <div class="board-main-container">
+    <div v-if="showHideNumbersButton" class="hide-numbers-button-container">
+      <button class="hide-numbers-button" @click="toggleShowNumbers">
+        <i :class="`mdi mdi-numeric${showNumbers ? '-off' : ''}`"></i>
+      </button>
+    </div>
+    <div :id="boardId" class="board-container">
+      <interactive-layer
+        :handle-click="handleClick"
+        :get-display-problem="getDisplayProblem"
+        :selected-problem="selectedProblem"
+        :active-problem="activeProblem"
+        :problem-state="problemState"
+        :edited-problem="editedProblem"
+        :alt-pinch-id="altPinchId"
+        :loop-state="loopState"
+        :is-active-loop-mode="isActiveLoopMode"
+        :active-loop-mode-grips="activeLoopModeGrips"
+        :show-numbers="showNumbers"
+      >
+      </interactive-layer>
+    </div>
   </div>
 </template>
 
@@ -40,12 +52,16 @@ module.exports = {
       }
     },
     handleClick(id) {
-      if (this.isScene(ADD_PROBLEM))
-        this.$store.commit("toggleProblemState", id);
-      if (this.isScene(EDIT_PROBLEM))
-        this.$store.commit("editProblemStateGrip", id);
-      if (this.isScene(ADD_PROBLEM) || this.isScene(EDIT_PROBLEM))
-        this.sendGripMessage(id);
+      if (this.isLoopBoard) {
+        this.gripClickCallback && this.gripClickCallback(id);
+      } else {
+        if (this.isScene(ADD_PROBLEM))
+          this.$store.commit("toggleProblemState", id);
+        if (this.isScene(EDIT_PROBLEM))
+          this.$store.commit("editProblemStateGrip", id);
+        if (this.isScene(ADD_PROBLEM) || this.isScene(EDIT_PROBLEM))
+          this.sendGripMessage(id);
+      }
     },
     sendGripMessage(id) {
       let diodes = gripMap[id];
@@ -60,7 +76,7 @@ module.exports = {
       }
       const messages = diodes.map((index) => ({
         topic: "display",
-        payload: `${index},${color}`
+        payload: `${index},${color}`,
       }));
       // messages.forEach((msg) => uibuilder.send(msg));
     },
@@ -76,9 +92,15 @@ module.exports = {
     },
     isScene(sceneType) {
       return this.$store.getters.getActiveScene === sceneType;
-    }
+    },
+    toggleShowNumbers() {
+      this.showNumbers = !this.showNumbers;
+    },
   },
   computed: {
+    isLoopBoard() {
+      return this.altPinchId === "loop-pinch";
+    },
     problemState() {
       return this.$store.getters.getAddProblemState;
     },
@@ -100,24 +122,31 @@ module.exports = {
       return this.$store.getters.getSelectedProblem;
     },
     diodeIndexes: () => diodeIndexes,
-    gripImages: () => gripImages
+    gripImages: () => gripImages,
   },
   data() {
     return {
       ACTIVE_PROBLEM,
-      BOARD_CONFIG
+      BOARD_CONFIG,
+      showNumbers: true,
     };
   },
   props: {
-    boardId: String
+    boardId: String,
+    altPinchId: String,
+    gripClickCallback: Function,
+    loopState: Object,
+    isActiveLoopMode: Boolean,
+    activeLoopModeGrips: Array,
+    showHideNumbersButton: Boolean,
   },
   mounted() {},
   created() {},
   destroyed() {},
   components: {
     "board-image": httpVueLoader("components/Board/BoardImage.vue"),
-    "interactive-layer": httpVueLoader("components/Board/InteractiveLayer.vue")
-  }
+    "interactive-layer": httpVueLoader("components/Board/InteractiveLayer.vue"),
+  },
 };
 </script>
 
@@ -140,5 +169,38 @@ module.exports = {
 .board-background-image {
   width: 100%;
   /* transform: translate(var(--board-image-left), var(--board-image-top)); */
+}
+
+.hide-numbers-button-container {
+  width: 100%;
+  height: 32px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.hide-numbers-button {
+  width: 32px;
+  height: 32px;
+  border: 2px solid black;
+  border-radius: 5px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+.hide-numbers-button i {
+  font-size: 23px;
+  color: black;
+  padding: 0;
+}
+
+.board-main-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 </style>

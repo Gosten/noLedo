@@ -185,7 +185,6 @@ const store = new Vuex.Store({
       setTimeout(() => this.commit("toggleMenu"), 250);
     },
     async fetchProblemList() {
-      console.log("TEST fetching");
       try {
         const response = await NoLedoApi.getProblemList();
         const { problemList } = response;

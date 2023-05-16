@@ -2,13 +2,8 @@
   <div id="intro-scene">
     <div class="intro-container">
       <transition name="intro">
-        <!-- <img v-if="fade" class="splash-img" src="./images/LW_logo.png" alt="" /> -->
-        <img
-          v-if="fade"
-          class="splash-img"
-          src="./images/LW_logo_gif.gif"
-          alt=""
-        />
+        <img v-if="fade" class="splash-img" src="./images/LW_logo.svg" alt="" />
+        <!-- <img v-if="fade" class="splash-img" src="./images/LW_logo_gif.gif" alt="" />-->
       </transition>
     </div>
   </div>
