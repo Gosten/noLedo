@@ -1,61 +1,183 @@
 <!DOCTYPE html>
-<html lang="pl-PL">
-	<head>
-		<meta charset="utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./src/css/mainPage.css" media="all" />
+    <link rel="manifest" href="./manifest.json" />
 
-		<!-- website title -->
-		<title>LedoWalls</title>
+    <link rel="apple-touch-icon" href="src/icons/apple-icon-180.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
 
-		<meta name="description" content="climbing app" />
+    <link
+      rel="apple-touch-startup-image"
+      href="src/splash/apple-splash-2048-2732.jpg"
+      media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="src/splash/apple-splash-1668-2388.jpg"
+      media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="src/splash/apple-splash-1536-2048.jpg"
+      media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="src/splash/apple-splash-1668-2224.jpg"
+      media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="src/splash/apple-splash-1620-2160.jpg"
+      media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="src/splash/apple-splash-1290-2796.jpg"
+      media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="src/splash/apple-splash-1179-2556.jpg"
+      media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="src/splash/apple-splash-1284-2778.jpg"
+      media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="src/splash/apple-splash-1170-2532.jpg"
+      media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="src/splash/apple-splash-1125-2436.jpg"
+      media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="src/splash/apple-splash-1242-2688.jpg"
+      media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="src/splash/apple-splash-828-1792.jpg"
+      media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="src/splash/apple-splash-1242-2208.jpg"
+      media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="src/splash/apple-splash-750-1334.jpg"
+      media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="src/splash/apple-splash-640-1136.jpg"
+      media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <h1><img src="./src/images/LW_Logo.png" alt="LW_logo" /></h1>
+      <h2>wybierz lokację</h2>
+    </header>
+    <span class="divider"></span>
+    <ul>
+      <li>
+        <a href="./united/index.html">
+          <img
+            src="./src/images/unitedLogo.png"
+            style="filter: invert(100%)"
+            alt="united logo"
+          />
+        </a>
+        <span class="location-name">UNITED CLIMBING</span>
+      </li>
+      <li>
+        <a href="./test1/index.html">
+          <img src="./src/images/test_logo.svg" alt="test logo"
+        /></a>
+        <span class="location-name">TEST LOCATION 1</span>
+      </li>
+      <li>
+        <a href="./test2/index.html">
+          <img src="./src/images/test_logo.svg" alt="test logo"
+        /></a>
+        <span class="location-name">TEST LOCATION 2</span>
+      </li>
+      <li>
+        <a href="./test3/index.html">
+          <img src="./src/images/test_logo.svg" alt="test logo"
+        /></a>
+        <span class="location-name">TEST LOCATION 3</span>
+      </li>
+      <li>
+        <a href="./test4/index.html">
+          <img src="./src/images/test_logo.svg" alt="test logo"
+        /></a>
+        <span class="location-name">TEST LOCATION 4</span>
+      </li>
+    </ul>
 
-		<!-- website icon -->
-		<link rel="icon" href="./images/lw_icon.jpg" />
+    <div
+      id="install-prompt-container"
+      class="install-prompt"
+      style="display: none"
+    >
+      <div class="install-prompt__message">
+        Dodaj Ledowalls do ekranu głównego
+      </div>
+      <button class="install-prompt__button" onclick="installApp()">
+        Dodaj do ekranu głównego
+      </button>
+      <button class="install-prompt__close" onclick="dismissPrompt()">
+        Zamknij
+      </button>
+    </div>
 
-		<link rel="stylesheet" href="./css/materialdesignicons.min.css" media="all"/>
-		<link rel="stylesheet" href="./css/rSlider.min.css" media="all" />
-		<link rel="stylesheet" href="./css/index.css" media="all" />
+    <script>
+      let deferredPrompt;
 
-		<link rel="stylesheet" href="./css/AddProblem.css" media="all" />
-		<link rel="stylesheet" href="./css/app_config.css" media="all" />
-		<link rel="stylesheet" href="./css/Board.css" media="all" />
-		<link rel="stylesheet" href="./css/DoubleSlider.css" media="all" />
-		<link rel="stylesheet" href="./css/gripPositions.css" media="all" />
+      window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
 
-		<link rel="stylesheet" href="./css/loader.css" media="all" />
-		<link rel="stylesheet" href="./css/LoadProblem.css" media="all" />
-		<link rel="stylesheet" href="./css/Menu.css" media="all" />
-		<link rel="stylesheet" href="./css/PopupWindow.css" media="all" />
-		<link rel="stylesheet" href="./css/App.css" media="all" />
-		<link rel="manifest" href="./manifest.json">
-	</head>
-	<body>
-		<div id="app">
-			<app-component></app-component>
-		</div>
+        document.getElementById("install-prompt-container").style.display =
+          "flex";
+      });
 
-		<script src="./js/consts.js"></script>
-		<!-- <script src="../uibuilder/vendor/socket.io/socket.io.js"></script> -->
+      function installApp() {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
 
-		<!-- external libraries -->
-		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-		<script src="./js/vue.min.js"></script>
-		<script src="./js/vuex.min.js"></script>
+          deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === "accepted") {
+              console.log("User accepted the install prompt");
+            } else {
+              console.log("User dismissed the install prompt");
+            }
+            deferredPrompt = null;
+            document.getElementById("install-prompt-container").style.display =
+              "none";
+          });
+        }
+      }
 
-		<script src="./js/httpVueLoader.js"></script>
-		<!-- <script src="./uibuilderfe.min.js"></script> -->
-
-		<script src="./js/pinch-zoom.js"></script>
-		<script src="./js/rSlider.js"></script>
-		
-		<!-- source files -->
-		<script src="./js/utils.js"></script>
-		<script src="./api.js"></script>
-		<script src="./app_config.js"></script>
-		<script src="./store.js"></script>
-		<script src="./index.js"></script>
-		<script src="./js/errorFallback.js"></script>
-		<script src="./js/gripMap.js"></script>
-	</body>
+      function dismissPrompt() {
+        deferredPrompt = null;
+        document.getElementById("install-prompt-container").style.display =
+          "none";
+      }
+    </script>
+  </body>
 </html>
