@@ -14,7 +14,7 @@
   margin: 0;
   top: calc(60px + 1em);
   height: calc(
-    100% - 60px - 4em - 13.5em
+    100% - 60px - 4em - 17.5em
   ); /* 100vh - menu height - 3* padding - input(filter) container height*/
   border-radius: 5px;
   transition: 0.15s height ease-in-out;
