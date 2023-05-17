@@ -22,6 +22,9 @@ const ENABLE_SPACE_NAMES = true;
 // toggle splash screen
 const INTRO = true;
 
+// active problem loop countdown time in seconds
+const LOOP_COUNTDOWN_TIME = 6;
+
 const GRADES = [
   "3a",
   "3b",

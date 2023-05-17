@@ -1,4 +1,4 @@
-function multiClick(gripState, allGrips) {
+function multiClick(gripState, allGrips, isLoop) {
   if (!ENABLE_MULTI_TAP) return !gripState;
   const lastKey = Object.keys(BOARD_CONFIG.multiTapColors)
     .map((key) => Number(key))
@@ -6,14 +6,19 @@ function multiClick(gripState, allGrips) {
   const currentState = gripState ? gripState : 0;
   let newState = currentState + 1;
 
+  console.log(newState);
   if (newState > lastKey) newState = 0;
 
-  // If there is another top grip, change new state to 0
-  // if (newState === lastKey) {
-  //   if (Object.values(allGrips).includes(lastKey)) {
-  //     newState = 0;
-  //   }
-  // }
+  // For loop problems there is a limit of 2 start/top grips.
+  if (isLoop && newState === 2) {
+    const topGrips = Object.values(allGrips).filter((value) => value === 2);
+
+    // If there is already 2 top grips, change new state to next grip kind.
+    if (topGrips.length > 1) {
+      // Skips to 'step' grip.
+      newState = 3;
+    }
+  }
 
   return newState;
 }
@@ -25,6 +30,7 @@ const store = new Vuex.Store({
       // activeScene: "",
       menuActive: false,
       activeScene: "LOAD_PROBLEM",
+      // activeScene: "ADD_PROBLEM",
       sceneLoaded: true,
       activeProblem: undefined,
     },
@@ -44,6 +50,7 @@ const store = new Vuex.Store({
       },
       addModal: false,
       selectedGrade: 0,
+      loopLength: undefined,
       newProblem: {},
     },
     problemList: [],
@@ -104,7 +111,8 @@ const store = new Vuex.Store({
     toggleProblemState(state, payload) {
       const newState = multiClick(
         state.addProblem.problemState[payload],
-        state.addProblem.problemState
+        state.addProblem.problemState,
+        state.addProblem.isLoop
       );
       state.addProblem.problemState[payload] = newState;
     },
@@ -112,7 +120,7 @@ const store = new Vuex.Store({
       const newProblemState = {};
       Object.keys(payload).forEach((key) => (newProblemState[key] = false));
       state.addProblem.problemState = newProblemState;
-      // sendProblem({ grips: newProblemState });
+      //sendProblem({ grips: newProblemState });
     },
     setErrorState(state, payload) {
       state.addProblem.errorState = payload;
@@ -151,7 +159,8 @@ const store = new Vuex.Store({
     editProblemStateGrip(state, payload) {
       const newState = multiClick(
         state.editProblem.editedProblem.grips[payload],
-        state.editProblem.editedProblem.grips
+        state.editProblem.editedProblem.grips,
+        state.editProblem.isLoop
       );
       state.editProblem.editedProblem.grips[payload] = newState;
     },
@@ -163,6 +172,13 @@ const store = new Vuex.Store({
     },
     toggleIntro(state) {
       state.intro = !state.intro;
+    },
+    setAddProblemType(state, payload) {
+      state.addProblem.isLoop = payload;
+    },
+    setAddProblemLoopLength(state, payload) {
+      state.addProblem.loopLength = payload;
+      console.log({ payload, state: state.addProblem });
     },
   },
   actions: {
@@ -208,6 +224,7 @@ const store = new Vuex.Store({
     getProblemList: (state) => state.problemList,
     getFilterSlider: (state) => state.filterSlider,
     getSelectedGrade: (state) => state.addProblem.selectedGrade,
+    getLoopLength: (state) => state.addProblem.loopLength,
     getActiveProblem: (state) => state.menu.activeProblem,
     getEditedProblem: (state) => state.editProblem.editedProblem,
     getEditProblemState: (state) => state.editProblem,
