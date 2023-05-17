@@ -6,5 +6,9 @@ const TOPIC = {
   LOAD: "load",
   SAVE: "save",
   LOAD_STATE: "loadState",
-  SAVE_STATE: "saveState"
+  SAVE_STATE: "saveState",
 };
+const ProblemTypes = Object.freeze({
+  BALD: "Bald",
+  LOOP: "Obwód",
+});

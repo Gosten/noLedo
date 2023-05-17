@@ -44,7 +44,7 @@ module.exports = {
   components: {},
   mounted() {},
   components: {
-    "control-button": httpVueLoader("./subComponents/ControlButton.vue"),
+    "control-button": httpVueLoader("./ControlButton.vue"),
   },
 };
 </script>

@@ -272,7 +272,7 @@ module.exports = {
 </script>
 
 <style scoped type="text/css">
-@import "../../css/app_config.css";
+@import "../src/css/app_config.css";
 
 #interaction-layer path {
   fill: transparent;

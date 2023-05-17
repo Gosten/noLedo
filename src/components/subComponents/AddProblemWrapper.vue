@@ -12,8 +12,8 @@ module.exports = {
     },
   },
   components: {
-    "add-problem": httpVueLoader("./AddProblem.vue"),
-    "problem-type-modal": httpVueLoader("./subComponents/ProblemTypeModal.vue"),
+    "add-problem": httpVueLoader("../AddProblem.vue"),
+    "problem-type-modal": httpVueLoader("./ProblemTypeModal.vue"),
   },
 };
 </script>

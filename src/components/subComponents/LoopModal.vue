@@ -68,10 +68,8 @@ module.exports = {
     }
   },
   components: {
-    board: httpVueLoader("./Board/Board.vue"),
-    "loop-number-display": httpVueLoader(
-      "./subComponents/LoopGripNumbering.vue"
-    ),
+    board: httpVueLoader("../Board/Board.vue"),
+    "loop-number-display": httpVueLoader("./LoopGripNumbering.vue"),
   },
   computed: {
     problemState() {
