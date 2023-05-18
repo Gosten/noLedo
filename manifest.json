@@ -17,5 +17,26 @@
   "theme_color": "#000000",
   "background_color": "#000000",
   "display": "standalone",
-  "prefer_related_applications": false
+  "prefer_related_applications": false,
+  "shortcuts" : [
+    {
+      "name": "United",
+      "url": "https://christianambukita.github.io/no-ledowalls/united"
+    },
+    {
+      "name": "UNITED",
+      "url": "https://christianambukita.github.io/no-ledowalls/test1"
+    },
+    {
+      "name": "TEST2",
+      "url": "https://christianambukita.github.io/no-ledowalls/test2",
+      "description": "Test2 Location"
+    },    {
+      "name": "TEST3",
+      "url": "https://christianambukita.github.io/no-ledowalls/test3"
+    },    {
+      "name": "TEST4",
+      "url": "https://christianambukita.github.io/no-ledowalls/test4"
+    }
+  ]
 }
