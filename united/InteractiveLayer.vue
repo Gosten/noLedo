@@ -132,7 +132,6 @@ module.exports = {
     updateSelectors(startTopNumberingStage) {
       const problem = this.getDisplayProblem();
       const grips = this.getDisplayProblemGrips();
-      console.log({ problem });
       Object.keys(grips).forEach((key) =>
         this.setGripSelection(
           key,

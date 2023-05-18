@@ -7,9 +7,14 @@ module.exports = {
     editedProblem() {
       return this.$store.getters.getEditedProblem;
     },
+    isLoopBoard() {
+      return this.altPinchId === "loop-pinch";
+    },
     interactionCondition() {
       return (
-        this.activeScene === ADD_PROBLEM || this.activeScene === EDIT_PROBLEM
+        this.activeScene === ADD_PROBLEM ||
+        this.activeScene === EDIT_PROBLEM ||
+        this.isLoopBoard
       );
     },
     activeProblem() {
@@ -21,70 +26,253 @@ module.exports = {
     selectedProblem() {
       return this.$store.getters.getSelectedProblem;
     },
+    loopLength() {
+      return this.$store.getters.getLoopLength;
+    },
   },
   methods: {
-    setGripSelection(id, isSelected) {
+    setGripSelection(
+      id,
+      isSelected,
+      startTopNumberingStage,
+      isLoopProblem,
+      loopOrder
+    ) {
       const handle = document.getElementById(id);
+
+      // Set grip number display
+      if (handle && isSelected && (isLoopProblem || this.isLoopBoard)) {
+        const localLoopOrder = loopOrder || this.loopOrder;
+        const isOrdered = localLoopOrder.includes(id);
+        if (isOrdered) {
+          const rect = handle.getBBox();
+          const circlePosition = [rect.x - 45, rect.y - 45];
+
+          // Circle radius plus border width.
+          const edgeMinimalDistance = 78;
+          if (circlePosition[0] < edgeMinimalDistance) {
+            circlePosition[0] = edgeMinimalDistance;
+          }
+          if (circlePosition[1] < edgeMinimalDistance) {
+            circlePosition[1] = edgeMinimalDistance;
+          }
+
+          // For numbers bigger than 8 because displayed number is index + 1
+          const textOffset = localLoopOrder.indexOf(id) > 8 ? 4 : 30;
+          this.loopNumbers[id] = {
+            position: circlePosition,
+            textPosition: [circlePosition[0] + textOffset, circlePosition[1]],
+          };
+        }
+      }
+
       if (handle) {
         if (isSelected) {
-          handle.classList = `stroke grip-selection-${isSelected}`;
-        } else handle.classList = "";
+          if (this.isLoopBoard) {
+            const isOrdered = this.loopState.order.includes(id);
+            const isSelected = this.loopState.selectedGrip === id;
+            let classList = "stroke grip-selection-loop-unordered";
+
+            // If during startTopNumberingStage and id doesn't belong to start/top grip
+            if (startTopNumberingStage && !this.isStartTopId(id)) {
+              classList = "stroke grip-selection-loop-disabled";
+            }
+            // If after startTopNumberingStage and id belongs to top grip
+            if (
+              this.isStartTopId(id) &&
+              !startTopNumberingStage &&
+              !this.loopOrder.includes(id) &&
+              this.loopOrder.length < this.loopLength - 1
+            ) {
+              classList = "stroke grip-selection-loop-top";
+            }
+            if (isOrdered) {
+              classList = `stroke grip-selection-loop-ordered`;
+            }
+            if (isSelected) {
+              classList = `stroke grip-selection-loop-selected`;
+            }
+            handle.classList = classList;
+          } else {
+            handle.classList = `stroke grip-selection-${isSelected}`;
+          }
+        } else {
+          if (
+            this.isLoopBoard ||
+            (isLoopProblem && !this.isScene(ADD_PROBLEM))
+          ) {
+            handle.classList = "stroke grip-selection-loop-excluded";
+          } else {
+            handle.classList = "";
+          }
+        }
       }
     },
     getDisplayProblem() {
-      if (this.isScene(LOAD_PROBLEM)) return this.selectedProblem.grips;
-      if (this.isScene(ACTIVE_PROBLEM)) return this.activeProblem.grips;
+      if (this.isScene(LOAD_PROBLEM)) return this.selectedProblem;
+      if (this.isScene(ACTIVE_PROBLEM)) return this.activeProblem;
+      if (this.isScene(EDIT_PROBLEM)) {
+        return this.editedProblem;
+      }
+      if (this.isScene(ADD_PROBLEM)) {
+        return {};
+      }
+    },
+    getDisplayProblemGrips() {
       if (this.isScene(ADD_PROBLEM)) {
         return this.problemState;
-      }
-      if (this.isScene(EDIT_PROBLEM)) {
-        return this.editedProblem.grips;
+      } else {
+        const problem = this.getDisplayProblem();
+        return problem.grips;
       }
     },
     isScene(sceneType) {
       return this.$store.getters.getActiveScene === sceneType;
     },
-    updateSelectors() {
+    updateSelectors(startTopNumberingStage) {
       const problem = this.getDisplayProblem();
-      Object.keys(problem).forEach((key) =>
-        this.setGripSelection(key, problem[key])
+      const grips = this.getDisplayProblemGrips();
+      Object.keys(grips).forEach((key) =>
+        this.setGripSelection(
+          key,
+          this.isGripSelected(key, grips),
+          startTopNumberingStage,
+          problem.isLoop,
+          problem.loopOrder
+        )
       );
     },
     _handleClick(id) {
       if (this.interactionCondition) {
+        if (this.isLoopBoard) {
+          if (!this.isStartTopId(id) && this.startTopNumberingStage) {
+            return;
+          }
+          // If id belongs to grip that is start/top, and start has already been selected
+          if (
+            this.isStartTopId(id) &&
+            !this.startTopNumberingStage &&
+            !this.loopOrder.includes(id) &&
+            this.loopOrder.length < this.loopLength - 1
+          ) {
+            return;
+          }
+        }
         this.handleClick(id);
-        this.updateSelectors();
+        this.updateSelectors(this.startTopNumberingStage);
       }
+    },
+    updateStartTopNumberingStage(loopOrder) {
+      const problem = this.getDisplayProblemGrips();
+      let startTopNumberingStage = false;
+      if (this.isLoopBoard) {
+        const startTopKeys = Object.keys(problem).filter(
+          (key) => problem[key] === 2
+        );
+        const orderedStartTop = startTopKeys
+          .map((key) => loopOrder.includes(key))
+          .filter(Boolean);
+
+        // If none of start/top keys are ordered enter startTopNumberingStage
+        if (orderedStartTop.length === 0 && startTopKeys.length === 2) {
+          startTopNumberingStage = true;
+        } else {
+          startTopNumberingStage = false;
+        }
+      }
+      this.startTopNumberingStage = startTopNumberingStage;
+      return startTopNumberingStage;
+    },
+    isStartTopId(id) {
+      return this.startTopKeys.includes(id);
+    },
+    isGripSelected(id, grips) {
+      const isSelected = grips[id];
+      const isLive =
+        this.activeLoopModeGrips && this.activeLoopModeGrips.includes(id);
+
+      // If isLive isSelected should be returnet because it may contain selection color number
+      return this.isActiveLoopMode ? isLive && isSelected : isSelected;
     },
   },
   data() {
     return {
       zoomElement: null,
+      loopOrder: [],
+      loopNumbers: {},
+      startTopNumberingStage: false,
+      startTopKeys: [],
     };
   },
   mounted() {
-    this.updateSelectors();
-    setTimeout(() => this.updateSelectors(), 500);
-    let el = document.getElementById("pinch-zoom-1");
+    const problem = this.getDisplayProblem();
+    const grips = problem.grips || this.getDisplayProblemGrips();
+    this.startTopKeys = Object.keys(grips).filter((key) => grips[key] === 2);
+    const startTopNumberingStage = this.updateStartTopNumberingStage(
+      this.loopOrder
+    );
+    this.startTopNumberingStage = startTopNumberingStage;
+    this.updateSelectors(startTopNumberingStage);
+    setTimeout(() => {
+      this.updateSelectors(this.startTopNumberingStage);
+    }, 500);
+    let el = document.getElementById(this.altPinchId || "pinch-zoom-1");
     this.zoomElement = new PinchZoom(el, {
       draggableUnzoomed: false,
     });
     if (this.isScene(LOAD_PROBLEM)) {
       this.zoomElement.disable();
     }
+    if (this.loopState) {
+      this.loopOrder = this.loopState.order;
+    }
+    if (
+      problem.isLoop &&
+      (this.isScene(LOAD_PROBLEM) || this.isScene(ACTIVE_PROBLEM))
+    ) {
+      this.loopOrder = problem.loopOrder;
+    }
   },
   beforeDestroy() {
     this.zoomElement.destroy();
   },
-  updated() {},
   props: {
     handleClick: Function,
+    altPinchId: String,
+    loopState: Object,
+    isActiveLoopMode: Boolean,
+    activeLoopModeGrips: Array,
+    showNumbers: Boolean,
+  },
+  watch: {
+    loopState: {
+      handler: function (newVal, oldVal) {
+        const newLoopOrder = newVal.order;
+        const startTopNumberingStage =
+          this.updateStartTopNumberingStage(newLoopOrder);
+        this.updateSelectors(startTopNumberingStage);
+        this.loopOrder = newLoopOrder;
+      },
+      deep: true,
+    },
+    isActiveLoopMode: {
+      handler: function (newVal, oldVal) {
+        this.updateSelectors();
+      },
+      deep: true,
+    },
+    activeLoopModeGrips: {
+      handler: function (newVal, oldVal) {
+        this.updateSelectors();
+      },
+      deep: true,
+    },
   },
 };
 </script>
 
 <style scoped type="text/css">
-@import "../src/css/app_config.css";
+@import "../../css/app_config.css";
 
 #interaction-layer path {
   fill: transparent;
@@ -100,6 +288,25 @@ module.exports = {
   /* position: absolute; */
   opacity: 0;
 }
+
+.grip-selection-loop-ordered {
+  position: relative;
+}
+.grip-selection-loop-ordered::after {
+  content: "";
+  position: absolute;
+  width: 1em;
+  height: 1em;
+  background: black;
+  left: -1em;
+  bottom: -1em;
+}
+.number-display {
+  font-size: 95px;
+  font-family: "JetBrains";
+  font-weight: bold;
+  fill: black;
+}
 </style>
 
 <template>
@@ -107,7 +314,7 @@ module.exports = {
     regex id="(_\d+[_\d+]*)"
     replace id="$1" @click="_handleClick('$1')"
    -->
-  <div id="pinch-zoom-1" class="background-image-container">
+  <div :id="altPinchId || 'pinch-zoom-1'" class="background-image-container">
     <svg
       id="interaction-layer"
       data-name="Obrysy z SVG 1"
@@ -10770,6 +10977,28 @@ module.exports = {
           @click="_handleClick('_424_')"
           d="M2631.55,531c-8.56,4.07-19.5,4.21-31-.59-14.5-6.06-21.92-17-23.19-32.93-.56-7.07,1.47-9.63,8-10.23,5-.46,9.66,1.5,14.24,4.49,7.27,4.74,14.84,8,23,9.09,13.67,1.8,18.64,9.48,14.38,21.8C2636.1,525.4,2635.19,528.19,2631.55,531Z"
         />
+      </g>
+
+      <g v-if="showNumbers">
+        <g v-for="(id, index) in loopOrder" :key="`number-display-${index}`">
+          <circle
+            v-if="!isActiveLoopMode && loopNumbers[id]"
+            :cx="loopNumbers[id].position[0]"
+            :cy="loopNumbers[id].position[1]"
+            r="75"
+            stroke="black"
+            stroke-width="8"
+            fill="white"
+          />
+          <text
+            v-if="!isActiveLoopMode && loopNumbers[id]"
+            :x="loopNumbers[id].textPosition[0] - 60"
+            :y="loopNumbers[id].textPosition[1] + 35"
+            class="number-display"
+          >
+            {{ index + 1 }}
+          </text>
+        </g>
       </g>
     </svg>
   </div>
