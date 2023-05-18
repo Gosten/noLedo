@@ -132,6 +132,7 @@ module.exports = {
     updateSelectors(startTopNumberingStage) {
       const problem = this.getDisplayProblem();
       const grips = this.getDisplayProblemGrips();
+      console.log({ problem });
       Object.keys(grips).forEach((key) =>
         this.setGripSelection(
           key,
@@ -272,7 +273,7 @@ module.exports = {
 </script>
 
 <style scoped type="text/css">
-@import "../src/css/app_config.css";
+@import "../../css/app_config.css";
 
 #interaction-layer path {
   fill: transparent;

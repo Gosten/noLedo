@@ -154,7 +154,7 @@ module.exports = {
 
 <style scoped type="text/css">
 @import "../../css/Board.css";
-@import ".src/css/app_config.css";
+@import "../../css/app_config.css";
 
 .board-description {
   font-size: var(--description-font-size);
