@@ -20,7 +20,7 @@ const ENABLE_AUTHOR = true;
 const ENABLE_SPACE_NAMES = true;
 
 // toggle splash screen
-const INTRO = true;
+const INTRO = false;
 
 // active problem loop countdown time in seconds
 const LOOP_COUNTDOWN_TIME = 6;
@@ -40,7 +40,7 @@ const GRADES = [
   "6c",
   "7a",
   "7b",
-  "7c"
+  "7c",
 ];
 
 const DEFAULT_GRADE = 5; // Index of GRADES array
@@ -63,7 +63,7 @@ const BOARD_CONFIG = {
     0: [0, 0, 0],
     1: [0, 255, 0], // first tap
     2: [255, 0, 0], // secound tap
-    3: [0, 0, 255] // third tap
+    3: [0, 0, 255], // third tap
     // 4: [255, 255, 0] // fourth tap
-  }
+  },
 };
