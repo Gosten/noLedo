@@ -45,9 +45,9 @@ module.exports = {
     }
   },
   components: {
-    "name-input": httpVueLoader("./subComponents/NameInputLoad.vue"),
+    "name-input": httpVueLoader("./NameInputLoad.vue"),
     "slider-component": httpVueLoader("../DoubleSlider.vue"),
-    "type-switch": httpVueLoader("./subComponents/MultiSwitch.vue"),
+    "type-switch": httpVueLoader("./MultiSwitch.vue"),
   },
   props: {
     setIsFilterCollapsed: Function,
