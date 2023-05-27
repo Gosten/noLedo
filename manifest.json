@@ -13,7 +13,7 @@
       "type": "image/png"
     }
   ],
-  "start_url": "https://christianambukita.github.io/no-ledowalls/",
+  "start_url": "https://app.ledowalls.com/",
   "theme_color": "#000000",
   "background_color": "#000000",
   "display": "standalone",
@@ -21,7 +21,7 @@
   "shortcuts": [
     {
       "name": "UNITED",
-      "url": "https://christianambukita.github.io/no-ledowalls/united",
+      "url": "https://app.ledowalls.com/united",
       "icons": [
         {
           "src": "src/images/locationLogos/unitedLogo_96.png",
@@ -42,7 +42,7 @@
     },
     {
       "name": "TEST1",
-      "url": "https://christianambukita.github.io/no-ledowalls/test1",
+      "url": "https://app.ledowalls.com/test1",
       "icons": [
         {
           "src": "src/images/locationLogos/test_logo_96.png",
@@ -63,7 +63,7 @@
     },
     {
       "name": "TEST2",
-      "url": "https://christianambukita.github.io/no-ledowalls/test2",
+      "url": "https://app.ledowalls.com/test2",
       "icons": [
         {
           "src": "src/images/locationLogos/test_logo_96.png",
@@ -84,7 +84,7 @@
     },
     {
       "name": "TEST3",
-      "url": "https://christianambukita.github.io/no-ledowalls/test3",
+      "url": "https://app.ledowalls.com/test3",
       "icons": [
         {
           "src": "src/images/locationLogos/test_logo_96.png",
@@ -105,7 +105,7 @@
     },
     {
       "name": "TEST4",
-      "url": "https://christianambukita.github.io/no-ledowalls/test4",
+      "url": "https://app.ledowalls.com/test4",
       "icons": [
         {
           "src": "src/images/locationLogos/test_logo_96.png",
