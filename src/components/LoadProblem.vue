@@ -7,7 +7,7 @@ module.exports = {
     "slider-component": httpVueLoader("./DoubleSlider.vue"),
     board: httpVueLoader("./Board/Board.vue"),
     "comment-display": httpVueLoader("./subComponents/CommentDisplay.vue"),
-    "sorting-arrows": httpVueLoader("./subComponents/SortingArrows.vue")
+    "sorting-arrows": httpVueLoader("./subComponents/SortingArrows.vue"),
   },
   data() {
     return {
@@ -15,7 +15,7 @@ module.exports = {
       GRADES,
       gradeFilter: {
         from: 0,
-        to: GRADES.length - 1
+        to: GRADES.length - 1,
       },
       sliderInstance: undefined,
       mapGrade,
@@ -29,7 +29,9 @@ module.exports = {
       isSwipeListenerSet: false,
       selectedProblemIndex: null,
       isProblemReloading: false,
-      isProblemListLoading: false
+      isProblemListLoading: false,
+      ProblemTypes,
+      problemTypeFilter: [ProblemTypes.BALD, ProblemTypes.LOOP],
     };
   },
   methods: {
@@ -134,7 +136,10 @@ module.exports = {
         }, 50);
         this.$store.commit("selectProblem", nextProblem);
       }
-    }
+    },
+    handleTypeChange(types) {
+      this.problemTypeFilter = types;
+    },
   },
   beforeUnmount() {
     this.sliderInstance.destroy();
@@ -150,13 +155,22 @@ module.exports = {
     filteredList() {
       if (this.problemList) {
         let newList = [...this.problemList];
+
+        //filter by type
+        newList = newList.filter((problem) => {
+          const problemType = problem.isLoop
+            ? ProblemTypes.LOOP
+            : ProblemTypes.BALD;
+          // all selected
+          return this.problemTypeFilter.includes(problemType);
+        });
+
         //sort by timestamp
         newList = newList.sort((a, b) => {
           if (b.timestamp && a.timestamp) return b.timestamp - a.timestamp;
           if (b.timestamp) return 1;
           return -1;
         });
-        console.log({ filterVal: this.textFilter });
         if (this.textFilter) {
           //filter by name
           //filter by author
@@ -170,7 +184,6 @@ module.exports = {
           );
         }
 
-        console.log({ grade: this.filterGrades });
         //filter by grade
         if (this.ENABLE_GRADES) {
           const fromGrade = mapGrade(this.filterGrades.value1);
@@ -198,7 +211,7 @@ module.exports = {
     },
     textInputFocus() {
       return this.$store.getters.getTextInputFocus;
-    }
+    },
   },
   updated() {
     const { isSwipeListenerSet, listCollapsed } = this;
@@ -210,7 +223,7 @@ module.exports = {
     this.isProblemListLoading = true;
     await this.$store.dispatch("fetchProblemList");
     this.isProblemListLoading = false;
-  }
+  },
 };
 </script>
 
@@ -327,6 +340,9 @@ module.exports = {
   opacity: 0 !important;
 }
 
+.loop-icon {
+  margin-left: 5px;
+}
 .loader-container {
   display: flex;
   justify-content: center;
@@ -374,7 +390,7 @@ module.exports = {
       :class="{
         collapsed: listCollapsed,
         'focus-transition': textInputFocus,
-        'filter-section-collapsed': isFilterCollapsed
+        'filter-section-collapsed': isFilterCollapsed,
       }"
     >
       <li class="list-label">
@@ -398,11 +414,14 @@ module.exports = {
         :key="problem.name"
         :class="{
           [listItemClass(index)]: true,
-          'li-selected': liSelectedCondition(problem)
+          'li-selected': liSelectedCondition(problem),
         }"
         @click="() => handleProblemSelect(problem, index)"
       >
-        <span>{{ parseName(problem) }}</span>
+        <span
+          >{{ parseName(problem) }}
+          <i v-if="problem.isLoop" class="loop-icon mdi mdi-sync"></i
+        ></span>
         <span v-if="ENABLE_GRADES">{{ problem.grade }}</span>
       </li>
     </ul>
@@ -428,6 +447,7 @@ module.exports = {
         v-if="!listCollapsed"
         :handle-filter-input-change="handleFilterInputChange"
         :set-is-filter-collapsed="setIsFilterCollapsed"
+        :handle-type-change="handleTypeChange"
       ></filters>
     </transition>
 
@@ -442,7 +462,7 @@ module.exports = {
                   alt=""
                   :class="{
                     'problem-swipe-arrow-disabled':
-                      getNextIndex('left') === null
+                      getNextIndex('left') === null,
                   }"
                   @click="() => handleSwipe('left')"
                 />
@@ -461,7 +481,7 @@ module.exports = {
                   alt=""
                   :class="{
                     'problem-swipe-arrow-disabled':
-                      getNextIndex('right') === null
+                      getNextIndex('right') === null,
                   }"
                   @click="() => handleSwipe('right')"
                 />

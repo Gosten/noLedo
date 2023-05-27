@@ -4,7 +4,7 @@ module.exports = {
   methods: {
     handleInputChange() {
       this.handleFilterInputChange({
-        textFilter: this.inputValue
+        textFilter: this.inputValue,
       });
     },
     showFilters() {
@@ -12,7 +12,6 @@ module.exports = {
         this.isCollapsed = false;
         this.setIsFilterCollapsed(false);
       }
-      // console.log("show");
     },
     collapseFilters() {
       this.isCollapsed = true;
@@ -20,14 +19,19 @@ module.exports = {
     },
     blurInput(e) {
       if (e.keyCode === 13) this.textInputHandle.blur();
-    }
+    },
+    setType(type) {
+      this.handleTypeChange(type);
+    },
   },
   data() {
     return {
       ENABLE_GRADES,
       inputValue: "",
       isCollapsed: true,
-      textInputHandle: undefined
+      textInputHandle: undefined,
+      selectedProblemType: null,
+      ProblemTypes,
     };
   },
   updated() {
@@ -42,12 +46,14 @@ module.exports = {
   },
   components: {
     "name-input": httpVueLoader("./NameInputLoad.vue"),
-    "slider-component": httpVueLoader("../DoubleSlider.vue")
+    "slider-component": httpVueLoader("../DoubleSlider.vue"),
+    "type-switch": httpVueLoader("./MultiSwitch.vue"),
   },
   props: {
     setIsFilterCollapsed: Function,
-    handleFilterInputChange: Function
-  }
+    handleFilterInputChange: Function,
+    handleTypeChange: Function,
+  },
 };
 </script>
 
@@ -103,7 +109,7 @@ module.exports = {
   background: white;
   padding: 0 1em;
   transition: height 0.15s ease-in-out;
-  height: 13.5em;
+  height: 17.5em;
   position: relative;
 }
 .filter-collapsed {
@@ -134,6 +140,11 @@ module.exports = {
   justify-content: center;
   align-items: center;
 }
+
+.type-switch {
+  margin-block: 1em;
+  width: 100%;
+}
 </style>
 
 <template>
@@ -156,6 +167,14 @@ module.exports = {
         <div :v-if="ENABLE_GRADES" class="slider-width">
           <slider-component></slider-component>
         </div>
+        <type-switch
+          class="type-switch"
+          :selection-kinds="[ProblemTypes.BALD, ProblemTypes.LOOP]"
+          :default-selection-index="0"
+          :set-value="setType"
+          enable-select-all
+        >
+        </type-switch>
         <input
           id="add-problem-author-input"
           class="input-name input"

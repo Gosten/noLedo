@@ -24,13 +24,13 @@
 <script>
 module.exports = {
   components: {
-    "add-problem": httpVueLoader("./AddProblem.vue"),
+    "add-problem": httpVueLoader("./subComponents/AddProblemWrapper.vue"),
     "load-problem": httpVueLoader("./LoadProblem.vue"),
     "active-problem": httpVueLoader("./ActiveProblem.vue"),
     "edit-problem": httpVueLoader("./EditProblem.vue"),
     "menu-bar": httpVueLoader("./Menu.vue"),
     intro: httpVueLoader("./Intro.vue"),
-    "landscape-block": httpVueLoader("./LandscapeBlock.vue")
+    "landscape-block": httpVueLoader("./LandscapeBlock.vue"),
   },
   computed: {
     isAddProblem() {
@@ -47,7 +47,7 @@ module.exports = {
     },
     intro() {
       return this.$store.getters.getIntro;
-    }
+    },
   },
   methods: {
     handleResize() {
@@ -55,18 +55,18 @@ module.exports = {
         console.log("resize");
         this.appHandle.style = `height: ${window.innerHeight}px; --window-height: ${window.innerHeight}px`;
       }
-    }
+    },
   },
   data() {
     return {
-      appHandle: undefined
+      appHandle: undefined,
     };
   },
   mounted() {
     this.appHandle = document.getElementById("app-container");
     this.handleResize();
     window.addEventListener("resize", this.handleResize);
-  }
+  },
 };
 </script>
 

@@ -66,6 +66,7 @@ module.exports = {
   max-height: 15em;
   overflow: hidden;
   height: fit-content;
+  word-break: break-word;
 }
 
 .fade-enter-active,

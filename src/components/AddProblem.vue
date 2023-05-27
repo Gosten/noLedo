@@ -1,56 +1,8 @@
-<template>
-  <div id="add-problem" class="grid-content">
-    <div id="add-problem-top" class="top-conainer">
-      <div id="board-style-AP" class="board-position">
-        <transition name="board-fade">
-          <board board-id="board-AdP"></board>
-        </transition>
-      </div>
-
-      <board-legend></board-legend>
-      <scroll-arrow scroll-container-id="add-problem"></scroll-arrow>
-    </div>
-
-    <div class="flex-container-blank" id="add-bottom">
-      <div class="bottom">
-        <scroll-arrow
-          scroll-container-id="add-problem"
-          :reverse="true"
-        ></scroll-arrow>
-        <div class="input-container">
-          <div class="name-grade-container">
-            <name-input
-              :set-name="setName"
-              :set-author="setAuthor"
-              :error-name="errorFlags.name"
-              :set-error-name="setErrorFlag"
-            ></name-input>
-            <div v-if="ENABLE_GRADES" class="slider-width">
-              <grade-slider></grade-slider>
-            </div>
-          </div>
-          <comment-field :set-comment="setComment"></comment-field>
-        </div>
-        <div class="button-container">
-          <button class="button" @click="addProblem">Dodaj problem</button>
-        </div>
-      </div>
-    </div>
-
-    <transition name="fade">
-      <error-modal v-if="errorState.active"></error-modal>
-    </transition>
-
-    <transition name="fade">
-      <problem-modal v-if="addModal"></problem-modal>
-    </transition>
-  </div>
-</template>
-
 <script>
 module.exports = {
   mounted() {
     this.$store.commit("clearProblemState", gripMap);
+    this.$store.commit("setAddProblemType", this.isLoopType);
   },
   beforeUnmount() {
     this.textInputHandle.removeEventListener("keyup", this.blurInput);
@@ -62,7 +14,7 @@ module.exports = {
       authNameValue: "",
       commentValue: "",
       errorFlags: {
-        name: false
+        name: false,
       },
       mapGrade,
       boardZoom: false,
@@ -70,7 +22,11 @@ module.exports = {
       ENABLE_GRADES,
       ENABLE_AUTHOR,
       ADD_PROBLEM,
-      textInputHandle: undefined
+      textInputHandle: undefined,
+      ProblemTypes,
+      problemType: null,
+      isLoopModalOpen: false,
+      loopOrder: null,
     };
   },
   components: {
@@ -82,10 +38,13 @@ module.exports = {
     "grade-slider": httpVueLoader("./SingleSlider.vue"),
     "board-legend": httpVueLoader("./subComponents/BoardLegend.vue"),
     "scroll-arrow": httpVueLoader("./subComponents/ScrollArrow.vue"),
-    "comment-field": httpVueLoader("./subComponents/CommentField.vue")
+    "comment-field": httpVueLoader("./subComponents/CommentField.vue"),
+    "type-switch": httpVueLoader("./subComponents/MultiSwitch.vue"),
+    "loop-modal": httpVueLoader("./subComponents/LoopModal.vue"),
+    "custom-button": httpVueLoader("./subComponents/CustomButton.vue"),
   },
   computed: {
-    problmState() {
+    problemState() {
       return this.$store.getters.getAddProblemState;
     },
     errorState() {
@@ -111,7 +70,29 @@ module.exports = {
     },
     zoomScale() {
       return this.$store.getters.getZoomScale(ADD_PROBLEM);
-    }
+    },
+    isAnyGripSelected() {
+      const problemStateValues = Object.values(this.problemState) || [];
+      return Boolean(
+        problemStateValues.length &&
+          problemStateValues.reduce((acc, curr) => acc || curr)
+      );
+    },
+    gripNumberingButtonIcon() {
+      const selectedGrips = Object.keys(this.problemState).filter(
+        (key) => this.problemState[key]
+      );
+      const selecterGripsAmount = selectedGrips.length;
+
+      if (this.shouldClearOrder(this.loopOrder, selectedGrips)) {
+        this.loopOrder = null;
+        return "mdi-alert-circle-outline color-warning";
+      }
+      if (!this.isLoopType || selecterGripsAmount === 0) return "";
+      return !this.loopOrder || selecterGripsAmount > this.loopOrder.length
+        ? "mdi-alert-circle-outline color-warning"
+        : "mdi-checkbox-marked-outline color-success";
+    },
   },
   methods: {
     setName(newName) {
@@ -138,10 +119,12 @@ module.exports = {
       let newProblem = {
         name: this.nameValue,
         grade: mapGrade(this.gradeValue),
-        grips: this.problmState,
+        grips: this.problemState,
         author: this.authNameValue,
         comment: this.commentValue || "",
-        timestamp: Date.now()
+        isLoop: this.isLoopType,
+        loopOrder: this.loopOrder,
+        timestamp: Date.now(),
       };
       if (this.validateProblem(newProblem)) {
         // let newList = [newProblem, ...this.problemList];
@@ -176,6 +159,13 @@ module.exports = {
       if (selecterGripsAmount === 0)
         return this.handleError("Nie wybrano żadnego chwytu");
 
+      if (
+        this.isLoopType &&
+        (!this.loopOrder || selecterGripsAmount > this.loopOrder.length)
+      ) {
+        return this.handleError("Dodaj numerację chwytów");
+      }
+
       //validate name uniqueness
       return this.checkNameUniqueness(name);
     },
@@ -191,7 +181,7 @@ module.exports = {
     handleError(errorMessage) {
       this.$store.dispatch("toggleErrorModal", {
         active: true,
-        message: errorMessage
+        message: errorMessage,
       });
       console.warn(errorMessage);
       return false;
@@ -200,8 +190,39 @@ module.exports = {
     handleNameError(errorMessage) {
       this.handleError(errorMessage);
       this.errorFlags.name = true;
-    }
-  }
+    },
+
+    setType(type) {
+      this.problemType = type;
+    },
+
+    toggleLoopModal() {
+      this.isLoopModalOpen = !this.isLoopModalOpen;
+    },
+
+    setLoopState(newOrder) {
+      this.loopOrder = newOrder;
+    },
+
+    shouldClearOrder(order, selected) {
+      // If user unselected a grip that exists in loop order.
+      if (order && order.some((gripId) => !selected.includes(gripId))) {
+        return true;
+      }
+
+      // #TODO
+      // If user changed order, and now start/top grip aren't first/last from order.
+      // const startTopKeys = selected.filter(
+      // (key) => this.problemState[key] === 2
+      // );
+
+      return false;
+    },
+  },
+  props: {
+    isLoopType: Boolean,
+  },
+  updated() {},
 };
 </script>
 
@@ -230,4 +251,75 @@ module.exports = {
 .opacity {
   opacity: 0;
 }
+
+.type-switch {
+  margin-block: 1em;
+}
 </style>
+
+<template>
+  <div id="add-problem" class="grid-content">
+    <div id="add-problem-top" class="top-conainer">
+      <div id="board-style-AP" class="board-position">
+        <transition name="board-fade">
+          <board board-id="board-AdP" v-if="!isLoopModalOpen"></board>
+        </transition>
+      </div>
+
+      <board-legend></board-legend>
+      <scroll-arrow scroll-container-id="add-problem"></scroll-arrow>
+    </div>
+
+    <div class="flex-container-blank" id="add-bottom">
+      <div class="bottom">
+        <scroll-arrow
+          scroll-container-id="add-problem"
+          :reverse="true"
+        ></scroll-arrow>
+        <div class="input-container">
+          <div class="name-grade-container">
+            <name-input
+              :set-name="setName"
+              :set-author="setAuthor"
+              :error-name="errorFlags.name"
+              :set-error-name="setErrorFlag"
+            ></name-input>
+            <div v-if="ENABLE_GRADES" class="slider-width">
+              <grade-slider></grade-slider>
+            </div>
+          </div>
+          <div class="button-container">
+            <custom-button
+              v-if="isLoopType"
+              text="Numeruj chwyty"
+              :handle-click="toggleLoopModal"
+              :disabled="!isAnyGripSelected"
+              :icon-class-name="gripNumberingButtonIcon"
+            ></custom-button>
+          </div>
+          <comment-field :set-comment="setComment"></comment-field>
+        </div>
+        <div class="button-container">
+          <button class="button" @click="addProblem">Dodaj problem</button>
+        </div>
+      </div>
+    </div>
+
+    <transition name="fade">
+      <error-modal v-if="errorState.active"></error-modal>
+    </transition>
+
+    <transition name="fade">
+      <problem-modal v-if="addModal"></problem-modal>
+    </transition>
+
+    <transition name="fade">
+      <loop-modal
+        v-if="isLoopModalOpen"
+        :close="toggleLoopModal"
+        :initial-order="loopOrder"
+        :set-loop-state="setLoopState"
+      ></loop-modal>
+    </transition>
+  </div>
+</template>

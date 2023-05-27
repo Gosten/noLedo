@@ -2,13 +2,13 @@
   <div id="intro-scene">
     <div class="intro-container">
       <transition name="intro">
-        <!-- <img v-if="fade" class="splash-img" src="./images/LW_logo.png" alt="" /> -->
-        <img
+        <!-- <img
           v-if="fade"
-          class="splash-img"
-          src="../src/images/LW_logo_gif.gif"
-          alt=""
-        />
+          class="full-screen-splash"
+          src="../src/splash/apple-splash-1668-2388.jpg"
+          alt="splash screen"
+        /> -->
+        <!-- <img v-if="fade" class="splash-img" src="./images/LW_logo_gif.gif" alt="" />-->
       </transition>
     </div>
   </div>
@@ -18,19 +18,22 @@
 module.exports = {
   data() {
     return {
-      fade: true
+      fade: true,
     };
   },
   mounted() {
     setTimeout(() => (this.fade = false), 3000);
     setTimeout(() => this.$store.commit("toggleIntro"), 3700);
-  }
+  },
 };
 </script>
 
 <style scoped type="text/css">
+.full-screen-splash {
+}
+
 #intro-scene {
-  background: black;
+  /* background: black; */
   position: absolute;
   display: flex;
   justify-content: center;
@@ -39,6 +42,9 @@ module.exports = {
   width: 100vw;
   height: 100vh;
   font-family: "Russo One", sans-serif;
+  background-image: url("../splash/apple-splash-1668-2388.jpg");
+  background-size: cover;
+  background-position: center;
 }
 .intro-container {
   font-size: 1.5em;

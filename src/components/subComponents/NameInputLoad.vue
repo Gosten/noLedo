@@ -93,8 +93,6 @@ module.exports = {
       //remove trailing space
       const value = event.target.value;
       const newValue = value.replace(/( $)/g, "");
-      console.log("change type", event.type);
-      console.log({ value, newValue });
       callback(newValue);
       this.inputVal.name = newValue;
     },
